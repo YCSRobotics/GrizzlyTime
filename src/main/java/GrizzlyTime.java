@@ -7,11 +7,11 @@ import org.opencv.core.Core;
 public class GrizzlyTime extends Application {
     static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
 
-    ImageProcess processor = new ImageProcess();
-    GrizzlyTimeGUI userInterface = new GrizzlyTimeGUI();
+    private ImageProcess processor = new ImageProcess();
+    private GrizzlyTimeGUI userInterface = new GrizzlyTimeGUI();
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         GridPane root = new GridPane();
         Scene scene = new Scene(root, 600, 600);
 
@@ -20,7 +20,7 @@ public class GrizzlyTime extends Application {
 
         primaryStage.show();
 
-        processor.displayImage(primaryStage, root);
+        processor.displayImage(root);
         userInterface.updateOptions(root);
 
     }

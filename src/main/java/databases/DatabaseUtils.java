@@ -1,36 +1,32 @@
 package databases;
 
+import helpers.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseUtils {
-    DatabaseProcess dbProcess = new DatabaseProcess();
-    List<List<Object>> mainWorksheet = null;
-    List<List<Object>> loggedHours = null;
+    private DatabaseProcess dbProcess = new DatabaseProcess();
+    private List<List<Object>> mainWorksheet;
+    private List<List<Object>> loggedHours;
 
     public DatabaseUtils() {
         //initial data
-        mainWorksheet = dbProcess.returnWorksheetData("1qPUj2Pu8dHXof5Jy-VSRz13Uz354t9G7Oy4v8il97W8", "Current");
-        loggedHours = dbProcess.returnWorksheetData("1qPUj2Pu8dHXof5Jy-VSRz13Uz354t9G7Oy4v8il97W8", "LoggedHours");
+        mainWorksheet = dbProcess.returnWorksheetData(Constants.spreadsheet, "Current");
+        loggedHours = dbProcess.returnWorksheetData(Constants.spreadsheet, "LoggedHours");
 
     }
 
     //helper method called at beginning of each method to retrieve updated data
-    public void getUpdatedData() {
-        mainWorksheet = dbProcess.returnWorksheetData("1qPUj2Pu8dHXof5Jy-VSRz13Uz354t9G7Oy4v8il97W8", "Current");
-        loggedHours = dbProcess.returnWorksheetData("1qPUj2Pu8dHXof5Jy-VSRz13Uz354t9G7Oy4v8il97W8", "LoggedHours");
-
-    }
-
-    public void setID() {
-        getUpdatedData();
+    private void getUpdatedData() {
+        mainWorksheet = dbProcess.returnWorksheetData(Constants.spreadsheet, "Current");
+        loggedHours = dbProcess.returnWorksheetData(Constants.spreadsheet, "LoggedHours");
 
     }
 
     public ArrayList<String> getColumnData(int column) {
         getUpdatedData();
 
-        int i = 1;
         ArrayList<String> result = new ArrayList<>();
 
         for (List row: mainWorksheet) {
@@ -77,15 +73,38 @@ public class DatabaseUtils {
     }
 
     public void setCellData(int row, int column, String data) {
+        for (int x = 0; x < mainWorksheet.size(); x++) {
+            if (x == row) {
+                System.out.println("Successfully set data on row: " + x + " and column: " + column);
+                dbProcess.updateSpreadSheet(Constants.spreadsheet, x + 1, column + 1, data);
+            }
+        }
+    }
+
+    public String getCellData(int row, int column) {
         int i = 0;
-        for (List rowList : mainWorksheet) {
+
+        for (String sheetRow : getColumnData(column)) {
             if (i == row) {
-                System.out.println("Successfully set data on row: " + i + " and column: " + column);
-                dbProcess.updateSpreadSheet("1qPUj2Pu8dHXof5Jy-VSRz13Uz354t9G7Oy4v8il97W8", i + 1, 11, "Experiment");
+                return sheetRow;
             }
 
             i++;
         }
+
+        return null;
+    }
+
+    public int getCellRowFromColumn(String cellValue, int column) {
+        int i = 0;
+        for (String value : getColumnData(column)) {
+            if (value.equals(cellValue)) {
+                return i;
+            }
+            i++;
+        }
+
+        return -1;
     }
 
 }

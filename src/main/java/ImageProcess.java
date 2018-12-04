@@ -1,12 +1,7 @@
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
-import javafx.stage.Stage;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -15,15 +10,13 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 
-public class ImageProcess {
-    VideoCapture capture = new VideoCapture(0);
+class ImageProcess {
+    private VideoCapture capture = new VideoCapture(0);
     private boolean stopCamera = false;
-    ImageView capturedImage = null;
 
-    public void displayImage(Stage primaryStage, GridPane root) {
+    void displayImage(GridPane root) {
         startWebCamStream(root);
 
     }
@@ -40,27 +33,20 @@ public class ImageProcess {
 
         if (!capture.isOpened()) {
             System.out.println("Error opening camera");
+            return;
+
         }
 
-        Runnable frameGrabber = new Runnable() {
-            @Override
-            public void run() {
-                while (!stopCamera) {
-                    capture.read(frame);
-                    Imgproc.resize(frame, frame, sz);
-                    Core.flip(frame, frame, 1);
-                    MatOfByte buffer = new MatOfByte();
-                    Imgcodecs.imencode(".png", frame, buffer);
-                    Image imageToShow = new Image(new ByteArrayInputStream(buffer.toArray()));
+        Runnable frameGrabber = () -> {
+            while (!stopCamera) {
+                capture.read(frame);
+                Imgproc.resize(frame, frame, sz);
+                Core.flip(frame, frame, 1);
+                MatOfByte buffer = new MatOfByte();
+                Imgcodecs.imencode(".png", frame, buffer);
+                Image imageToShow = new Image(new ByteArrayInputStream(buffer.toArray()));
 
-                    Platform.runLater(new Runnable() {
-                        @Override public void run() {
-
-                            currentFrame.setImage(imageToShow);
-                        }
-
-                    });
-                }
+                Platform.runLater(() -> currentFrame.setImage(imageToShow));
             }
         };
 

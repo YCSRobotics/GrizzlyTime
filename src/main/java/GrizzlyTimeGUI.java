@@ -1,4 +1,3 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import databases.DatabaseUtils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,13 +7,13 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 
-public class GrizzlyTimeGUI {
+class GrizzlyTimeGUI {
 
     private Label scanLabel = new Label("Scan Student ID or Type Below!");
     private Label messageText = new Label("");
     private TextField studentIDBox = new TextField();
     private Button loginButton = new Button("Login/Logout");
-    private DatabaseUtils util = new DatabaseUtils();
+    private UserProcess userProcess = new UserProcess();
 
     public void updateOptions(GridPane root) {
         GridPane subRoot = new GridPane();
@@ -43,18 +42,13 @@ public class GrizzlyTimeGUI {
 
     private void setEventHandlers() {
         loginButton.setOnAction(event -> {
-            ArrayList<String> ids = util.getColumnData(0);
+            if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
+                userProcess.loginUser(studentIDBox.getText());
 
-            int i = 0;
-            for (String data : ids) {
-                if (data.equals(studentIDBox.getText())) {
-                    System.out.println("Data is located on Row: " + i);
-                    util.setCellData(1, 1, "GIBBERISH");
+            } else {
+                userProcess.logoutUser(studentIDBox.getText());
 
-                }
-                i++;
             }
-
         });
     }
 }

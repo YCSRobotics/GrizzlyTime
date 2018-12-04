@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class DatabaseProcess {
+class DatabaseProcess {
     private static final String APPLICATION_NAME = "GrizzlyTime JavaFX Edition";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
@@ -47,7 +47,7 @@ public class DatabaseProcess {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public List<List<Object>> returnWorksheetData(String spreadsheet, String range) {
+    List<List<Object>> returnWorksheetData(String spreadsheet, String range) {
         // Build a new authorized API client service.
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -71,7 +71,7 @@ public class DatabaseProcess {
         }
     }
 
-    public void updateSpreadSheet(String spreadsheet, int row, int column, String data) {
+    void updateSpreadSheet(String spreadsheet, int row, int column, String data) {
         // Build a new authorized API client service.
         String columnLetter = getCharForNumber(column);
 
@@ -86,15 +86,13 @@ public class DatabaseProcess {
                     .setApplicationName(APPLICATION_NAME)
                     .build();
 
-            UpdateValuesResponse response = service.spreadsheets().values()
-                    .update(spreadsheet, range, requestBody)
-                    .setValueInputOption("RAW").execute();
+            service.spreadsheets().values().update(spreadsheet, range, requestBody).setValueInputOption("RAW").execute();
 
         } catch (GeneralSecurityException e) {
             System.out.println("Invalid Credentials");
 
         } catch (IOException e2) {
-            System.out.println(e2);
+            e2.printStackTrace();
             //do nothing
 
         }

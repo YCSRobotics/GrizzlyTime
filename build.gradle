@@ -5,7 +5,7 @@ plugins {
 group 'GrizzlyTime'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+System.setProperty("java.library.path", "/libraries/opencv/")
 
 repositories {
     mavenCentral()
@@ -20,5 +20,3 @@ dependencies {
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
     compile 'com.google.apis:google-api-services-sheets:v4-rev516-1.23.0'
 }
-
-System.setProperty("java.library.path", "libraries/opencv/")

@@ -17,6 +17,8 @@ dependencies {
     )
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'com.google.api-client:google-api-client:1.23.0'
+    compile "com.google.zxing:core:3.3.0"
+    compile 'com.google.zxing:javase:3.3.0'
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
     compile 'com.google.apis:google-api-services-sheets:v4-rev516-1.23.0'
 }

@@ -14,21 +14,29 @@ public class UserProcess {
     private DatabaseUtils dbUtils = new DatabaseUtils();
 
     public boolean isUserLoggedIn(String userID) {
-        ArrayList<String> ids = dbUtils.getColumnData(0);
+    ArrayList<String> ids = dbUtils.getColumnData(0);
 
-        int i = 0;
-        for (String data : ids) {
-            if (data.equals(userID)) {
-                String cellData = dbUtils.getCellData(i, Constants.LOGGEDINCOLUMN);
-                cellData = cellData.replaceAll("\\s+","");
-
-                return cellData.equals("TRUE");
+    int i = 0;
+    for (String data : ids) {
+        if (data.equals(userID)) {
+            String cellData = dbUtils.getCellData(i, Constants.LOGGEDINCOLUMN);
+            try {
+                cellData = cellData.replaceAll("\\s+", "");
+            } catch (NullPointerException e) {
+                continue;
+                //do nothing because regex fails if it doesn't detect whitespace
             }
-            i++;
-        }
 
-        //TODO Create user if user doesn't exist
-        return false;
+            return cellData.equals("TRUE");
+        }
+        i++;
+    }
+
+    //create user then login
+    System.out.println("empty: " + dbUtils.nextEmptyCellColumn());
+    dbUtils.setCellData(dbUtils.nextEmptyCellColumn(), Constants.STUDENTIDCOLUMN, userID);
+
+    return false; //should never be triggered because of recursion
 
     }
 

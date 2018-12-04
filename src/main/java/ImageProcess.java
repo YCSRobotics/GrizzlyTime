@@ -11,10 +11,13 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 class ImageProcess {
     private VideoCapture capture = new VideoCapture(0);
     private boolean stopCamera = false;
+    private QRReader reader = new QRReader();
+    UserProcess process = new UserProcess();
 
     void displayImage(GridPane root) {
         startWebCamStream(root);
@@ -38,6 +41,8 @@ class ImageProcess {
         }
 
         Runnable frameGrabber = () -> {
+            int prevID = 0;
+
             while (!stopCamera) {
                 capture.read(frame);
                 Imgproc.resize(frame, frame, sz);
@@ -45,6 +50,19 @@ class ImageProcess {
                 MatOfByte buffer = new MatOfByte();
                 Imgcodecs.imencode(".png", frame, buffer);
                 Image imageToShow = new Image(new ByteArrayInputStream(buffer.toArray()));
+                String data = QRReader.decodeQRCode(imageToShow);
+
+                if (data != null) {
+                    if (!(Integer.valueOf(data) == prevID)) {
+                        if (process.isUserLoggedIn(data)) {
+                            process.logoutUser(data);
+                        } else {
+                            process.loginUser(data);
+                        }
+
+                        prevID = Integer.valueOf(data);
+                    }
+                }
 
                 Platform.runLater(() -> currentFrame.setImage(imageToShow));
             }

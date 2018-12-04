@@ -107,4 +107,16 @@ public class DatabaseUtils {
         return -1;
     }
 
+    public int nextEmptyCellColumn(){
+        ArrayList<String> columnData = getColumnData(Constants.STUDENTIDCOLUMN);
+        for (int i = 0; i < columnData.size(); i++) {
+            if (columnData.get(i).isEmpty()) {
+                return i;
+            }
+        }
+
+        return -1;
+
+    }
+
 }

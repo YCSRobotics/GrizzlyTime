@@ -1,5 +1,3 @@
-import com.google.api.client.util.DateTime;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import databases.DatabaseUtils;
 import helpers.Constants;
 
@@ -9,11 +7,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class UserProcess {
+class UserProcess {
 
     private DatabaseUtils dbUtils = new DatabaseUtils();
 
-    public boolean isUserLoggedIn(String userID) {
+    boolean isUserLoggedIn(String userID) {
     ArrayList<String> ids = dbUtils.getColumnData(0);
 
     int i = 0;
@@ -40,7 +38,7 @@ public class UserProcess {
 
     }
 
-    public void loginUser(String userID) {
+    void loginUser(String userID) {
         String currentTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
         int userRow = dbUtils.getCellRowFromColumn(userID, Constants.STUDENTIDCOLUMN);
 

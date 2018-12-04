@@ -24,6 +24,8 @@ public class DatabaseUtils {
 
     }
 
+    //TODO should take sheet as an argument
+    //grabs column data from sheet
     public ArrayList<String> getColumnData(int column) {
         getUpdatedData();
 
@@ -72,6 +74,7 @@ public class DatabaseUtils {
         return result;
     }
 
+    //sets cell data
     public void setCellData(int row, int column, String data) {
         for (int x = 0; x < mainWorksheet.size(); x++) {
             if (x == row) {
@@ -81,6 +84,7 @@ public class DatabaseUtils {
         }
     }
 
+    //gets specific cell data
     public String getCellData(int row, int column) {
         int i = 0;
 
@@ -95,6 +99,7 @@ public class DatabaseUtils {
         return null;
     }
 
+    //grab a a cellrow based on its position in a column
     public int getCellRowFromColumn(String cellValue, int column) {
         int i = 0;
         for (String value : getColumnData(column)) {

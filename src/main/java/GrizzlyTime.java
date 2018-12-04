@@ -20,7 +20,9 @@ public class GrizzlyTime extends Application {
 
         primaryStage.show();
 
+        //process camera frames and read barcode images
         processor.displayImage(root);
+        //create UI and logic
         userInterface.updateOptions(root);
 
     }

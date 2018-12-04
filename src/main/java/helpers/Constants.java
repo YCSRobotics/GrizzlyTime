@@ -10,6 +10,10 @@ public class Constants {
     public static final int LASTLOGOUTCOLUMN = 7;
     public static final int LASTLOGINCOLUMN = 6;
     public static final int STUDENTIDCOLUMN = 0;
+
+    //camera feed size
+    public static final int cameraHeight = 600;
+    public static final int cameraWidth = 400;
     
 
 }

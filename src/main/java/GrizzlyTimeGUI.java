@@ -1,11 +1,8 @@
-import databases.DatabaseUtils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-
-import java.util.ArrayList;
 
 class GrizzlyTimeGUI {
 
@@ -15,7 +12,8 @@ class GrizzlyTimeGUI {
     private Button loginButton = new Button("Login/Logout");
     private UserProcess userProcess = new UserProcess();
 
-    public void updateOptions(GridPane root) {
+    void updateOptions(GridPane root) {
+        //create our pains
         GridPane subRoot = new GridPane();
         GridPane options = new GridPane();
         GridPane title = new GridPane();
@@ -23,8 +21,10 @@ class GrizzlyTimeGUI {
         options.setAlignment(Pos.CENTER);
         title.setAlignment(Pos.CENTER);
 
+        //set styles
         scanLabel.setStyle("-fx-font-size: 20");
 
+        //add to root pane
         title.add(scanLabel, 0, 0);
         title.add(messageText, 0, 1);
         options.add(studentIDBox, 0, 0);
@@ -40,6 +40,7 @@ class GrizzlyTimeGUI {
 
     }
 
+    //our event handlers for interactivity
     private void setEventHandlers() {
         loginButton.setOnAction(event -> {
             if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {

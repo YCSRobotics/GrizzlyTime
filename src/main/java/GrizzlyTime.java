@@ -1,11 +1,13 @@
+import helpers.Constants;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import org.opencv.core.Core;
 
 public class GrizzlyTime extends Application {
-    static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
+    static{
+        CVHelper.loadLibrary();
+    }
 
     private ImageProcess processor = new ImageProcess();
     private GrizzlyTimeGUI userInterface = new GrizzlyTimeGUI();
@@ -17,6 +19,7 @@ public class GrizzlyTime extends Application {
 
         primaryStage.setTitle("GrizzlyTime JavaFX Edition");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(Constants.windowResizable);
 
         primaryStage.show();
 

@@ -56,14 +56,19 @@ class ImageProcess {
 
                 //verify that we have data
                 if (data != null) {
-                    if (!(Integer.valueOf(data) == prevID)) {
-                        if (process.isUserLoggedIn(data)) {
-                            process.logoutUser(data);
-                        } else {
-                            process.loginUser(data);
-                        }
+                    try {
+                        if (!(Integer.parseInt(data) == prevID)) {
+                            if (process.isUserLoggedIn(data)) {
+                                process.logoutUser(data);
+                            } else {
+                                process.loginUser(data);
+                            }
 
-                        prevID = Integer.valueOf(data);
+                            prevID = Integer.valueOf(data);
+                        }
+                    } catch (NumberFormatException e) {
+                        //do nothing
+                        continue;
                     }
                 }
 

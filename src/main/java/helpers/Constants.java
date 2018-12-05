@@ -10,10 +10,17 @@ public class Constants {
     public static final int LASTLOGOUTCOLUMN = 7;
     public static final int LASTLOGINCOLUMN = 6;
     public static final int STUDENTIDCOLUMN = 0;
+    public static final int TOTALHOURSLOG = 1;
 
     //camera feed size
-    public static final int cameraHeight = 600;
-    public static final int cameraWidth = 400;
-    
+    public static final int cameraHeight = 400;
+    public static final int cameraWidth = 600;
+
+    //window constants
+    public static final boolean windowResizable = false;
+
+    //sheet codes
+    public static final int mainSheet = 0;
+    public static final int logSheet = 1;
 
 }

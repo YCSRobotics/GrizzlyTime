@@ -26,8 +26,10 @@ public class DatabaseUtils {
 
     //TODO should take sheet as an argument
     //grabs column data from sheet
-    public ArrayList<String> getColumnData(int column) {
+    public ArrayList<String> getColumnData(int column, int page) {
         getUpdatedData();
+
+        mainWorksheet = page != 0 ? mainWorksheet = loggedHours : mainWorksheet;
 
         ArrayList<String> result = new ArrayList<>();
 
@@ -45,8 +47,10 @@ public class DatabaseUtils {
 
     }
 
-    public ArrayList<String> getRowData(int row) {
+    public ArrayList<String> getRowData(int row, int page) {
         getUpdatedData();
+
+        mainWorksheet = page != 0 ? mainWorksheet = loggedHours : mainWorksheet;
 
         int i = 1;
         ArrayList<String> result = new ArrayList<>();
@@ -75,7 +79,10 @@ public class DatabaseUtils {
     }
 
     //sets cell data
-    public void setCellData(int row, int column, String data) {
+    public void setCellData(int row, int column, String data, int page) {
+
+        mainWorksheet = page != 0 ? mainWorksheet = loggedHours : mainWorksheet;
+
         for (int x = 0; x < mainWorksheet.size(); x++) {
             if (x == row) {
                 System.out.println("Successfully set data on row: " + x + " and column: " + column);
@@ -85,10 +92,10 @@ public class DatabaseUtils {
     }
 
     //gets specific cell data
-    public String getCellData(int row, int column) {
+    public String getCellData(int row, int column, int page) {
         int i = 0;
 
-        for (String sheetRow : getColumnData(column)) {
+        for (String sheetRow : getColumnData(column, page)) {
             if (i == row) {
                 return sheetRow;
             }
@@ -99,10 +106,10 @@ public class DatabaseUtils {
         return null;
     }
 
-    //grab a a cellrow based on its position in a column
-    public int getCellRowFromColumn(String cellValue, int column) {
+    //grab a a cell row based on its position in a column
+    public int getCellRowFromColumn(String cellValue, int column, int page) {
         int i = 0;
-        for (String value : getColumnData(column)) {
+        for (String value : getColumnData(column, page)) {
             if (value.equals(cellValue)) {
                 return i;
             }
@@ -112,8 +119,9 @@ public class DatabaseUtils {
         return -1;
     }
 
-    public int nextEmptyCellColumn(){
-        ArrayList<String> columnData = getColumnData(Constants.STUDENTIDCOLUMN);
+    public int nextEmptyCellColumn(int page){
+
+        ArrayList<String> columnData = getColumnData(Constants.STUDENTIDCOLUMN, page);
         for (int i = 0; i < columnData.size(); i++) {
             if (columnData.get(i).isEmpty()) {
                 return i;

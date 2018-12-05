@@ -3,11 +3,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-
 class GrizzlyTimeGUI {
 
     private Label scanLabel = new Label("Scan Student ID or Type Below!");
-    private Label messageText = new Label("");
+    private static Label messageText = new Label("");
     private TextField studentIDBox = new TextField();
     private Button loginButton = new Button("Login/Logout");
     private UserProcess userProcess = new UserProcess();
@@ -42,14 +41,27 @@ class GrizzlyTimeGUI {
 
     //our event handlers for interactivity
     private void setEventHandlers() {
+
         loginButton.setOnAction(event -> {
-            if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
-                userProcess.loginUser(studentIDBox.getText());
+            Runnable loginUser = () -> {
+                if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
+                    userProcess.loginUser(studentIDBox.getText());
 
-            } else {
-                userProcess.logoutUser(studentIDBox.getText());
+                } else {
+                    userProcess.logoutUser(studentIDBox.getText());
 
-            }
+                }
+            };
+
+            Thread t = new Thread(loginUser);
+            t.setDaemon(true);
+            t.start();
+
         });
     }
+
+    public static void setMessageBoxText(String text) {
+        messageText.setText(text);
+    }
+
 }

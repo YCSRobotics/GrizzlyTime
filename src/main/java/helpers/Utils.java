@@ -15,7 +15,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Utils {
     public static String getCurrentDir() throws URISyntaxException {
 
-        return new File(Utils.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+        System.out.println(System.getProperty("user.dir"));
+        return System.getProperty("user.dir");
     }
 
     public static String readFile(String filePath) throws FileNotFoundException {

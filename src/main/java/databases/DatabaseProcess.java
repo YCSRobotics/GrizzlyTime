@@ -14,9 +14,7 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import helpers.Utils;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import sun.util.logging.PlatformLogger;
 
 import java.io.IOException;
 import java.io.InputStream;

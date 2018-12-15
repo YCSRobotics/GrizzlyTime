@@ -1,19 +1,13 @@
 package databases;
 
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import helpers.Constants;
 import helpers.Utils;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -88,9 +82,9 @@ public class JSONHelper {
 
     public void copyTemplateJSON(){
         try {
-            Files.copy(getClass().getClassLoader().getResourceAsStream("templates/config.json"), Paths.get(Utils.getCurrentDir()+"/"+Constants.configLocal), REPLACE_EXISTING);
+            Files.copy(getClass().getClassLoader().getResourceAsStream("templates/config.json"), Paths.get(Constants.configLocal), REPLACE_EXISTING);
 
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
 
             util.createAlert(

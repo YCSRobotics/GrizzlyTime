@@ -1,4 +1,3 @@
-import com.sun.deploy.config.Platform;
 import helpers.Constants;
 import helpers.Utils;
 import javafx.geometry.HPos;
@@ -74,8 +73,6 @@ class GrizzlyTimeGUI {
 
         loginButton.setOnAction(event -> {
             Runnable loginUser = () -> {
-                System.out.println(userProcess.getDateColumn());
-
                 if(studentIDBox.getText().isEmpty()){
                     util.createAlert(
                             "Invalid ID",

@@ -11,7 +11,10 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
+import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+
 class ImageProcess {
     private VideoCapture capture = new VideoCapture(0);
     private boolean stopCamera = false;
@@ -35,6 +38,13 @@ class ImageProcess {
 
         if (!capture.isOpened()) {
             System.out.println("Error opening camera");
+            Image image = new Image("images/error.png");
+            currentFrame.setImage(image);
+            currentFrame.setFitHeight(Constants.cameraHeight);
+            currentFrame.setFitWidth(Constants.cameraWidth);
+            subRoot.add(currentFrame, 0, 0);
+            root.add(subRoot, 0, 0);
+
             return;
 
         }

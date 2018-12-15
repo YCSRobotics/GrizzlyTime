@@ -13,6 +13,9 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import helpers.Utils;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import sun.util.logging.PlatformLogger;
 
 import java.io.IOException;
@@ -32,6 +35,9 @@ class DatabaseProcess {
 
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
     private static final String CREDENTIALS_FILE_PATH = "/credentials/credentials.json";
+    private Utils util = new Utils();
+
+    private static final String spreadsheet = new JSONHelper().getSheet();
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //set google logging level to severe due to permissions bug, see https://github.com/googleapis/google-http-java-client/issues/315
@@ -51,7 +57,8 @@ class DatabaseProcess {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    List<List<Object>> returnWorksheetData(String spreadsheet, String range) {
+    List<List<Object>> returnWorksheetData(String range) {
+
         // Build a new authorized API client service.
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -66,16 +73,36 @@ class DatabaseProcess {
             return response.getValues();
 
         } catch (GeneralSecurityException e) {
-            System.out.println("Invalid Credentials");
+            util.createAlert(
+                    "ERROR",
+                    "INVALID CREDENTIALS",
+                    "Please check that you have permission to edit the google sheet and try again.",
+                    Alert.AlertType.ERROR
+
+            );
+
+            System.exit(1);
             return null;
 
         } catch (IOException e2) {
+            e2.printStackTrace();
+
+            util.createAlert(
+                    "ERROR",
+                    "INVALID SHEET",
+                    "Please check that the google sheet URL located in the config.json is valid, and try again.",
+                    Alert.AlertType.ERROR
+
+            );
+
+            System.exit(1);
             return null;
 
         }
     }
 
-    void updateSpreadSheet(String spreadsheet, int row, int column, String data) {
+    void updateSpreadSheet(int row, int column, String data) {
+
         // Build a new authorized API client service.
         String columnLetter = getCharForNumber(column);
 

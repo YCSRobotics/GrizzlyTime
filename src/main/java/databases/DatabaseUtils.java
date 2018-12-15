@@ -12,15 +12,13 @@ public class DatabaseUtils {
 
     public DatabaseUtils() {
         //initial data
-        mainWorksheet = dbProcess.returnWorksheetData(Constants.spreadsheet, "Current");
-        loggedHours = dbProcess.returnWorksheetData(Constants.spreadsheet, "LoggedHours");
+        mainWorksheet = dbProcess.returnWorksheetData("Current");
 
     }
 
     //helper method called at beginning of each method to retrieve updated data
     private void getUpdatedData() {
-        mainWorksheet = dbProcess.returnWorksheetData(Constants.spreadsheet, "Current");
-        loggedHours = dbProcess.returnWorksheetData(Constants.spreadsheet, "LoggedHours");
+        mainWorksheet = dbProcess.returnWorksheetData("Current");
 
     }
 
@@ -86,7 +84,7 @@ public class DatabaseUtils {
         for (int x = 0; x < mainWorksheet.size(); x++) {
             if (x == row) {
                 System.out.println("Successfully set data on row: " + x + " and column: " + column);
-                dbProcess.updateSpreadSheet(Constants.spreadsheet, x + 1, column + 1, data);
+                dbProcess.updateSpreadSheet(x + 1, column + 1, data);
             }
         }
     }

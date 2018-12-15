@@ -1,8 +1,8 @@
 package helpers;
 
-public class Constants {
-    public static final String spreadsheet = "1qPUj2Pu8dHXof5Jy-VSRz13Uz354t9G7Oy4v8il97W8";
+import databases.JSONHelper;
 
+public class Constants {
     //spreadsheet layout
     public static final int LOGGEDINCOLUMN = 10;
     public static final int TOTALHOURSCOLUMN = 9;
@@ -22,5 +22,8 @@ public class Constants {
     //sheet codes
     public static final int mainSheet = 0;
     public static final int logSheet = 1;
+
+    //configuration locations
+    public static final String configLocal = "config.json";
 
 }

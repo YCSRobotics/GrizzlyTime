@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GrizzlyTime extends Application {
@@ -17,7 +18,11 @@ public class GrizzlyTime extends Application {
     public void start(Stage primaryStage) {
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/icon.png")));
         GridPane root = new GridPane();
+
         Scene scene = new Scene(root, 600, 600);
+        scene.getStylesheets().add("styles/root.css");
+
+        root.setId("main");
 
         primaryStage.setTitle("GrizzlyTime JavaFX Edition");
         primaryStage.setScene(scene);

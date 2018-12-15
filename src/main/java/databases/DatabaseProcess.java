@@ -37,7 +37,7 @@ class DatabaseProcess {
     private static final String CREDENTIALS_FILE_PATH = "/credentials/credentials.json";
     private Utils util = new Utils();
 
-    private static final String spreadsheet = new JSONHelper().getSheet();
+    private static final String spreadsheet = new JSONHelper().getKey("sheet");
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //set google logging level to severe due to permissions bug, see https://github.com/googleapis/google-http-java-client/issues/315

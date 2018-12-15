@@ -27,15 +27,13 @@ public class JSONHelper {
 
     Utils util = new Utils();
 
-    public String getSheet() {
+    public String getKey(String key) {
         String JSONString;
 
         try {
             JSONString = Utils.readFile(Utils.getCurrentDir() + "/" + Constants.configLocal);
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
             copyTemplateJSON();
 
             //show alert dialog
@@ -66,14 +64,14 @@ public class JSONHelper {
 
         JSONObject json = new JSONObject(JSONString);
 
-        String key = json.getString("sheet");
+        String result = json.getString(key);
 
-        if (key.isEmpty()) {
+        if (result.isEmpty()) {
         //show alert dialog
             util.createAlert(
                     "ERROR",
                     "ERROR LOADING config.json",
-                    "Please confirm that the specified sheet is valid.",
+                    "Please confirm that the configuration is valid.",
                     Alert.AlertType.ERROR
             );
 
@@ -81,8 +79,8 @@ public class JSONHelper {
             return null;
 
         } else {
-            System.out.println("Sheet: " + key);
-            return key;
+            System.out.println(key+ ": " + result);
+            return result;
 
         }
 

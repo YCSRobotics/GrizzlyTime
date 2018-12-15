@@ -14,7 +14,7 @@ public class Constants {
 
     //camera feed size
     public static final int cameraHeight = 400;
-    public static final int cameraWidth = 600;
+    public static final int cameraWidth = 610;
 
     //window constants
     public static final boolean windowResizable = false;
@@ -25,5 +25,7 @@ public class Constants {
 
     //configuration locations
     public static final String configLocal = "config.json";
+    public static final String VERSION = "1.0.1a";
+    public static final String CREDITS = "Dalton Smith";
 
 }

@@ -1,3 +1,4 @@
+import databases.JSONHelper;
 import helpers.Constants;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
@@ -11,14 +12,17 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
-import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
+
+/***
+ * Description: Manages grabbing frames from the camera, and reading the bar codes.
+ */
 
 class ImageProcess {
     private VideoCapture capture = new VideoCapture(0);
     private boolean stopCamera = false;
     private UserProcess process = new UserProcess();
+    private JSONHelper parser = new JSONHelper();
 
     void displayImage(GridPane root) {
         startWebCamStream(root);
@@ -36,7 +40,8 @@ class ImageProcess {
 
         ImageView currentFrame = new ImageView();
 
-        if (!capture.isOpened()) {
+        //check if camera opened successfully, or is disabled
+        if (!capture.isOpened() || parser.getKey("enableCamera") == "false") {
             System.out.println("Error opening camera");
             Image image = new Image("images/error.png");
             currentFrame.setImage(image);
@@ -49,6 +54,7 @@ class ImageProcess {
 
         }
 
+        //grab frames from the camera
         Runnable frameGrabber = () -> {
             int prevID = 0;
 

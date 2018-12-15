@@ -32,8 +32,7 @@
 }
 
 #bottomPane {
-    -fx-background-color: lightgrey;
-    -fx-font-size: 18px;
+    -fx-font-size: 12px;
     -fx-padding: 5px;
 
 }

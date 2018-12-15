@@ -39,6 +39,9 @@ class DatabaseProcess {
 
     private static final String spreadsheet = new JSONHelper().getKey("sheet");
 
+    private static final String mainPage = "Current";
+    private static final String logPage = "Date Log";
+
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //set google logging level to severe due to permissions bug, see https://github.com/googleapis/google-http-java-client/issues/315
         java.util.logging.Logger.getLogger(FileDataStoreFactory.class.getName()).setLevel(Level.SEVERE);
@@ -101,12 +104,14 @@ class DatabaseProcess {
         }
     }
 
-    void updateSpreadSheet(int row, int column, String data) {
+    void updateSpreadSheet(int row, int column, String data, int page) {
 
         // Build a new authorized API client service.
         String columnLetter = getCharForNumber(column);
 
         String range = columnLetter + row;
+        String sheetPage = page == 0 ? mainPage : logPage;
+        range = sheetPage + "!" + range;
 
         ValueRange requestBody = new ValueRange();
         requestBody.setValues(Arrays.asList(Arrays.asList(data)));

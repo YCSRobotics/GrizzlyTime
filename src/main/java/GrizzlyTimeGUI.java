@@ -4,6 +4,7 @@ import helpers.Utils;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -73,6 +74,18 @@ class GrizzlyTimeGUI {
 
         loginButton.setOnAction(event -> {
             Runnable loginUser = () -> {
+                System.out.println(userProcess.getDateColumn());
+
+                if(studentIDBox.getText().isEmpty()){
+                    util.createAlert(
+                            "Invalid ID",
+                            "Invalid ID",
+                            "The ID you specified is invalid.",
+                            Alert.AlertType.ERROR
+                    );
+                    return;
+                }
+
                 if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
                     if (util.confirmInput("Confirm login of user: " + studentIDBox.getText())) {
                         System.out.println("Logging in");

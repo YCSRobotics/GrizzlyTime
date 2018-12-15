@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 class UserProcess {
 
@@ -119,6 +120,7 @@ class UserProcess {
 
                 System.out.println("Set Data:");
                 dbUtils.setCellData(userRow, Constants.HOURSCOLUMN, time, Constants.mainSheet);
+                dbUtils.setCellData(userRow, getDateColumn(), time, Constants.logSheet);
                 dbUtils.setCellData(userRow, Constants.TOTALHOURSCOLUMN, timeTotal, Constants.mainSheet);
 
                 Platform.runLater(() -> {
@@ -133,6 +135,24 @@ class UserProcess {
 
         }
 
+    }
+
+    public int getDateColumn(){
+        ArrayList<String> data = dbUtils.getRowData(1, Constants.logSheet);
+        String currentDate = new SimpleDateFormat("yyyy:MM:dd").format(new Date());
+
+        int i;
+        for (i = 0; i < data.size(); i++) {
+            String checkDate = data.get(i);
+            checkDate = checkDate.replace("'", "");
+
+            if(checkDate.equals(currentDate)){
+                return i;
+            }
+        }
+
+        dbUtils.setCellData(0,  i, currentDate, Constants.logSheet);
+        return i+1;
     }
 
     boolean isValidID(String userID) {

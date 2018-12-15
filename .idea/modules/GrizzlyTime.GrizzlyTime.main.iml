@@ -24,6 +24,7 @@
     <orderEntry type="library" name="Gradle: com.google.zxing:core:3.3.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.oauth-client:google-oauth-client-jetty:1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.json:json:20180813" level="project" />
     <orderEntry type="library" name="Gradle: com.google.oauth-client:google-oauth-client-java6:1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.oauth-client:google-oauth-client:1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.http-client:google-http-client-jackson2:1.23.0" level="project" />

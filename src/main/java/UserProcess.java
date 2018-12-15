@@ -90,17 +90,17 @@ class UserProcess {
             Duration difference = Duration.between(date1, date2);
             long durInSeconds = difference.getSeconds();
             String time = String.format("%02d:%02d:%02d", durInSeconds / 3600, (durInSeconds % 3600) / 60, (durInSeconds % 60));
+            LocalTime totalHoursTime = LocalTime.parse(time);
 
             //logout the user if in the negative
             int err = time.indexOf('-');
 
             System.out.println("Time difference is: " + time);
             if (err == -1) {
-                LocalTime start;
                 LocalTime diffTimeObj;
+                LocalTime start;
 
                 String totalHours = dbUtils.getCellData(userRow, Constants.TOTALHOURSCOLUMN, Constants.mainSheet);
-                String diffTime = dbUtils.getCellData(userRow, Constants.HOURSCOLUMN, Constants.mainSheet);
 
                 //check if any of the fields are blank
                 try {
@@ -109,13 +109,8 @@ class UserProcess {
                     start = LocalTime.parse("00:00:01");
                 }
 
-                try {
-                    diffTimeObj = LocalTime.parse(diffTime);
-                } catch (DateTimeParseException e) {
-                    diffTimeObj = LocalTime.parse("00:00:01");
-                }
 
-                LocalTime totalTime = start.plusHours(diffTimeObj.getHour()).plusMinutes(diffTimeObj.getMinute()).plusSeconds(diffTimeObj.getSecond());
+                LocalTime totalTime = totalHoursTime.plusHours(start.getHour()).plusMinutes(start.getMinute()).plusSeconds(start.getSecond());
                 String timeTotal = String.format("%02d:%02d:%02d", totalTime.getHour(), totalTime.getMinute(), totalTime.getSecond());
 
                 System.out.println("Set Data:");

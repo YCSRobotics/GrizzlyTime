@@ -118,13 +118,15 @@ public class DatabaseUtils {
     public int nextEmptyCellColumn(int page){
 
         ArrayList<String> columnData = getColumnData(Constants.STUDENTIDCOLUMN, page);
-        for (int i = 0; i < columnData.size(); i++) {
+        int i;
+
+        for (i = 0; i < columnData.size(); i++) {
             if (columnData.get(i).isEmpty()) {
                 return i;
             }
         }
 
-        return 1;
+        return i;
 
     }
 

@@ -21,3 +21,14 @@ the sheet variable in the config.json.
   - Optimize gsheet wrapper
  
 ![example image](https://i.imgur.com/JVmdQg5.png)
+
+### Usage
+1. Import the template spreadsheet into a google doc.
+2. Copy the spreadsheet ID (google it)
+3. Paste spreadsheet id into the config.json, it should look something like
+```
+"sheet" = "fkljATsgsdfsdfaslkjtaSDsfs"
+```
+4. Launch the application
+5. It should open a web browser and request for permission to access your account, grant it.
+6. Profit???

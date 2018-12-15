@@ -54,7 +54,7 @@ public class DatabaseUtils {
         int i = 1;
         ArrayList<String> result = new ArrayList<>();
 
-        System.out.println(mainWorksheet.get(9).get(0).toString());
+        //System.out.println(mainWorksheet.get(9).get(0).toString());
 
         for (List currentRow : mainWorksheet) {
             if (i == row) {
@@ -82,12 +82,9 @@ public class DatabaseUtils {
 
         mainWorksheet = page != 0 ? mainWorksheet = loggedHours : mainWorksheet;
 
-        for (int x = 0; x < mainWorksheet.size(); x++) {
-            if (x == row) {
-                System.out.println("Successfully set data on row: " + x + " and column: " + column);
-                dbProcess.updateSpreadSheet(x + 1, column + 1, data, page);
-            }
-        }
+        System.out.println("Successfully set data on row: " + row + " and column: " + column+1);
+        dbProcess.updateSpreadSheet(row+1, column+1, data, page);
+
     }
 
     //gets specific cell data
@@ -127,7 +124,7 @@ public class DatabaseUtils {
             }
         }
 
-        return -1;
+        return 1;
 
     }
 

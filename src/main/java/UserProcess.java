@@ -58,6 +58,7 @@ class UserProcess {
 
             Platform.runLater(() -> {
                 GrizzlyTimeGUI.setMessageBoxText("Successfully logged in user: " + userID);
+                GrizzlyTimeGUI.clearInput();
             });
 
         }
@@ -103,9 +104,13 @@ class UserProcess {
                 //check if any of the fields are blank
                 try {
                     start = LocalTime.parse(totalHours);
-                    diffTimeObj = LocalTime.parse(diffTime);
                 } catch (DateTimeParseException e) {
                     start = LocalTime.parse("00:00:01");
+                }
+
+                try {
+                    diffTimeObj = LocalTime.parse(diffTime);
+                } catch (DateTimeParseException e) {
                     diffTimeObj = LocalTime.parse("00:00:01");
                 }
 
@@ -118,6 +123,7 @@ class UserProcess {
 
                 Platform.runLater(() -> {
                     GrizzlyTimeGUI.setMessageBoxText("Logged out user: " + userID);
+                    GrizzlyTimeGUI.clearInput();
                 });
 
             }

@@ -1,3 +1,4 @@
+import helpers.Utils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,9 +8,10 @@ class GrizzlyTimeGUI {
 
     private Label scanLabel = new Label("Scan Student ID or Type Below!");
     private static Label messageText = new Label("");
-    private TextField studentIDBox = new TextField();
+    private static TextField studentIDBox = new TextField();
     private Button loginButton = new Button("Login/Logout");
     private UserProcess userProcess = new UserProcess();
+    private Utils util = new Utils();
 
     void updateOptions(GridPane root) {
         //create our pains
@@ -45,10 +47,16 @@ class GrizzlyTimeGUI {
         loginButton.setOnAction(event -> {
             Runnable loginUser = () -> {
                 if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
-                    userProcess.loginUser(studentIDBox.getText());
+                    if (util.confirmInput("Confirm login of user: " + studentIDBox.getText())) {
+                        System.out.println("Logging in");
+                        userProcess.loginUser(studentIDBox.getText());
+                    }
 
                 } else {
-                    userProcess.logoutUser(studentIDBox.getText());
+                    if (util.confirmInput("Confirm logout of user: " + studentIDBox.getText())) {
+                        System.out.println("Logging out");
+                        userProcess.logoutUser(studentIDBox.getText());
+                    }
 
                 }
             };
@@ -63,5 +71,6 @@ class GrizzlyTimeGUI {
     public static void setMessageBoxText(String text) {
         messageText.setText(text);
     }
+    public static void clearInput() { studentIDBox.clear(); }
 
 }

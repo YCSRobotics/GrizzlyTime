@@ -13,6 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import sun.util.logging.PlatformLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +22,9 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
+//ignore google sheets warnings because of google permission bug
 class DatabaseProcess {
     private static final String APPLICATION_NAME = "GrizzlyTime JavaFX Edition";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -31,6 +34,9 @@ class DatabaseProcess {
     private static final String CREDENTIALS_FILE_PATH = "/credentials/credentials.json";
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+        //set google logging level to severe due to permissions bug, see https://github.com/googleapis/google-http-java-client/issues/315
+        java.util.logging.Logger.getLogger(FileDataStoreFactory.class.getName()).setLevel(Level.SEVERE);
+
         // Load client secrets.
         InputStream in = DatabaseProcess.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));

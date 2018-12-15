@@ -11,7 +11,7 @@ public class CVHelper {
             InputStream in = null;
             File fileOut = null;
             String osName = System.getProperty("os.name");
-            System.out.println(GrizzlyTime.class + osName);
+            System.out.println("Detected OS: " + osName);
             if (osName.startsWith("Windows")) {
                 int bitness = Integer.parseInt(System.getProperty("sun.arch.data.model"));
                 if (bitness == 32) {
@@ -40,6 +40,7 @@ public class CVHelper {
             System.load(fileOut.toString());
         } catch (Exception e) {
             throw new RuntimeException("Failed to load opencv native library", e);
+
         }
 
     }

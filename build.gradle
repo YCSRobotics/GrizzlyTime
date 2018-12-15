@@ -3,9 +3,7 @@ plugins {
 }
 
 group 'GrizzlyTime'
-version '1.0-SNAPSHOT'
-
-System.setProperty("java.library.path", "/libraries/opencv/")
+version '1.0.0a'
 
 repositories {
     mavenCentral()
@@ -13,7 +11,7 @@ repositories {
 
 dependencies {
     compile(
-            files('libraries/opencv/opencv-343.jar')
+            files('src/main/resources/opencv/opencv-343.jar')
     )
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'com.google.api-client:google-api-client:1.23.0'
@@ -21,4 +19,5 @@ dependencies {
     compile 'com.google.zxing:javase:3.3.0'
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
     compile 'com.google.apis:google-api-services-sheets:v4-rev516-1.23.0'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }

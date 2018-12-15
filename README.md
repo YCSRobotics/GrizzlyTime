@@ -1,5 +1,6 @@
 # GrizzlyTime-JavaFX
 JavaFX version of GrizzlyTime logger
+GrizzlyTime is a google sheets based logging system. It logs students/mentors hours and days based on a 6 digit identification code. It can read barcodes and is configurable to use different google sheets. 
 
 Clone with `https://github.com/Daltz333/GrizzlyTime-JavaFX.git`
 

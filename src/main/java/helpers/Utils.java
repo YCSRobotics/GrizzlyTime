@@ -1,15 +1,20 @@
 package helpers;
 
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 //methods in this class should not be dependent on anything relative
 public class Utils {
@@ -85,6 +90,94 @@ public class Utils {
 
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
+    }
+
+    public ArrayList<String> getUserInfo() {
+
+        if (Platform.isFxApplicationThread()) {
+            return showAuthDialog();
+
+        } else {
+            AtomicReference<ArrayList<String>> temp = new AtomicReference<>();
+            AtomicReference<Boolean> isSet = new AtomicReference<>();
+
+            isSet.set(false);
+            Platform.runLater(() -> {
+                temp.set(showAuthDialog());
+                isSet.set(true);
+            });
+
+            while (!isSet.get()) {}
+
+            System.out.println("Run later");
+            return temp.get();
+
+        }
+    }
+
+    private ArrayList<String> showAuthDialog() {
+        // Create the custom dialog.
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("New User Detected");
+        dialog.setHeaderText("Please enter your name to complete your registration and login.");
+
+        // Set the button types.
+        ButtonType loginButtonType = new ButtonType("Create Account", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField username = new TextField("First Name");
+        username.setPromptText("");
+        TextField password = new TextField("Last Name");
+        password.setPromptText("");
+
+        grid.add(new Label("First Name:"), 0, 0);
+        grid.add(username, 1, 0);
+        grid.add(new Label("Last Name:"), 0, 1);
+        grid.add(password, 1, 1);
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        username.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(username::requestFocus);
+
+        ArrayList<String> data = new ArrayList<>();
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(username.getText(), password.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(usernamePassword -> {
+            data.add("TRUE");
+            data.add(usernamePassword.getKey());
+            data.add(usernamePassword.getValue());
+
+        });
+
+        if (data.get(0) != null ){ return data; }
+
+        data.set(0, "FALSE");
+
+        return data;
     }
 
 }

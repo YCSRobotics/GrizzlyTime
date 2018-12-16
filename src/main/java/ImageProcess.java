@@ -41,7 +41,7 @@ class ImageProcess {
         ImageView currentFrame = new ImageView();
 
         //check if camera opened successfully, or is disabled
-        if (!capture.isOpened() || parser.getKey("enableCamera") == "false") {
+        if (!capture.isOpened() || parser.getKey("enableCamera").equals("false")) {
             System.out.println("Error opening camera");
             Image image = new Image("images/error.png");
             currentFrame.setImage(image);
@@ -82,7 +82,7 @@ class ImageProcess {
 
                             prevID = Integer.valueOf(data);
                         }
-                    } catch (NumberFormatException e) {
+                    } catch (Exception e) {
                         //do nothing
                         continue;
                     }

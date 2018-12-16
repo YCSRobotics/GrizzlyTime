@@ -1,5 +1,6 @@
 import databases.DatabaseUtils;
 import helpers.Constants;
+import helpers.Utils;
 import javafx.application.Platform;
 
 import java.text.SimpleDateFormat;
@@ -16,7 +17,9 @@ class UserProcess {
     private DatabaseUtils dbUtils = new DatabaseUtils();
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
 
-    boolean isUserLoggedIn(String userID) {
+    private Utils util = new Utils();
+
+    boolean isUserLoggedIn(String userID) throws Exception {
         ArrayList<String> ids = dbUtils.getColumnData(0, Constants.mainSheet);
 
         int i = 0;
@@ -35,9 +38,21 @@ class UserProcess {
             i++;
         }
 
-        //create user then login
-        System.out.println("empty: " + dbUtils.nextEmptyCellColumn(Constants.mainSheet));
-        dbUtils.setCellData(dbUtils.nextEmptyCellColumn(Constants.mainSheet), Constants.STUDENTIDCOLUMN, userID, Constants.mainSheet);
+        System.out.println("NEW USER DETECTED");
+        ArrayList<String> userData = util.getUserInfo();
+
+        System.out.println(userData.get(0));
+        if (userData.get(0).equals("TRUE")) {
+            //create user then login
+            int blankRow = dbUtils.nextEmptyCellColumn(Constants.mainSheet);
+            dbUtils.setCellData(blankRow, Constants.STUDENTIDCOLUMN, userID, Constants.mainSheet);
+            dbUtils.setCellData(blankRow, Constants.FIRSTNAMECOLUMN, userData.get(1), Constants.mainSheet);
+            dbUtils.setCellData(blankRow, Constants.LASTNAMECOLUMN, userData.get(2), Constants.mainSheet);
+
+        } else {
+            throw new Exception("Cancelled");
+
+        }
 
         return false;
 

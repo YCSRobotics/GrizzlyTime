@@ -72,36 +72,40 @@ class GrizzlyTimeGUI {
     private void setEventHandlers() {
 
         loginButton.setOnAction(event -> {
-            Runnable loginUser = () -> {
-                if(studentIDBox.getText().isEmpty()){
-                    util.createAlert(
-                            "Invalid ID",
-                            "Invalid ID",
-                            "The ID you specified is invalid.",
-                            Alert.AlertType.ERROR
-                    );
-                    return;
-                }
-
-                if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
-                    if (util.confirmInput("Confirm login of user: " + studentIDBox.getText())) {
-                        System.out.println("Logging in");
-                        userProcess.loginUser(studentIDBox.getText());
+            if (util.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
+                Runnable loginUser = () -> {
+                    if (studentIDBox.getText().isEmpty()) {
+                        util.createAlert(
+                                "Invalid ID",
+                                "Invalid ID",
+                                "The ID you specified is invalid.",
+                                Alert.AlertType.ERROR
+                        );
+                        return;
                     }
 
-                } else {
-                    if (util.confirmInput("Confirm logout of user: " + studentIDBox.getText())) {
-                        System.out.println("Logging out");
-                        userProcess.logoutUser(studentIDBox.getText());
+                    try {
+                        if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
+                            System.out.println("Logging in");
+                            userProcess.loginUser(studentIDBox.getText());
+
+                        } else {
+                            System.out.println("Logging out");
+                            userProcess.logoutUser(studentIDBox.getText());
+
+                        }
+                    } catch (Exception e) {
+                        //do nothing
+                        System.out.println("CANCELLED");
+
                     }
+                };
 
-                }
-            };
+                Thread t = new Thread(loginUser);
+                t.setDaemon(true);
+                t.start();
 
-            Thread t = new Thread(loginUser);
-            t.setDaemon(true);
-            t.start();
-
+            }
         });
     }
 

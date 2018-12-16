@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseUtils {
+    /**
+     * @author Dalton Smith
+     * DatabaseUtils
+     * Helpers to make managing the google sheets API
+     * Horribly inefficient, but it works :)
+     */
+
     private DatabaseProcess dbProcess = new DatabaseProcess();
     private List<List<Object>> mainWorksheet;
     private List<List<Object>> loggedHours;
@@ -14,6 +21,7 @@ public class DatabaseUtils {
         //initial data
         mainWorksheet = dbProcess.returnWorksheetData("Current");
         loggedHours = dbProcess.returnWorksheetData("Date Log");
+
     }
 
     //helper method called at beginning of each method to retrieve updated data
@@ -23,7 +31,6 @@ public class DatabaseUtils {
 
     }
 
-    //TODO should take sheet as an argument
     //grabs column data from sheet
     public ArrayList<String> getColumnData(int column, int page) {
         getUpdatedData();
@@ -32,6 +39,7 @@ public class DatabaseUtils {
 
         ArrayList<String> result = new ArrayList<>();
 
+        //add various rows to ArrayList
         for (List row: mainWorksheet) {
             try {
                 result.add(row.get(column).toString());
@@ -80,6 +88,7 @@ public class DatabaseUtils {
     //sets cell data
     public void setCellData(int row, int column, String data, int page) {
 
+        //set appropriate sheet
         mainWorksheet = page != 0 ? mainWorksheet = loggedHours : mainWorksheet;
 
         System.out.println("Successfully set data on row: " + row + " and column: " + column+1);

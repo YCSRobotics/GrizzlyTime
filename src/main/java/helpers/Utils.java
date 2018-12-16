@@ -9,7 +9,6 @@ import javafx.util.Pair;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
@@ -18,10 +17,17 @@ import java.util.concurrent.atomic.AtomicReference;
 
 //methods in this class should not be dependent on anything relative
 public class Utils {
-    public static String getCurrentDir() throws URISyntaxException {
+    /**
+     * @author Dalton Smith
+     * Utils
+     * Various utility methods used throughout the application
+     * https://code.makery.ch/blog/javafx-dialogs-official/
+     */
 
+    public static String getCurrentDir() {
         System.out.println(System.getProperty("user.dir"));
         return System.getProperty("user.dir");
+
     }
 
     public static String readFile(String filePath) throws FileNotFoundException {
@@ -30,13 +36,16 @@ public class Utils {
 
         String result = "";
 
+        //read the entire json
         while (sc.hasNext()) {
             result = result + sc.next();
+
         }
 
         return result;
     }
 
+    //create alert
     public void createAlert(String title, String header, String content, Alert.AlertType type) {
 
         //ensure that we always show the dialog on the main UI thread
@@ -50,6 +59,7 @@ public class Utils {
         }
     }
 
+    //alert helper
     private void showAlert(String title, String header, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -59,6 +69,7 @@ public class Utils {
         alert.showAndWait();
     }
 
+    //confirm new user registration
     public boolean confirmInput(String message) {
         AtomicBoolean tempBoolean = new AtomicBoolean();
         AtomicBoolean isSet = new AtomicBoolean();
@@ -82,6 +93,7 @@ public class Utils {
         }
     }
 
+    //new user registration helper
     private boolean confirmInputHelper(String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -94,6 +106,7 @@ public class Utils {
 
     public ArrayList<String> getUserInfo() {
 
+        //run on FX application thread
         if (Platform.isFxApplicationThread()) {
             return showAuthDialog();
 
@@ -107,6 +120,7 @@ public class Utils {
                 isSet.set(true);
             });
 
+            //wait until the user has finished dialog
             while (!isSet.get()) {}
 
             System.out.println("Run later");

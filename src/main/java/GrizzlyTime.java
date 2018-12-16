@@ -1,14 +1,23 @@
+import helpers.CVHelper;
 import helpers.Constants;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import modules.CameraStream;
+import modules.UserInterface;
 
 public class GrizzlyTime extends Application {
+    /**
+     * @author Dalton Smith
+     * GrizzlyTime main application class
+     * This class calls our various modules and starts the JavaFX application
+     */
+
     @Override
     public void start(Stage primaryStage) {
+        //grab our application icon from stream
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/icon.png")));
         GridPane root = new GridPane();
 
@@ -23,14 +32,20 @@ public class GrizzlyTime extends Application {
 
         primaryStage.show();
 
+        //copy OpenCV dlls outside jar
         CVHelper.loadLibrary();
 
-        ImageProcess processor = new ImageProcess();
-        GrizzlyTimeGUI userInterface = new GrizzlyTimeGUI();
+        //initialize our modules and interface objects AFTER
+        //we display application
+        //TODO Add splash screen and thread listeners
+        CameraStream processor = new CameraStream();
+        UserInterface userInterface = new UserInterface();
+
         //process camera frames and read barcode images
         processor.displayImage(root);
+
         //create UI and logic
-        userInterface.updateOptions(root);
+        userInterface.updateInterface(root);
 
     }
 }

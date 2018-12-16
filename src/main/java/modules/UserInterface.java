@@ -1,8 +1,8 @@
+package modules;
+
 import helpers.Constants;
 import helpers.Utils;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,7 +11,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-class GrizzlyTimeGUI {
+public class UserInterface {
+    /**
+     * @author Dalton Smith
+     * UserInterface
+     * Manages the main interface
+     */
 
     private Label scanLabel = new Label("GrizzlyTime Logging System");
     private static Label messageText = new Label("");
@@ -24,46 +29,47 @@ class GrizzlyTimeGUI {
 
     private BorderPane bottomPane = new BorderPane();
 
-    void updateOptions(GridPane root) {
+    public void updateInterface(GridPane root) {
         //update CSS IDS
         scanLabel.setId("title");
         messageText.setId("messageText");
         studentIDBox.setId("textBox");
         loginButton.setId("confirmButton");
 
-        //create our pains
+        //create our panes
         GridPane subRoot = new GridPane();
         GridPane options = new GridPane();
         GridPane title = new GridPane();
+
+        //confirm alignments
         subRoot.setAlignment(Pos.CENTER);
         options.setAlignment(Pos.CENTER);
         title.setAlignment(Pos.CENTER);
+        messageText.setAlignment(Pos.CENTER);
 
+        //set bottom pane details
         bottomPane.setId("bottomPane");
         bottomPane.setLeft(version);
         bottomPane.setRight(credits);
-        bottomPane.setAlignment(messageText, Pos.CENTER);
-        bottomPane.setAlignment(version, Pos.CENTER);
-        bottomPane.setAlignment(credits, Pos.CENTER);
         bottomPane.setMinWidth(root.getWidth());
-        messageText.setAlignment(Pos.CENTER);
-        GridPane.setHalignment(messageText, HPos.CENTER);
 
-        GridPane.setValignment(bottomPane, VPos.BOTTOM);
-
-        //add to root pane
+        //add our various nodes to respective panes
         title.add(scanLabel, 0, 0);
         options.add(studentIDBox, 0, 0);
         options.add(loginButton, 1, 0);
         subRoot.add(title, 0, 0);
         subRoot.add(options, 0, 1);
         subRoot.add(messageText, 0, 2);
+
+        //sub root details
         subRoot.setMinHeight(182);
         subRoot.setVgap(10);
 
+        //add to root pane
         root.add(subRoot, 0, 1);
         root.add(bottomPane, 0, 2);
 
+        //handle our buttons
         setEventHandlers();
 
     }
@@ -71,9 +77,18 @@ class GrizzlyTimeGUI {
     //our event handlers for interactivity
     private void setEventHandlers() {
 
+        //login button event handler
         loginButton.setOnAction(event -> {
+
+            //confirm that the user wants to login/logout
             if (util.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
+
+                //separate login process on different thread to ensure
+                //main application does not freeze
+                //also allows in for multiple users login simultaneously
                 Runnable loginUser = () -> {
+
+                    //ensure that the user typed something in
                     if (studentIDBox.getText().isEmpty()) {
                         util.createAlert(
                                 "Invalid ID",
@@ -82,9 +97,14 @@ class GrizzlyTimeGUI {
                                 Alert.AlertType.ERROR
                         );
                         return;
+
                     }
 
+                    //attempt login/logout and or account creation
+                    //do nothing if account creation was cancelled
                     try {
+
+                        //check if the user is logged in, and that user exists
                         if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
                             System.out.println("Logging in");
                             userProcess.loginUser(studentIDBox.getText());
@@ -101,6 +121,7 @@ class GrizzlyTimeGUI {
                     }
                 };
 
+                //start our thread
                 Thread t = new Thread(loginUser);
                 t.setDaemon(true);
                 t.start();
@@ -109,9 +130,11 @@ class GrizzlyTimeGUI {
         });
     }
 
-    public static void setMessageBoxText(String text) {
+    //helper methods for setting and clearing text box
+    static void setMessageBoxText(String text) {
         messageText.setText(text);
     }
-    public static void clearInput() { studentIDBox.clear(); }
+
+    static void clearInput() { studentIDBox.clear(); }
 
 }

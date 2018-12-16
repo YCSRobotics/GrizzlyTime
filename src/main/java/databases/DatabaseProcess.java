@@ -27,6 +27,13 @@ import java.util.logging.Level;
 
 //ignore google sheets warnings because of google permission bug
 class DatabaseProcess {
+    /**
+     * @author Dalton Smith
+     * DatabaseProcess
+     * Manages low level google sheets handling from API
+     * Based on Java QuickStart
+     */
+
     private static final String APPLICATION_NAME = "GrizzlyTime JavaFX Edition";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";

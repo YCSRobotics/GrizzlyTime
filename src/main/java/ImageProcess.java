@@ -36,7 +36,7 @@ class ImageProcess {
         Size sz = new Size(Constants.cameraWidth, Constants.cameraHeight);
 
         Mat frame = new Mat();
-        capture.read(frame);
+        capture.retrieve(frame);
 
         ImageView currentFrame = new ImageView();
 
@@ -49,6 +49,7 @@ class ImageProcess {
             currentFrame.setFitWidth(Constants.cameraWidth);
             subRoot.add(currentFrame, 0, 0);
             root.add(subRoot, 0, 0);
+            capture.release();
 
             return;
 

@@ -1,7 +1,5 @@
 package helpers;
 
-import databases.JSONHelper;
-
 public class Constants {
     //spreadsheet layout
     public static final int LOGGEDINCOLUMN = 10;
@@ -27,7 +25,7 @@ public class Constants {
 
     //configuration locations
     public static final String configLocal = "config.json";
-    public static final String VERSION = "1.0.1a";
+    public static final String VERSION = "1.0.2a";
     public static final String CREDITS = "Dalton Smith";
 
 }

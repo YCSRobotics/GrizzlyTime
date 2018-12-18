@@ -2,7 +2,9 @@ package modules;
 
 import helpers.Constants;
 import helpers.Utils;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -46,6 +48,9 @@ public class UserInterface {
         options.setAlignment(Pos.CENTER);
         title.setAlignment(Pos.CENTER);
         messageText.setAlignment(Pos.CENTER);
+
+        //manually align message text because Gridpane is weird
+        GridPane.setHalignment(messageText, HPos.CENTER);
 
         //set bottom pane details
         bottomPane.setId("bottomPane");

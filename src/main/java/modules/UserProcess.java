@@ -187,7 +187,7 @@ class UserProcess {
 
         //log the current date and return column
         dbUtils.setCellData(0,  i, currentDate, Constants.logSheet);
-        return i+1;
+        return i;
     }
 
     //checks if ID is valid integer and 6 digit number

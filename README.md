@@ -23,6 +23,9 @@ the sheet variable in the config.json.
  
 ![example image](https://i.imgur.com/JVmdQg5.png)
 
+### Video Tutorial
+https://www.youtube.com/watch?v=Cnrck_dascw
+
 ### Usage
 1. Import the template spreadsheet into a google doc.
 2. Copy the spreadsheet ID (google it)

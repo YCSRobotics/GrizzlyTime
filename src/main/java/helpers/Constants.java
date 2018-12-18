@@ -25,7 +25,7 @@ public class Constants {
 
     //configuration locations
     public static final String configLocal = "config.json";
-    public static final String VERSION = "1.0.2a";
+    public static final String VERSION = "1.0.3a";
     public static final String CREDITS = "Dalton Smith";
 
 }

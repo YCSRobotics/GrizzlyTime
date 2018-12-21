@@ -2,8 +2,15 @@
 JavaFX version of GrizzlyTime logger
 GrizzlyTime is a google sheets based logging system. It logs students/mentors hours and days based on a 6 digit identification code. It can read barcodes and is configurable to use different google sheets. 
 
-Clone with `https://github.com/Daltz333/GrizzlyTime-JavaFX.git`
+## Downloads
+Download the latest release here
+https://github.com/Daltz333/GrizzlyTime-JavaFX/releases
 
+## Video Tutorial
+https://www.youtube.com/watch?v=Cnrck_dascw
+
+## Building Source Code
+Clone with `https://github.com/Daltz333/GrizzlyTime-JavaFX.git` 
 Build with `.\gradlew shadowJar`
 
 Releases are curated towards Grizzly Robotics personal google sheet. If you download a compiled jar, you **must change** 
@@ -22,10 +29,6 @@ the sheet variable in the config.json.
   - Optimize gsheet wrapper
  
 ![example image](https://i.imgur.com/JVmdQg5.png)
-
-### Video Tutorial
-https://www.youtube.com/watch?v=Cnrck_dascw
-
 ### Usage
 1. Import the template spreadsheet into a google doc.
 2. Copy the spreadsheet ID (google it)

@@ -180,6 +180,7 @@ public class Utils {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
+        //confirm that the user typed in data
         result.ifPresent(usernamePassword -> {
             data.add("TRUE");
             data.add(usernamePassword.getKey());
@@ -187,8 +188,10 @@ public class Utils {
 
         });
 
-        if (data.get(0) != null ){ return data; }
+        //return the data
+        if (data.get(0) != null){ return data; }
 
+        //the user did not return data
         data.set(0, "FALSE");
 
         return data;

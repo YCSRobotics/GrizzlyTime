@@ -10,8 +10,8 @@ https://github.com/Daltz333/GrizzlyTime-JavaFX/releases
 https://www.youtube.com/watch?v=Cnrck_dascw
 
 ## Building Source Code
-Get API Credentials from https://developers.google.com/sheets/api/quickstart/java
-Place google sheet api credentials under `src/main/resources/credentials/credentials.json'
+Get API Credentials from https://developers.google.com/sheets/api/quickstart/java  
+Place google sheet api credentials under `src/main/resources/credentials/credentials.json'  
 Clone with `https://github.com/Daltz333/GrizzlyTime-JavaFX.git` 
 Build with `.\gradlew shadowJar`
 

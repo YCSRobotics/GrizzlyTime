@@ -10,6 +10,8 @@ https://github.com/Daltz333/GrizzlyTime-JavaFX/releases
 https://www.youtube.com/watch?v=Cnrck_dascw
 
 ## Building Source Code
+Get API Credentials from https://developers.google.com/sheets/api/quickstart/java
+Place google sheet api credentials under `src/main/resources/credentials/credentials.json'
 Clone with `https://github.com/Daltz333/GrizzlyTime-JavaFX.git` 
 Build with `.\gradlew shadowJar`
 
@@ -28,7 +30,7 @@ the sheet variable in the config.json.
   - Launch nuke command
   - Optimize gsheet wrapper
  
-![example image](https://i.imgur.com/JVmdQg5.png)
+![example image](https://i.ibb.co/TK4Q1WT/90.png)
 ### Usage
 1. Import the template spreadsheet into a google doc.
 2. Copy the spreadsheet ID (google it)

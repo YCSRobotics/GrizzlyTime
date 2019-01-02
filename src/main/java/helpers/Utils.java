@@ -189,7 +189,13 @@ public class Utils {
         });
 
         //return the data
-        if (data.get(0) != null){ return data; }
+        try {
+            if (data.get(0) != null) {
+                return data;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            //do nothing
+        }
 
         //the user did not return data
         data.set(0, "FALSE");

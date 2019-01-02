@@ -1,39 +1,75 @@
 #main {
-    -fx-font-family: "Trebuchet MS";
-    -fx-background-color: #beac56;
+    -fx-font-family: "Calibri";
+    -fx-background-color: #D0BB61;
 }
 
 #title {
-    -fx-font-size: 30px;
+    -fx-font-size: 25px;
+    -fx-text-alignment: center;
     -fx-padding: 0px, 20px, 0px, 0px;
 
 }
 
 #messageText {
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
     -fx-text-alignment: center;
+    -fx-text-fill: #b00805;
 }
 
 #textBox {
-    -fx-background-radius: 0px ;
     -fx-font-size: 18px;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-    -fx-border-color: black;
-    -fx-border-width: 1px;
+    -fx-background-color: WHITE;
+    -fx-font-weight: BOLD;
+    -fx-prompt-text-fill: #808080;
+    -fx-alignment: top-left;
+    -fx-max-width: 300;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0;
+    -fx-min-height: 34px;
 
 }
 
 #confirmButton {
     -fx-font-size: 18px;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-    -fx-border-color: black;
-    -fx-border-width: 1px;
+    -fx-border-width: 0;
+    -fx-alignment: top-left;
+    -fx-outline: none;
+    -fx-background-color: lightgrey;
+    -fx-background-radius: 0;
+}
+
+#confirmButton:hover {
+    -fx-background-color: #acacac;
 }
 
 #bottomPane {
     -fx-font-size: 12px;
-    -fx-padding: 5px;
+    -fx-padding: 10px;
+}
 
+#textDescription {
+    -fx-font-size: 18px;
+    -fx-padding: 0px;
+}
+
+#bottomView {
+    -fx-border-width: 3px;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-max-width: 250px;
+    -fx-padding: 15px;
+    -fx-border-radius: 3px;
+    -fx-background-color: #d9c575;
+}
+
+#creditsButton {
+    -fx-border-width: 1px;
+    -fx-border-radius: 50%;
+    -fx-background-color: white;
+    -fx-background-radius: 50%;
+    -fx-outline: none;
+}
+
+#creditsButton:hover {
+    -fx-background-color: lightgrey;
 }

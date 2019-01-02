@@ -22,30 +22,30 @@ public class UserInterface {
      * Manages the main interface
      */
 
-    private Label scanLabel = new Label("GrizzlyTime Logging System");
     private static Label messageText = new Label("");
     private static TextField studentIDBox = new TextField();
     private Button loginButton = new Button("Login/Logout");
     private UserProcess userProcess = new UserProcess();
     private Utils util = new Utils();
-    private Text version = new Text("Version: " + Constants.VERSION);
-    private Text credits = new Text(Constants.CREDITS);
     private Text description = new Text("Type in your Student ID to login. If you do not have a Student ID," +
-            "\nenter your numerical birth date in 6 digits. [MMDDYY]");
+            "\nenter your birth date in 6 digits. [MMDDYY]");
 
+    private Button credits = new Button("!");
     private BorderPane bottomPane = new BorderPane();
 
     public void updateInterface(GridPane root) {
         //update CSS IDS
-        scanLabel.setId("title");
         messageText.setId("messageText");
         studentIDBox.setId("textBox");
         loginButton.setId("confirmButton");
+        credits.setId("creditsButton");
 
         //create our panes
         GridPane subRoot = new GridPane();
         GridPane options = new GridPane();
         GridPane title = new GridPane();
+
+        subRoot.setId("bottomView");
 
         //confirm alignments
         subRoot.setAlignment(Pos.CENTER);
@@ -53,19 +53,19 @@ public class UserInterface {
         title.setAlignment(Pos.CENTER);
         messageText.setAlignment(Pos.CENTER);
         description.setTextAlignment(TextAlignment.CENTER);
+        description.setId("textDescription");
 
         //manually align message text because Gridpane is weird
         GridPane.setHalignment(messageText, HPos.CENTER);
         GridPane.setHalignment(description, HPos.CENTER);
+        GridPane.setHalignment(subRoot, HPos.CENTER);
 
         //set bottom pane details
         bottomPane.setId("bottomPane");
-        bottomPane.setLeft(version);
         bottomPane.setRight(credits);
-        bottomPane.setMinWidth(root.getWidth());
+        bottomPane.setMinWidth(subRoot.getWidth());
 
         //add our various nodes to respective panes
-        title.add(scanLabel, 0, 0);
         title.add(description, 0, 1);
         options.add(studentIDBox, 0, 0);
         options.add(loginButton, 1, 0);
@@ -74,7 +74,6 @@ public class UserInterface {
         subRoot.add(messageText, 0, 2);
 
         //sub root details
-        subRoot.setMinHeight(158);
         subRoot.setVgap(10);
 
         //add to root pane
@@ -97,6 +96,25 @@ public class UserInterface {
         loginButton.setOnAction(event -> {
             loginUser();
         });
+
+        credits.setOnAction(event -> {
+            showCredits();
+        });
+    }
+
+    private void showCredits() {
+        util.createAlert("Credits", "Credits",
+                "This application was programmed by a member of Grizzly Robotics (Team 66 & Team 470), Dalton Smith.\n" +
+                "This application is licensed under MIT and all restrictions apply.\n" +
+                "This application uses the follow external dependencies which have their own licenses.\n" +
+                "OpenCV\n" +
+                "ZXing Barcode Scanning\n" +
+                "Java Google OAuth Client\n" +
+                "Java Google Sheets Client\n" +
+                "Java Google API Client\n" +
+                "Apache Commons-IO\n" +
+                "Apache Json",
+                Alert.AlertType.INFORMATION);
     }
 
     //helper login method
@@ -159,6 +177,7 @@ public class UserInterface {
                     }
                 } catch (Exception e) {
                     //do nothing
+                    setMessageBoxText("Cancelled account creation");
                     System.out.println("CANCELLED");
 
                 }

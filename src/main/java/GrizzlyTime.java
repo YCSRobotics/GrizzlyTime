@@ -52,9 +52,9 @@ public class GrizzlyTime extends Application {
         UserInterface userInterface = new UserInterface();
 
         //remove splash screen on load
-        root.getChildren().removeAll();
+        root.getChildren().clear();
         primaryStage.setWidth(608);
-        primaryStage.setHeight(600);
+        primaryStage.setHeight(610);
         primaryStage.centerOnScreen();
 
         //add our global key handlers

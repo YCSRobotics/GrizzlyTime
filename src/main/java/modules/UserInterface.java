@@ -78,7 +78,7 @@ public class UserInterface {
 
         //add to root pane
         root.add(subRoot, 0, 1);
-        root.add(bottomPane, 0, 2);
+        //root.add(bottomPane, 0, 2);
 
         //handle our buttons
         setEventHandlers();

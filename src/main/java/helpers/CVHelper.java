@@ -22,8 +22,10 @@ public class CVHelper {
             String osName = System.getProperty("os.name");
             System.out.println("Detected OS: " + osName);
 
+            String os = osName.toLowerCase();
+
             //check OS version
-            if (osName.startsWith("Windows")) {
+            if (os.indexOf("win") >= 0) {
 
                 //check architecture type
                 int bitness = Integer.parseInt(System.getProperty("sun.arch.data.model"));
@@ -43,7 +45,7 @@ public class CVHelper {
                     fileOut = File.createTempFile("lib", ".dll");
 
                 }
-            } else if (osName.equals("Mac OS X")) {
+            } else if (os.indexOf("mac") >= 0) {
                 in = CVHelper.class.getResourceAsStream("/opencv/mac/libopencv_java343.dylib");
                 fileOut = File.createTempFile("lib", ".dylib");
 

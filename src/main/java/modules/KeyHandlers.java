@@ -16,7 +16,7 @@ public class KeyHandlers {
     public void setKeyHandlers(Scene scene, Stage stage) {
         //make application fullscreen on f key press
         scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.F) {
+            if (event.getCode() == KeyCode.F11) {
                 if (isFullscreen) {
                     stage.setFullScreen(false);
                     isFullscreen = false;

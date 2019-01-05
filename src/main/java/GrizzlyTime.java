@@ -1,5 +1,6 @@
 import helpers.CVHelper;
 import helpers.Constants;
+import helpers.Utils;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,6 +11,8 @@ import modules.CameraStream;
 import modules.KeyHandlers;
 import modules.SplashScene;
 import modules.UserInterface;
+
+import java.io.File;
 
 public class GrizzlyTime extends Application {
     /**
@@ -25,7 +28,18 @@ public class GrizzlyTime extends Application {
     @Override
     public void start(Stage primaryStage) {
         //grab our application icon from stream
-        primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/icon.png")));
+
+        //check if custom icon
+        File file = new File(Utils.getCurrentDir() + "\\images\\icon.png");
+
+        if (file.exists()) {
+            primaryStage.getIcons().add(new Image(file.toURI().toString()));
+
+        } else {
+            primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/icon.png")));
+
+        }
+
         GridPane root = new GridPane();
 
         Scene scene = new Scene(root, Constants.splashWidth, Constants.splashHeight);

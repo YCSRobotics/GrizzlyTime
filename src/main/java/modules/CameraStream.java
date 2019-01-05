@@ -2,6 +2,7 @@ package modules;
 
 import databases.JSONHelper;
 import helpers.Constants;
+import helpers.Utils;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,6 +16,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 
 /***
  * @author Dalton Smith
@@ -40,13 +42,25 @@ public class CameraStream {
         Mat frame = new Mat();
         ImageView currentFrame = new ImageView();
 
+        File errorImage = new File(Utils.getCurrentDir() + "\\images\\error.png");
+
+        System.out.println("Path to fallback: " + Utils.getCurrentDir() + "\\images\\error.png");
         //open the camera
         capture.retrieve(frame);
 
         //check if camera opened successfully, or is disabled
         if (!capture.isOpened() || parser.getKey("enableCamera").equals("false")) {
             System.out.println("Error opening camera");
-            Image image = new Image("images/error.png");
+
+            Image image;
+
+            System.out.println("Does custom fallback exist? " +  errorImage.exists());
+            //custom error image
+            if (errorImage.exists()){
+                image = new Image(errorImage.toURI().toString());
+            } else {
+                image = new Image("images/error.png");
+            }
 
             //set image properties
             currentFrame.setImage(image);

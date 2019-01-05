@@ -3,6 +3,7 @@ package databases;
 import helpers.Constants;
 import helpers.Utils;
 import javafx.scene.control.Alert;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
@@ -49,9 +50,24 @@ public class JSONHelper {
 
         //create a JSONObject from our string
         JSONObject json = new JSONObject(JSONString);
+        String result;
 
         //grab the specified key from our json object
-        String result = json.getString(key);
+        try {
+            result = json.getString(key);
+
+        } catch (JSONException e) {
+            util.createAlert(
+                    "ERROR",
+                    "ERROR LOADING config.json",
+                    "Please confirm that the configuration is valid. \n" +
+                            "ERROR RETRIEVING: " + key + " EMPTY",
+                    Alert.AlertType.ERROR
+            );
+
+            System.exit(1);
+            return null;
+        }
 
         //confirm that the key was successfully retrieved
         if (result.isEmpty()) {

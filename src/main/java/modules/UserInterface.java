@@ -1,5 +1,7 @@
 package modules;
 
+import Exceptions.CancelledUserCreationException;
+import databases.JSONHelper;
 import helpers.Constants;
 import helpers.Utils;
 import javafx.application.Platform;
@@ -32,6 +34,8 @@ public class UserInterface {
 
     private Button credits = new Button("!");
     private BorderPane bottomPane = new BorderPane();
+
+    private JSONHelper parser = new JSONHelper();
 
     public void updateInterface(GridPane root) {
         //update CSS IDS
@@ -121,12 +125,12 @@ public class UserInterface {
     private void loginUser() {
         setMessageBoxText("Processing...");
 
-        if(!userProcess.isValidID(studentIDBox.getText())) {
+        if (!userProcess.isValidID(studentIDBox.getText())) {
             setMessageBoxText("ID " + studentIDBox.getText() + " is an invalid 6 digit number.");
 
             Task<Void> wait = new Task<Void>() {
                 @Override
-                protected Void call() throws Exception{
+                protected Void call() throws Exception {
                     Thread.sleep(5000);
                     return null;
                 }
@@ -142,62 +146,77 @@ public class UserInterface {
 
         }
 
-        //confirm that the user wants to login/logout
-        if (util.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
+        if (parser.getKey("handsFreeMode").equals("false")) {
+            //confirm that the user wants to login/logout
+            if (util.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
+                loginUserLocal(false);
+            } else {
+                setMessageBoxText("");
+            }
 
-            //separate login process on different thread to ensure
-            //main application does not freeze
-            //also allows in for multiple users login simultaneously
-            Runnable loginUser = () -> {
-                //ensure that the user typed something in
-                if (studentIDBox.getText().isEmpty()) {
-                    util.createAlert(
-                            "Invalid ID",
-                            "Invalid ID",
-                            "The ID you specified is invalid.",
-                            Alert.AlertType.ERROR
-                    );
-                    return;
-
-                }
-
-                //attempt login/logout and or account creation
-                //do nothing if account creation was cancelled
-                try {
-
-                    //check if the user is logged in, and that user exists
-                    if (!(userProcess.isUserLoggedIn(studentIDBox.getText()))) {
-                        System.out.println("Logging in");
-                        userProcess.loginUser(studentIDBox.getText());
-
-                    } else {
-                        System.out.println("Logging out");
-                        userProcess.logoutUser(studentIDBox.getText());
-
-                    }
-                } catch (Exception e) {
-                    //do nothing
-                    setMessageBoxText("Cancelled account creation");
-                    System.out.println("CANCELLED");
-
-                }
-
-                //refocus the textbox
-                Platform.runLater(() -> {
-                    studentIDBox.requestFocus();
-                });
-            };
-
-            //start our thread
-            Thread t = new Thread(loginUser);
-            t.setDaemon(true);
-            t.start();
-
+        //show no prompts
         } else {
-            setMessageBoxText("");
+            loginUserLocal(true);
         }
 
     }
+
+    //login the user, check if hands free or not
+    private void loginUserLocal(boolean handsFree) {
+        //separate login process on different thread to ensure
+        //main application does not freeze
+        //also allows in for multiple users login simultaneously
+        Runnable loginUser = () -> {
+            //ensure that the user typed something in
+            if (studentIDBox.getText().isEmpty()) {
+                setMessageBoxText("Nothing was entered!");
+                return;
+
+            }
+
+            //attempt login/logout and or account creation
+            //do nothing if account creation was cancelled
+            try {
+
+                //check if the user is logged in, and that user exists
+                if (!(userProcess.isUserLoggedIn(studentIDBox.getText(), handsFree))) {
+                    System.out.println("Logging in");
+                    userProcess.loginUser(studentIDBox.getText());
+
+                } else {
+                    System.out.println("Logging out");
+                    userProcess.logoutUser(studentIDBox.getText());
+
+                }
+
+            } catch (CancelledUserCreationException e) {
+                //do nothing
+                if (Platform.isFxApplicationThread()) {
+                    setMessageBoxText("Cancelled account creation");
+                } else {
+                    Platform.runLater(() -> {
+                        setMessageBoxText("Cancelled account creation");
+                    });
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+
+            //refocus the textbox
+            Platform.runLater(() -> {
+                studentIDBox.requestFocus();
+            });
+        };
+
+        //start our thread
+        Thread t = new Thread(loginUser);
+        t.setDaemon(true);
+        t.start();
+    }
+
     //helper methods for setting and clearing text box
     static void setMessageBoxText(String text) {
         messageText.setText(text);

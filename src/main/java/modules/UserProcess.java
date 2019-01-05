@@ -1,5 +1,7 @@
 package modules;
 
+import Exceptions.CancelledUserCreationException;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import databases.DatabaseUtils;
 import helpers.Constants;
 import helpers.Utils;
@@ -24,7 +26,7 @@ class UserProcess {
     private Utils util = new Utils();
 
     //check if user is logged in
-    boolean isUserLoggedIn(String userID) throws Exception {
+    boolean isUserLoggedIn(String userID, boolean handsFree) throws Exception {
         ArrayList<String> ids = dbUtils.getColumnData(0, Constants.mainSheet);
 
         //check if the user ID exists
@@ -57,7 +59,7 @@ class UserProcess {
             dbUtils.setCellData(blankRow, Constants.LASTNAMECOLUMN, userData.get(2), Constants.mainSheet);
 
         } else {
-            throw new Exception("Cancelled");
+            throw new CancelledUserCreationException("Cancelled");
 
         }
 
@@ -121,13 +123,21 @@ class UserProcess {
 
             //calculate the total time from difference
             String time = String.format("%02d:%02d:%02d", durInSeconds / 3600, (durInSeconds % 3600) / 60, (durInSeconds % 60));
-            LocalTime totalHoursTime = LocalTime.parse(time);
+
+
+            boolean err = false;
 
             //logout the user if in the negative
-            //err returns -1 if index doesn't exist
-            int err = time.indexOf('-');
+            LocalTime totalHoursTime = null;
+            try {
+                totalHoursTime = LocalTime.parse(time);
+            } catch(DateTimeParseException e) {
+                e.printStackTrace();
+                err = true;
+            }
 
-            if (err == -1) {
+
+            if (!err) {
                 LocalTime prevTotalHours;
 
                 //grab the current total hours
@@ -162,6 +172,13 @@ class UserProcess {
 
             //if user didn't logout, then logout user and don't log hours
             dbUtils.setCellData(userRow, Constants.LOGGEDINCOLUMN, "FALSE", Constants.mainSheet);
+
+            if(err) {
+                Platform.runLater(() -> {
+                    UserInterface.setMessageBoxText("You forgot to log out! Yours hours were not counted! See an administrator if this is in error");
+                    UserInterface.clearInput();
+                });
+            }
 
 
         }

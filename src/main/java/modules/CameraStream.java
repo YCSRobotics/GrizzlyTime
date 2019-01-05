@@ -97,7 +97,7 @@ public class CameraStream {
                 if (data != null) {
                     try {
                         if (!(Integer.parseInt(data) == prevID)) {
-                            if (process.isUserLoggedIn(data)) {
+                            if (process.isUserLoggedIn(data, false)) {
                                 process.logoutUser(data);
 
                             } else {

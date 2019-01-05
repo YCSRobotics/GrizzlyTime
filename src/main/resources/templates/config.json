@@ -1,4 +1,5 @@
 {
   "sheet": "",
-  "enableCamera":"true"
+  "enableCamera": "true",
+  "handsFreeMode": "false"
 }

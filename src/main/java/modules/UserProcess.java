@@ -1,7 +1,6 @@
 package modules;
 
-import Exceptions.CancelledUserCreationException;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import exceptions.CancelledUserCreationException;
 import databases.DatabaseUtils;
 import helpers.Constants;
 import helpers.Utils;

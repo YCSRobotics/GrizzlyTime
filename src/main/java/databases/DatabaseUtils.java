@@ -35,7 +35,7 @@ public class DatabaseUtils {
     public ArrayList<String> getColumnData(int column, int page) {
         getUpdatedData();
 
-        mainWorksheet = page != 0 ? mainWorksheet = loggedHours : mainWorksheet;
+       setPage(page);
 
         ArrayList<String> result = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class DatabaseUtils {
     public ArrayList<String> getRowData(int row, int page) {
         getUpdatedData();
 
-        mainWorksheet = page != 0 ? mainWorksheet = loggedHours : mainWorksheet;
+        setPage(page);
 
         int i = 1;
         ArrayList<String> result = new ArrayList<>();
@@ -89,7 +89,7 @@ public class DatabaseUtils {
     public void setCellData(int row, int column, String data, int page) {
 
         //set appropriate sheet
-        mainWorksheet = page != 0 ? mainWorksheet = loggedHours : mainWorksheet;
+        setPage(page);
 
         System.out.println("Successfully set data on row: " + row + " and column: " + column+1);
         dbProcess.updateSpreadSheet(row+1, column+1, data, page);
@@ -126,6 +126,8 @@ public class DatabaseUtils {
 
     public int nextEmptyCellColumn(int page){
 
+        setPage(page);
+
         ArrayList<String> columnData = getColumnData(Constants.STUDENTIDCOLUMN, page);
         int i;
 
@@ -137,6 +139,20 @@ public class DatabaseUtils {
 
         return i;
 
+    }
+
+    private void setPage(int page) {
+        switch (page) {
+            case Constants.mainSheet:
+                break;
+            case Constants.logSheet:
+                mainWorksheet = loggedHours;
+                break;
+            default:
+                break;
+
+
+        }
     }
 
 }

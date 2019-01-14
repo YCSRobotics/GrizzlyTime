@@ -82,39 +82,55 @@ public class CameraStream {
             int prevID = 0;
 
             while (!stopCamera) {
-                //read frames from teh camera and display them
-                capture.read(frame);
-                Imgproc.resize(frame, frame, sz);
-                Core.flip(frame, frame, 1);
-                MatOfByte buffer = new MatOfByte();
-                Imgcodecs.imencode(".png", frame, buffer);
-                Image imageToShow = new Image(new ByteArrayInputStream(buffer.toArray()));
 
-                //convert to BufferedReader and decode
-                String data = QRReader.decodeQRCode(imageToShow);
+                try {
+                    //read frames from teh camera and display them
+                    capture.read(frame);
+                    Imgproc.resize(frame, frame, sz);
+                    Core.flip(frame, frame, 1);
+                    MatOfByte buffer = new MatOfByte();
+                    Imgcodecs.imencode(".png", frame, buffer);
+                    Image imageToShow = new Image(new ByteArrayInputStream(buffer.toArray()));
 
-                //verify that we have data
-                if (data != null) {
-                    try {
-                        if (!(Integer.parseInt(data) == prevID)) {
-                            if (process.isUserLoggedIn(data, false)) {
-                                process.logoutUser(data);
+                    //convert to BufferedReader and decode
+                    String data = QRReader.decodeQRCode(imageToShow);
 
-                            } else {
-                                process.loginUser(data);
+                    //verify that we have data
+                    if (data != null) {
+                        try {
+                            if (!(Integer.parseInt(data) == prevID)) {
+                                if (process.isUserLoggedIn(data, false)) {
+                                    process.logoutUser(data);
 
+                                } else {
+                                    process.loginUser(data);
+
+                                }
+
+                                prevID = Integer.valueOf(data);
                             }
-
-                            prevID = Integer.valueOf(data);
+                        } catch (Exception e) {
+                            //do nothing
+                            continue;
                         }
-                    } catch (Exception e) {
-                        //do nothing
-                        continue;
+                    }
+
+                    Platform.runLater(() -> currentFrame.setImage(imageToShow));
+                } catch (Exception e) {
+                    //attempt to reconnect the camera
+                    capture.release();
+                    capture.retrieve(frame);
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                        break;
                     }
                 }
 
-                Platform.runLater(() -> currentFrame.setImage(imageToShow));
             }
+
         };
 
         //start camera thread

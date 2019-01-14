@@ -35,6 +35,8 @@ public class DatabaseUtils {
     public ArrayList<String> getColumnData(int column, int page) {
         getUpdatedData();
 
+        if (!isWorksheetsValid()) { return null; }
+
        setPage(page);
 
         ArrayList<String> result = new ArrayList<>();
@@ -56,6 +58,8 @@ public class DatabaseUtils {
 
     public ArrayList<String> getRowData(int row, int page) {
         getUpdatedData();
+
+        if (!isWorksheetsValid()) { return null; }
 
         setPage(page);
 
@@ -98,6 +102,8 @@ public class DatabaseUtils {
 
     //gets specific cell data
     public String getCellData(int row, int column, int page) {
+        if (!isWorksheetsValid()) { return null; }
+
         int i = 0;
 
         for (String sheetRow : getColumnData(column, page)) {
@@ -113,6 +119,9 @@ public class DatabaseUtils {
 
     //grab a a cell row based on its position in a column
     public int getCellRowFromColumn(String cellValue, int column, int page) {
+
+        if (!isWorksheetsValid()) { return -1; }
+
         int i = 0;
         for (String value : getColumnData(column, page)) {
             if (value.equals(cellValue)) {
@@ -139,6 +148,13 @@ public class DatabaseUtils {
 
         return i;
 
+    }
+
+    private boolean isWorksheetsValid() {
+        if (mainWorksheet == null || loggedHours == null) {
+            return false;
+        }
+        return true;
     }
 
     private void setPage(int page) {

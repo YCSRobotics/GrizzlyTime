@@ -2,6 +2,7 @@ package modules;
 
 import exceptions.CancelledUserCreationException;
 import databases.DatabaseUtils;
+import exceptions.ConnectToWorksheetException;
 import helpers.Constants;
 import helpers.Utils;
 import javafx.application.Platform;
@@ -27,6 +28,10 @@ class UserProcess {
     //check if user is logged in
     boolean isUserLoggedIn(String userID, boolean handsFree) throws Exception {
         ArrayList<String> ids = dbUtils.getColumnData(0, Constants.mainSheet);
+
+        if (ids == null) {
+            throw new ConnectToWorksheetException("ids is null");
+        }
 
         //check if the user ID exists
         for (int i = 0; i < ids.size(); i++) {

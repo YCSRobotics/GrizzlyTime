@@ -19,6 +19,8 @@ import javafx.scene.control.Alert;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.NoRouteToHostException;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -80,7 +82,17 @@ class DatabaseProcess {
 
             return response.getValues();
 
-        } catch (GeneralSecurityException e) {
+        } catch (NoRouteToHostException | UnknownHostException e) {
+            util.createAlert(
+                    "ERROR",
+                    "NO NETWORK CONNECTION",
+                    "Please confirm your network connection and try again.",
+                    Alert.AlertType.ERROR
+
+            );
+            return null;
+
+        } catch (GeneralSecurityException e2) {
             util.createAlert(
                     "ERROR",
                     "INVALID CREDENTIALS",
@@ -92,18 +104,18 @@ class DatabaseProcess {
             System.exit(1);
             return null;
 
-        } catch (IOException e2) {
-            e2.printStackTrace();
+        } catch (IOException e3) {
+            e3.printStackTrace();
 
             util.createAlert(
                     "ERROR",
-                    "INVALID SHEET",
-                    "Please check that the google sheet URL located in the config.json is valid, and try again.",
+                    "ERROR CONNECTING TO DATABASE",
+                    "Please confirm that the URL is valid and that you have internet access.",
                     Alert.AlertType.ERROR
 
             );
 
-            System.exit(1);
+            System.exit(-1);
             return null;
 
         }

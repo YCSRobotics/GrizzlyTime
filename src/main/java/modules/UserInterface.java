@@ -2,6 +2,7 @@ package modules;
 
 import exceptions.CancelledUserCreationException;
 import databases.JSONHelper;
+import exceptions.ConnectToWorksheetException;
 import helpers.Utils;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -181,15 +182,10 @@ public class UserInterface {
                 }
 
             } catch (CancelledUserCreationException e) {
-                //do nothing
-                if (Platform.isFxApplicationThread()) {
-                    setMessageBoxText("Cancelled account creation");
-                } else {
-                    Platform.runLater(() -> {
-                        setMessageBoxText("Cancelled account creation");
-                    });
-                }
+                setMessageBoxText("Cancelled account creation");
 
+            } catch (ConnectToWorksheetException e) {
+                setMessageBoxText("There was an error connecting to the database. Please retry.");
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -210,7 +206,13 @@ public class UserInterface {
 
     //helper methods for setting and clearing text box
     static void setMessageBoxText(String text) {
-        messageText.setText(text);
+        if (Platform.isFxApplicationThread()) {
+            messageText.setText(text);
+        } else {
+            Platform.runLater(() -> {
+                messageText.setText(text);
+            });
+        }
     }
 
     static void clearInput() { studentIDBox.clear(); }

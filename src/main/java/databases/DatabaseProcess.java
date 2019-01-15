@@ -67,10 +67,14 @@ class DatabaseProcess {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    List<List<Object>> returnWorksheetData(String range) {
+    List<List<Object>> returnWorksheetData(int page) {
 
         // Build a new authorized API client service.
         try {
+
+            // Build a new authorized API client service.
+            String range = page == 0 ? mainPage : logPage;
+
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                     .setApplicationName(APPLICATION_NAME)

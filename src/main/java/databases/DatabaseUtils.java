@@ -19,15 +19,15 @@ public class DatabaseUtils {
 
     public DatabaseUtils() {
         //initial data
-        mainWorksheet = dbProcess.returnWorksheetData("Current");
-        loggedHours = dbProcess.returnWorksheetData("Date Log");
+        mainWorksheet = dbProcess.returnWorksheetData(Constants.mainSheet);
+        loggedHours = dbProcess.returnWorksheetData(Constants.logSheet);
 
     }
 
     //helper method called at beginning of each method to retrieve updated data
     private void getUpdatedData() {
-        mainWorksheet = dbProcess.returnWorksheetData("Current");
-        loggedHours = dbProcess.returnWorksheetData("Date Log");
+        mainWorksheet = dbProcess.returnWorksheetData(Constants.mainSheet);
+        loggedHours = dbProcess.returnWorksheetData(Constants.logSheet);
 
     }
 
@@ -47,7 +47,7 @@ public class DatabaseUtils {
                 result.add(row.get(column).toString());
 
             } catch (Exception e){
-                break; //no more data
+                 result.add("");
 
             }
         }
@@ -103,6 +103,8 @@ public class DatabaseUtils {
     //gets specific cell data
     public String getCellData(int row, int column, int page) {
         if (!isWorksheetsValid()) { return null; }
+
+        setPage(page);
 
         int i = 0;
 

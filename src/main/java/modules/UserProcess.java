@@ -163,7 +163,33 @@ class UserProcess {
 
                 //set cell data
                 dbUtils.setCellData(userRow, Constants.HOURSCOLUMN, time, Constants.mainSheet);
-                dbUtils.setCellData(userRow, logCurrentDate(), time, Constants.logSheet);
+
+                int userTimeColumn = logCurrentDate();
+
+                //add together day times
+                LocalTime prevDayTime;
+                try {
+                    String prevData = dbUtils.getCellData(userRow, userTimeColumn, Constants.logSheet);
+                    prevDayTime = LocalTime.parse(prevData);
+
+                } catch (DateTimeParseException | NullPointerException e) {
+                    prevDayTime = LocalTime.parse("00:00:01");
+                    e.printStackTrace();
+
+                }
+
+                LocalTime tempTotalDayTime;
+                try {
+                    tempTotalDayTime = LocalTime.parse(time).plusHours(prevDayTime.getHour()).plusMinutes(prevDayTime.getMinute()).plusSeconds(prevDayTime.getSecond());
+
+                } catch (DateTimeParseException e) {
+                    UserInterface.setMessageBoxText("There was an error adding together total time. Using fallback.");
+                    tempTotalDayTime = prevDayTime;
+                }
+
+                String timeTotalDay = String.format("%02d:%02d:%02d", tempTotalDayTime.getHour(), tempTotalDayTime.getMinute(), tempTotalDayTime.getSecond());
+
+                dbUtils.setCellData(userRow, userTimeColumn, timeTotalDay, Constants.logSheet);
                 dbUtils.setCellData(userRow, Constants.TOTALHOURSCOLUMN, timeTotal, Constants.mainSheet);
 
                 //show user logout text
@@ -212,7 +238,6 @@ class UserProcess {
     }
 
     //checks if ID is valid integer and 6 digit number
-    //TODO Implement checkers in various locations
     boolean isValidID(String userID) {
         try {
             Integer.parseInt(userID);

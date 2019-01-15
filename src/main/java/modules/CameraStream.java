@@ -117,6 +117,8 @@ public class CameraStream {
 
                     Platform.runLater(() -> currentFrame.setImage(imageToShow));
                 } catch (Exception e) {
+                    e.printStackTrace();
+
                     //attempt to reconnect the camera
                     capture.release();
                     capture.retrieve(frame);

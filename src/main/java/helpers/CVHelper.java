@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
 
 public class CVHelper {
     /**
@@ -20,7 +21,7 @@ public class CVHelper {
             InputStream in = null;
             File fileOut = null;
             String osName = System.getProperty("os.name");
-            System.out.println("Detected OS: " + osName);
+            LoggingUtil.log(Level.INFO, "Detected OS as " +osName);
 
             String os = osName.toLowerCase();
 
@@ -30,22 +31,23 @@ public class CVHelper {
                 //check architecture type
                 int bitness = Integer.parseInt(System.getProperty("sun.arch.data.model"));
                 if (bitness == 32) {
-                    System.out.println("32 bit detected");
+                    LoggingUtil.log(Level.INFO, "32 bit detected");
                     in = CVHelper.class.getResourceAsStream("/opencv/x86/opencv_java343.dll");
                     fileOut = File.createTempFile("lib", ".dll");
 
                 } else if (bitness == 64) {
-                    System.out.println("64 bit detected");
+                    LoggingUtil.log(Level.INFO, "64 bit detected");
                     in = CVHelper.class.getResourceAsStream("/opencv/x64/opencv_java343.dll");
                     fileOut = File.createTempFile("lib", ".dll");
 
                 } else {
-                    System.out.println("Unknown bit detected - trying with 32 bit");
+                    LoggingUtil.log(Level.INFO, "Unknown bit detected");
                     in = CVHelper.class.getResourceAsStream("/opencv/x86/opencv_java343.dll");
                     fileOut = File.createTempFile("lib", ".dll");
 
                 }
             } else if (os.indexOf("mac") >= 0) {
+                LoggingUtil.log(Level.SEVERE, "MAC NOT SUPPORTED YET");
                 in = CVHelper.class.getResourceAsStream("/opencv/mac/libopencv_java343.dylib");
                 fileOut = File.createTempFile("lib", ".dylib");
 
@@ -59,6 +61,7 @@ public class CVHelper {
             System.load(fileOut.toString());
 
         } catch (Exception e) {
+            LoggingUtil.log(Level.SEVERE, e.getMessage());
             throw new RuntimeException("Failed to load opencv native library", e);
 
         }

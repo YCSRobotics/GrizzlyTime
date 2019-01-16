@@ -1,6 +1,7 @@
 package databases;
 
 import helpers.Constants;
+import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.scene.control.Alert;
 import org.json.JSONException;
@@ -10,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -31,6 +33,7 @@ public class JSONHelper {
             JSONString = Utils.readFile(Utils.getCurrentDir() + "/" + Constants.configLocal);
 
         } catch (FileNotFoundException e) {
+            LoggingUtil.log(Level.SEVERE, "config.json not found, creating");
             //config.json doesn't exist, create
             copyTemplateJSON();
 
@@ -57,6 +60,7 @@ public class JSONHelper {
             result = json.getString(key);
 
         } catch (JSONException e) {
+            LoggingUtil.log(Level.SEVERE, e.getMessage());
             util.createAlert(
                     "ERROR",
                     "ERROR LOADING config.json",
@@ -71,6 +75,7 @@ public class JSONHelper {
 
         //confirm that the key was successfully retrieved
         if (result.isEmpty()) {
+            LoggingUtil.log(Level.SEVERE, "Specified key: " + key + " does not exist");
             util.createAlert(
                     "ERROR",
                     "ERROR LOADING config.json",
@@ -85,7 +90,7 @@ public class JSONHelper {
 
         } else {
             //key was successfully retrieved
-            System.out.println(key+ ": " + result);
+            LoggingUtil.log(Level.INFO, "Successfully retrieved: " + key+ ": " + result);
             return result;
 
         }
@@ -98,6 +103,7 @@ public class JSONHelper {
             Files.copy(getClass().getClassLoader().getResourceAsStream("templates/config.json"), Paths.get(Constants.configLocal), REPLACE_EXISTING);
 
         } catch (IOException e) {
+            LoggingUtil.log(Level.SEVERE, e.getMessage());
             util.createAlert(
                     "ERROR",
                     "ERROR COPYING JSON",

@@ -2,6 +2,7 @@ package modules;
 
 import databases.JSONHelper;
 import helpers.Constants;
+import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
@@ -17,6 +18,7 @@ import org.opencv.videoio.VideoCapture;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.logging.Level;
 
 /***
  * @author Dalton Smith
@@ -44,17 +46,17 @@ public class CameraStream {
 
         File errorImage = new File(Utils.getCurrentDir() + "\\images\\error.png");
 
-        System.out.println("Path to fallback: " + Utils.getCurrentDir() + "\\images\\error.png");
+        LoggingUtil.log(Level.INFO, "Path to fallback: " + Utils.getCurrentDir() + "\\images\\error.png");
         //open the camera
         capture.retrieve(frame);
 
         //check if camera opened successfully, or is disabled
         if (!capture.isOpened() || parser.getKey("enableCamera").equals("false")) {
-            System.out.println("Error opening camera");
+          LoggingUtil.log(Level.WARNING, "Camera disabled or unable to be opened.");
 
             Image image;
 
-            System.out.println("Does custom fallback exist? " +  errorImage.exists());
+            LoggingUtil.log(Level.INFO, "Does custom fallback exist? " +  errorImage.exists());
             //custom error image
             if (errorImage.exists()){
                 image = new Image(errorImage.toURI().toString());
@@ -117,7 +119,7 @@ public class CameraStream {
 
                     Platform.runLater(() -> currentFrame.setImage(imageToShow));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LoggingUtil.log(Level.SEVERE, e.getMessage());
 
                     //attempt to reconnect the camera
                     capture.release();
@@ -126,7 +128,7 @@ public class CameraStream {
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e1) {
-                        e1.printStackTrace();
+                        LoggingUtil.log(Level.SEVERE, e.getMessage());
                         break;
                     }
                 }

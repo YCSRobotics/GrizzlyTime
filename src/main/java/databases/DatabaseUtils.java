@@ -66,15 +66,12 @@ public class DatabaseUtils {
         int i = 1;
         ArrayList<String> result = new ArrayList<>();
 
-        //System.out.println(mainWorksheet.get(9).get(0).toString());
-
         for (List currentRow : mainWorksheet) {
             if (i == row) {
                 int x = 0;
                 while (true) {
                     try {
                         result.add(currentRow.get(x).toString());
-                        System.out.println("Added data: " + currentRow.get(x).toString());
 
                     } catch (Exception e) {
                         break; //no more data;
@@ -95,7 +92,6 @@ public class DatabaseUtils {
         //set appropriate sheet
         setPage(page);
 
-        System.out.println("Successfully set data on row: " + row + " and column: " + column+1);
         dbProcess.updateSpreadSheet(row+1, column+1, data, page);
 
     }

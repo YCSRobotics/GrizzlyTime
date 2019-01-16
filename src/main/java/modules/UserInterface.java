@@ -3,6 +3,7 @@ package modules;
 import exceptions.CancelledUserCreationException;
 import databases.JSONHelper;
 import exceptions.ConnectToWorksheetException;
+import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -14,6 +15,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import scenes.CreditsScene;
+
+import java.util.logging.Level;
 
 public class UserInterface {
     /**
@@ -172,11 +175,11 @@ public class UserInterface {
 
                 //check if the user is logged in, and that user exists
                 if (!(userProcess.isUserLoggedIn(studentIDBox.getText(), handsFree))) {
-                    System.out.println("Logging in");
+                    LoggingUtil.log(Level.INFO, "Logging in: " + studentIDBox.getText());
                     userProcess.loginUser(studentIDBox.getText());
 
                 } else {
-                    System.out.println("Logging out");
+                    LoggingUtil.log(Level.INFO, "Logging out: " + studentIDBox.getText());
                     userProcess.logoutUser(studentIDBox.getText());
 
                 }
@@ -188,8 +191,8 @@ public class UserInterface {
                 setMessageBoxText("There was an error connecting to the database. Please retry.");
 
             } catch (Exception e) {
-                e.printStackTrace();
-                System.exit(1);
+                LoggingUtil.log(Level.SEVERE, e.getMessage());
+                setMessageBoxText("An unknown error has occurred, see log file.");
             }
 
             //refocus the textbox

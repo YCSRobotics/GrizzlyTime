@@ -4,6 +4,7 @@ import exceptions.CancelledUserCreationException;
 import databases.DatabaseUtils;
 import exceptions.ConnectToWorksheetException;
 import helpers.Constants;
+import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.application.Platform;
 
@@ -16,6 +17,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
 
 class UserProcess {
     /**
@@ -53,7 +55,7 @@ class UserProcess {
         }
 
         //request users first name and last name
-        System.out.println("NEW USER DETECTED");
+        LoggingUtil.log(Level.INFO, "New User Detected");
         ArrayList<String> userData = util.getUserInfo();
 
         //cancel if user cancelled or exited registration dialog
@@ -65,6 +67,7 @@ class UserProcess {
             dbUtils.setCellData(blankRow, Constants.LASTNAMECOLUMN, userData.get(2), Constants.mainSheet);
 
         } else {
+            LoggingUtil.log(Level.INFO, "Account Creation Cancelled");
             throw new CancelledUserCreationException("Cancelled");
 
         }
@@ -139,7 +142,7 @@ class UserProcess {
             try {
                 totalHoursTime = LocalTime.parse(time);
             } catch(DateTimeParseException e) {
-                e.printStackTrace();
+                LoggingUtil.log(Level.WARNING, "Error parsing previous time, did they forget to log out? \n" + e.getMessage());
                 err = true;
             }
 
@@ -159,7 +162,7 @@ class UserProcess {
                     prevTotalTimeNum[2] = Double.parseDouble(prevTotalTime[2]);
 
                 } catch (DateTimeParseException | NumberFormatException e) {
-                    e.printStackTrace();
+                    LoggingUtil.log(Level.WARNING, e.getMessage());
                     prevTotalTimeNum[0] = 0.0;
                     prevTotalTimeNum[1] = 0.0;
                     prevTotalTimeNum[2] = 0.0;
@@ -185,7 +188,7 @@ class UserProcess {
 
                 } catch (DateTimeParseException | NullPointerException e) {
                     prevDayTime = LocalTime.parse("00:00:01");
-                    e.printStackTrace();
+                    LoggingUtil.log(Level.WARNING, "There was an issue adding cell data, using fallback. \n" + e.getMessage());
 
                 }
 

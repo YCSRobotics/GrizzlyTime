@@ -13,6 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.scene.control.Alert;
 
@@ -87,6 +88,7 @@ class DatabaseProcess {
             return response.getValues();
 
         } catch (NoRouteToHostException | UnknownHostException e) {
+            LoggingUtil.log(Level.SEVERE, e.getMessage());
             util.createAlert(
                     "ERROR",
                     "NO NETWORK CONNECTION",
@@ -97,6 +99,7 @@ class DatabaseProcess {
             return null;
 
         } catch (GeneralSecurityException e2) {
+            LoggingUtil.log(Level.SEVERE, e2.getMessage());
             util.createAlert(
                     "ERROR",
                     "INVALID CREDENTIALS",
@@ -109,7 +112,7 @@ class DatabaseProcess {
             return null;
 
         } catch (IOException e3) {
-            e3.printStackTrace();
+            LoggingUtil.log(Level.SEVERE, e3.getMessage());
 
             util.createAlert(
                     "ERROR",
@@ -146,10 +149,10 @@ class DatabaseProcess {
             service.spreadsheets().values().update(spreadsheet, range, requestBody).setValueInputOption("RAW").execute();
 
         } catch (GeneralSecurityException e) {
-            System.out.println("Invalid Credentials");
+            LoggingUtil.log(Level.SEVERE, "INVALID CREDENTIALS");
 
         } catch (IOException e2) {
-            e2.printStackTrace();
+            LoggingUtil.log(Level.SEVERE, e2.getMessage());
             //do nothing
 
         }

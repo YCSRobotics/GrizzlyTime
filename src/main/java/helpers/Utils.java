@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 
 //methods in this class should not be dependent on anything relative
 public class Utils {
@@ -25,7 +26,6 @@ public class Utils {
      */
 
     public static String getCurrentDir() {
-        System.out.println(System.getProperty("user.dir"));
         return System.getProperty("user.dir");
 
     }

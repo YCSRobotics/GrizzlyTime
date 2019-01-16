@@ -10,6 +10,8 @@ import javafx.application.Platform;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -97,6 +99,7 @@ class UserProcess {
     }
 
     //logout the user
+    //TODO clean up code
     void logoutUser(String userID) {
         Platform.runLater(() -> {
             UserInterface.setMessageBoxText("Logging out user: " + userID);
@@ -142,24 +145,32 @@ class UserProcess {
 
 
             if (!err) {
-                LocalTime prevTotalHours;
-
                 //grab the current total hours
                 String totalHours = dbUtils.getCellData(userRow, Constants.TOTALHOURSCOLUMN, Constants.mainSheet);
+                String[] prevTotalTime;
+                double[] prevTotalTimeNum = new double[3];
 
-                //check if totalHours already exists
+                //manually manipulate the time
                 try {
-                    prevTotalHours = LocalTime.parse(totalHours);
+                    prevTotalTime = totalHours.split("\\s*:\\s*");
 
-                } catch (DateTimeParseException e) {
-                    prevTotalHours = LocalTime.parse("00:00:01");
+                    prevTotalTimeNum[0] = Double.parseDouble(prevTotalTime[0]);
+                    prevTotalTimeNum[1] = Double.parseDouble(prevTotalTime[1]);
+                    prevTotalTimeNum[2] = Double.parseDouble(prevTotalTime[2]);
 
+                } catch (DateTimeParseException | NumberFormatException e) {
+                    e.printStackTrace();
+                    prevTotalTimeNum[0] = 0.0;
+                    prevTotalTimeNum[1] = 0.0;
+                    prevTotalTimeNum[2] = 0.0;
                 }
 
 
                 //calculate the new total time
-                LocalTime totalTime = totalHoursTime.plusHours(prevTotalHours.getHour()).plusMinutes(prevTotalHours.getMinute()).plusSeconds(prevTotalHours.getSecond());
-                String timeTotal = String.format("%02d:%02d:%02d", totalTime.getHour(), totalTime.getMinute(), totalTime.getSecond());
+                double totalHour = prevTotalTimeNum[0] + totalHoursTime.getHour();
+                double totalMinute = prevTotalTimeNum[1] + totalHoursTime.getMinute();
+                double totalSeconds = prevTotalTimeNum[2] + totalHoursTime.getSecond();
+                String timeTotal = String.format("%02d:%02d:%02d", (int)totalHour, (int)totalMinute, (int)totalSeconds);
 
                 //set cell data
                 dbUtils.setCellData(userRow, Constants.HOURSCOLUMN, time, Constants.mainSheet);

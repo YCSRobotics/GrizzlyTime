@@ -26,11 +26,12 @@ Visit the [wiki](https://github.com/Daltz333/GrizzlyTime-JavaFX/wiki "wiki") for
 
 ## Credits
 GrizzlyTime is licensed under MIT and uses the following open source software with their respective licenses.
-> 
+```
 OpenCV 3.4.3
 Google Java API Client 1.23.0
 ZXIng Barcode Scanning Library 3.3.0
 Commons-IO 2.6
 Org.Json
+```
 
 GrizzlyTime is programmed and maintained by a member of FRC Team 66, Grizzly Robotics, Dalton Smith. All rights are reserved. Grizzly Robotics logo rights reserved.

@@ -16,25 +16,35 @@ public class DatabaseUtils {
     private DatabaseProcess dbProcess = new DatabaseProcess();
     private List<List<Object>> mainWorksheet;
     private List<List<Object>> loggedHours;
+    private List<List<Object>> currentWorksheet;
+    private List<List<Object>> registrationData;
 
     public DatabaseUtils() {
         //initial data
-        mainWorksheet = dbProcess.returnWorksheetData(Constants.mainSheet);
+        currentWorksheet = dbProcess.returnWorksheetData(Constants.mainSheet);
+        mainWorksheet = currentWorksheet;
         loggedHours = dbProcess.returnWorksheetData(Constants.logSheet);
+        updateStudentRegistrationData();
 
     }
 
     //helper method called at beginning of each method to retrieve updated data
-    private void getUpdatedData() {
-        mainWorksheet = dbProcess.returnWorksheetData(Constants.mainSheet);
+    public void getUpdatedData() {
+        currentWorksheet = dbProcess.returnWorksheetData(Constants.mainSheet);
+        mainWorksheet = currentWorksheet;
         loggedHours = dbProcess.returnWorksheetData(Constants.logSheet);
+        updateStudentRegistrationData();
 
+    }
+
+    private void updateStudentRegistrationData(){
+        if (Constants.grizzlyPrompt) {
+            registrationData = dbProcess.returnWorksheetData(Constants.registrationSheet);
+        }
     }
 
     //grabs column data from sheet
     public ArrayList<String> getColumnData(int column, int page) {
-        getUpdatedData();
-
         if (!isWorksheetsValid()) { return null; }
 
        setPage(page);
@@ -57,8 +67,6 @@ public class DatabaseUtils {
     }
 
     public ArrayList<String> getRowData(int row, int page) {
-        getUpdatedData();
-
         if (!isWorksheetsValid()) { return null; }
 
         setPage(page);
@@ -158,14 +166,16 @@ public class DatabaseUtils {
     private void setPage(int page) {
         switch (page) {
             case Constants.mainSheet:
+                mainWorksheet = currentWorksheet;
                 break;
             case Constants.logSheet:
                 mainWorksheet = loggedHours;
                 break;
+            case Constants.registrationSheet:
+                mainWorksheet = registrationData;
+                break;
             default:
                 break;
-
-
         }
     }
 

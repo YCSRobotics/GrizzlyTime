@@ -22,14 +22,17 @@ public class Constants {
     //sheet codes
     public static final int mainSheet = 0;
     public static final int logSheet = 1;
+    public static final int registrationSheet = 2;
 
     //configuration locations
     public static final String configLocal = "config.json";
-    public static final String VERSION = "1.2.0";
+    public static final String VERSION = "1.2.2";
     public static final String CREDITS = "Dalton Smith of Grizzly Robotics";
 
     //image constants minus our padding
     public static final int splashWidth = 400 - 10;
     public static final int splashHeight = 200 - 10;
+
+    public static final boolean grizzlyPrompt = false;
 
 }

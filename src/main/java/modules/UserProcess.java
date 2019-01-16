@@ -7,6 +7,8 @@ import helpers.Constants;
 import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import scenes.LoginNotifier;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -28,9 +30,12 @@ class UserProcess {
 
     private DatabaseUtils dbUtils = new DatabaseUtils();
     private Utils util = new Utils();
+    private LoginNotifier notifier = new LoginNotifier();
 
     //check if user is logged in
     boolean isUserLoggedIn(String userID, boolean handsFree) throws Exception {
+        dbUtils.getUpdatedData();
+
         ArrayList<String> ids = dbUtils.getColumnData(0, Constants.mainSheet);
 
         if (ids == null) {
@@ -91,6 +96,17 @@ class UserProcess {
             dbUtils.setCellData(userRow, Constants.LASTLOGINCOLUMN, currentTime, Constants.mainSheet);
             dbUtils.setCellData(userRow, Constants.LOGGEDINCOLUMN, "TRUE", Constants.mainSheet);
             dbUtils.setCellData(userRow, Constants.LASTLOGOUTCOLUMN, "LOGGED IN", Constants.mainSheet);
+
+            if (Constants.grizzlyPrompt) {
+                if (!notifier.checkNotifier(userRow, dbUtils)){
+                    util.playDing();
+
+                    util.createAlert("Registration not complete!", "Registration not complete!", "It seems you have not completed your user registration!" +
+                            " Please visit https://ycsrobotics.org/registration to finish your registration", Alert.AlertType.ERROR);
+
+
+                }
+            }
 
             Platform.runLater(() -> {
                 UserInterface.setMessageBoxText("Successfully logged in user: " + userID);

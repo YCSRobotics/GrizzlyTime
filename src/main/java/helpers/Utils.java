@@ -5,10 +5,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Pair;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
@@ -201,6 +204,18 @@ public class Utils {
         data.set(0, "FALSE");
 
         return data;
+    }
+
+    public void playDing() {
+
+        Media sound = null;
+        try {
+            sound = new Media(getClass().getResource("/sounds/ding.wav").toURI().toString());
+        } catch (URISyntaxException e) {
+            LoggingUtil.log(Level.SEVERE, e.getMessage());
+        }
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
 }

@@ -13,6 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import helpers.Constants;
 import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.scene.control.Alert;
@@ -49,6 +50,7 @@ class DatabaseProcess {
 
     private static final String mainPage = "Current";
     private static final String logPage = "Date Log";
+    private static final String regPage = "Student Registration";
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //set google logging level to severe due to permissions bug, see https://github.com/googleapis/google-http-java-client/issues/315
@@ -74,7 +76,7 @@ class DatabaseProcess {
         try {
 
             // Build a new authorized API client service.
-            String range = page == 0 ? mainPage : logPage;
+            String range = getPage(page);
 
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -134,7 +136,7 @@ class DatabaseProcess {
         String columnLetter = getCharForNumber(column);
 
         String range = columnLetter + row;
-        String sheetPage = page == 0 ? mainPage : logPage;
+        String sheetPage = getPage(page);
         range = sheetPage + "!" + range;
 
         ValueRange requestBody = new ValueRange();
@@ -157,6 +159,19 @@ class DatabaseProcess {
 
         }
 
+    }
+
+    private String getPage(int page){
+        switch (page) {
+            case Constants.mainSheet:
+                return mainPage;
+            case Constants.logSheet:
+                return logPage;
+            case Constants.registrationSheet:
+                return regPage;
+            default:
+                return mainPage;
+        }
     }
 
     private String getCharForNumber(int i) {

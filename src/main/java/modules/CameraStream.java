@@ -119,7 +119,7 @@ public class CameraStream {
 
                     Platform.runLater(() -> currentFrame.setImage(imageToShow));
                 } catch (Exception e) {
-                    LoggingUtil.log(Level.SEVERE, e.getMessage());
+                    LoggingUtil.log(Level.SEVERE, e);
 
                     //attempt to reconnect the camera
                     capture.release();
@@ -128,7 +128,7 @@ public class CameraStream {
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e1) {
-                        LoggingUtil.log(Level.SEVERE, e.getMessage());
+                        LoggingUtil.log(Level.SEVERE, e);
                         break;
                     }
                 }

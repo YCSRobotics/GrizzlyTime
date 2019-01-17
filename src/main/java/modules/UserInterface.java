@@ -191,7 +191,7 @@ public class UserInterface {
                 setMessageBoxText("There was an error connecting to the database. Please retry.");
 
             } catch (Exception e) {
-                LoggingUtil.log(Level.SEVERE, e.getMessage());
+                LoggingUtil.log(Level.SEVERE, e);
                 setMessageBoxText("An unknown error has occurred, see log file.");
             }
 

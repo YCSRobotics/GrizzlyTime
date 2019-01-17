@@ -1,7 +1,6 @@
 package helpers;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -17,6 +16,22 @@ public class LoggingUtil {
     public static void log(Level severity, String text) {
         setHandler();
         logger.log(severity, text);
+    }
+
+    public static void log(Level severity, Throwable error){
+        ByteArrayOutputStream out1 = new ByteArrayOutputStream();
+        PrintStream out2 = new PrintStream(out1);
+        error.printStackTrace(out2);
+
+        String message;
+        try {
+            message = out1.toString("UTF8");
+        } catch (UnsupportedEncodingException e) {
+            message = error.getMessage();
+        }
+
+        setHandler();
+        logger.log(severity, message);
     }
 
     private static void setHandler() {

@@ -90,7 +90,7 @@ class DatabaseProcess {
             return response.getValues();
 
         } catch (NoRouteToHostException | UnknownHostException e) {
-            LoggingUtil.log(Level.SEVERE, e.getMessage());
+            LoggingUtil.log(Level.SEVERE, e);
             util.createAlert(
                     "ERROR",
                     "NO NETWORK CONNECTION",
@@ -101,7 +101,7 @@ class DatabaseProcess {
             return null;
 
         } catch (GeneralSecurityException e2) {
-            LoggingUtil.log(Level.SEVERE, e2.getMessage());
+            LoggingUtil.log(Level.SEVERE, e2);
             util.createAlert(
                     "ERROR",
                     "INVALID CREDENTIALS",
@@ -114,7 +114,7 @@ class DatabaseProcess {
             return null;
 
         } catch (IOException e3) {
-            LoggingUtil.log(Level.SEVERE, e3.getMessage());
+            LoggingUtil.log(Level.SEVERE, e3);
 
             util.createAlert(
                     "ERROR",
@@ -154,7 +154,7 @@ class DatabaseProcess {
             LoggingUtil.log(Level.SEVERE, "INVALID CREDENTIALS");
 
         } catch (IOException e2) {
-            LoggingUtil.log(Level.SEVERE, e2.getMessage());
+            LoggingUtil.log(Level.SEVERE, e2);
             //do nothing
 
         }

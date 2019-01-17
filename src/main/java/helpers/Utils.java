@@ -212,7 +212,7 @@ public class Utils {
         try {
             sound = new Media(getClass().getResource("/sounds/ding.wav").toURI().toString());
         } catch (URISyntaxException e) {
-            LoggingUtil.log(Level.SEVERE, e.getMessage());
+            LoggingUtil.log(Level.SEVERE, e);
         }
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();

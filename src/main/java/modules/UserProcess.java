@@ -177,8 +177,8 @@ class UserProcess {
                     prevTotalTimeNum[1] = Double.parseDouble(prevTotalTime[1]);
                     prevTotalTimeNum[2] = Double.parseDouble(prevTotalTime[2]);
 
-                } catch (DateTimeParseException | NumberFormatException e) {
-                    LoggingUtil.log(Level.WARNING, e.getMessage());
+                } catch (DateTimeParseException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                    LoggingUtil.log(Level.WARNING, "Error parsing previous total time, using fallback of 0.0");
                     prevTotalTimeNum[0] = 0.0;
                     prevTotalTimeNum[1] = 0.0;
                     prevTotalTimeNum[2] = 0.0;

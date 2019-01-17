@@ -5,6 +5,7 @@ import helpers.Constants;
 import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -31,6 +32,7 @@ public class CameraStream {
     private boolean stopCamera = false;
     private UserProcess process = new UserProcess();
     private JSONHelper parser = new JSONHelper();
+    private Utils utils = new Utils();
 
     public void displayImage(GridPane root) {
         startWebCamStream(root);
@@ -120,17 +122,9 @@ public class CameraStream {
                     Platform.runLater(() -> currentFrame.setImage(imageToShow));
                 } catch (Exception e) {
                     LoggingUtil.log(Level.SEVERE, e);
+                    utils.createAlert("Camera disabled", "Camera disabled", "The camera has been disabled, please restart the application to re-enable", Alert.AlertType.ERROR);
+                    stopCamera = true;
 
-                    //attempt to reconnect the camera
-                    capture.release();
-                    capture.retrieve(frame);
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e1) {
-                        LoggingUtil.log(Level.SEVERE, e);
-                        break;
-                    }
                 }
 
             }

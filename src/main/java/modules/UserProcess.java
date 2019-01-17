@@ -70,6 +70,7 @@ class UserProcess {
             dbUtils.setCellData(blankRow, Constants.STUDENTIDCOLUMN, userID, Constants.mainSheet);
             dbUtils.setCellData(blankRow, Constants.FIRSTNAMECOLUMN, userData.get(1), Constants.mainSheet);
             dbUtils.setCellData(blankRow, Constants.LASTNAMECOLUMN, userData.get(2), Constants.mainSheet);
+            dbUtils.getUpdatedData();
 
         } else {
             LoggingUtil.log(Level.INFO, "Account Creation Cancelled");

@@ -189,6 +189,17 @@ class UserProcess {
                 double totalHour = prevTotalTimeNum[0] + totalHoursTime.getHour();
                 double totalMinute = prevTotalTimeNum[1] + totalHoursTime.getMinute();
                 double totalSeconds = prevTotalTimeNum[2] + totalHoursTime.getSecond();
+
+                while(totalSeconds > 60) {
+                    totalSeconds-=60;
+                    totalMinute+=1;
+                }
+
+                while(totalMinute > 60) {
+                    totalMinute-=60;
+                    totalHour+=1;
+                }
+
                 String timeTotal = String.format("%02d:%02d:%02d", (int)totalHour, (int)totalMinute, (int)totalSeconds);
 
                 //set cell data

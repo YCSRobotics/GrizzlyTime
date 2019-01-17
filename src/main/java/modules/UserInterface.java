@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import scenes.CreditsScene;
 
 import java.util.logging.Level;
@@ -34,7 +35,7 @@ public class UserInterface {
             "\nenter your birth date in 6 digits. [MMDDYY]");
 
     private Hyperlink creditsLink = new Hyperlink("Credits");
-    private Hyperlink optionsLink = new Hyperlink("Options");
+    private Hyperlink optionsLink = new Hyperlink("Full Screen");
 
     private BorderPane bottomPane = new BorderPane();
 
@@ -108,6 +109,17 @@ public class UserInterface {
 
         creditsLink.setOnAction(event -> {
             showCredits();
+        });
+
+        optionsLink.setOnAction(event -> {
+            Stage stage = (Stage)optionsLink.getScene().getWindow();
+            if (KeyHandlers.isFullscreen){
+                stage.setFullScreen(false);
+                KeyHandlers.isFullscreen = false;
+            } else {
+                stage.setFullScreen(true);
+                KeyHandlers.isFullscreen = true;
+            }
         });
     }
 

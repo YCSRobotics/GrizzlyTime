@@ -11,7 +11,7 @@ public class KeyHandlers {
      * Manages global keybinds
      */
 
-    private boolean isFullscreen = false;
+    public static boolean isFullscreen = false;
 
     public void setKeyHandlers(Scene scene, Stage stage) {
         //make application fullscreen on f key press

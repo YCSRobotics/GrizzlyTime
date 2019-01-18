@@ -194,16 +194,17 @@ public class Utils {
         //return the data
         try {
             if (data.get(0) != null) {
+                LoggingUtil.log(Level.INFO, "User successfully completed all registration fields");
+                return data;
+            } else {
+                data.add("FALSE");
                 return data;
             }
         } catch (IndexOutOfBoundsException e) {
-            //do nothing
+            data.add("FALSE");
+            LoggingUtil.log(Level.WARNING, e.getMessage());
+            return data;
         }
-
-        //the user did not return data
-        data.set(0, "FALSE");
-
-        return data;
     }
 
     public void playDing() {

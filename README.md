@@ -17,7 +17,7 @@ GrizzlyTime is a Java based time logging system that links with Google Sheets. I
 - Gather statistics of student growth over time
 
 ## Downloads
-Download the latest **release** [here](http://https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest "here").
+Download the latest **release** [here](https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest "here").
 
 A setup tutorial can be found [here.](https://www.youtube.com/watch?v=Cnrck_dascw "here.")
 

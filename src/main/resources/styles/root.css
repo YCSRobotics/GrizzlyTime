@@ -1,6 +1,22 @@
+/*
+Main Screen CSS
+ */
+
 #main {
     -fx-font-family: "Calibri";
     -fx-background-color: #D0BB61;
+}
+
+.button {
+    -fx-font-size: 16px;
+    -fx-border-width: 0;
+    -fx-outline: none;
+    -fx-background-color: lightgrey;
+    -fx-background-radius: 0;
+}
+
+.button:hover {
+    -fx-background-color: #acacac;
 }
 
 #title {
@@ -76,6 +92,9 @@
     -fx-text-alignment: center;
 }
 
+/*
+Credits CSS
+ */
 #upperPaneLeft {
 
 }
@@ -88,4 +107,71 @@
 
 #creditsText {
 
+}
+
+/*
+Custom Dialog CSS
+*/
+
+#customDialog {
+    -fx-background-color: #D0BB61;
+    -fx-padding: 10px;
+    -fx-font-size: 16px;
+}
+
+.myDialog{
+    -fx-background-color: #D0BB61;
+}
+.myDialog > *.button-bar > *.container{
+    -fx-background-color: #D0BB61;
+}
+
+.myDialog > *.label.content{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.myDialog:header *.header-panel{
+    -fx-background-color: #d9c575;
+}
+.myDialog:header *.header-panel *.label{
+    -fx-font-size: 25px;
+    -fx-fill: #292929;
+}
+
+/*
+Account Dialog CSS
+ */
+
+.accountDialog{
+    -fx-background-color: #D0BB61;
+}
+.accountDialog > *.button-bar > *.container{
+    -fx-background-color: #D0BB61;
+}
+
+.accountDialog > *.label.content{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.accountDialog:header *.header-panel{
+    -fx-background-color: #d9c575;
+}
+.accountDialog:header *.header-panel *.label{
+    -fx-font-size: 23px;
+    -fx-fill: #292929;
+}
+
+#accountGrid {
+    -fx-font-size: 16px;
+}
+
+#textField {
+    -fx-font-size: 15px;
+    -fx-background-color: WHITE;
+    -fx-prompt-text-fill: #808080;
+    -fx-alignment: top-left;
+    -fx-max-width: 300;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0;
+    -fx-min-height: 20px;
 }

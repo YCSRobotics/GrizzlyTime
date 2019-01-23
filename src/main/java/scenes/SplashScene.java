@@ -1,4 +1,4 @@
-package modules;
+package scenes;
 
 import helpers.Utils;
 import javafx.scene.image.Image;

@@ -2,6 +2,7 @@ package helpers;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -10,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.File;
@@ -76,11 +78,11 @@ public class Utils {
         AtomicBoolean isSet = new AtomicBoolean();
 
         if (Platform.isFxApplicationThread()) {
-            return confirmInputHelper(message);
+            return customDialog("Confirm Login/Logout", "Confirm Login/Logout", message);
 
         } else {
             Platform.runLater(() -> {
-                tempBoolean.set(confirmInputHelper(message));
+                tempBoolean.set(customDialog("Confirm Login/Logout", "Confirm Login/Logout", message));
                 isSet.set(true);
 
             });
@@ -94,25 +96,21 @@ public class Utils {
         }
     }
 
-    //new user registration helper
-    private boolean confirmInputHelper(String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Confirm login/logout?");
-        alert.setContentText(message);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.get() == ButtonType.OK;
-    }
-
     private boolean customDialog(String title, String header, String message) {
         // Create the custom dialog.
         Dialog dialog = new Dialog<>();
         dialog.setTitle(title);
         dialog.setHeaderText(header);
 
+        dialog.getDialogPane().getStylesheets().add("styles/root.css");
+        dialog.getDialogPane().getStyleClass().add("myDialog");
+
+        // Set Custom Icon
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("images/icon.png"));
+
         // Set the button types.
-        ButtonType confirmButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        ButtonType confirmButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
 
         Image image = new Image("images/bear.png");
@@ -138,7 +136,7 @@ public class Utils {
 
         Optional<ButtonType> result = dialog.showAndWait();
 
-        return result.get() == ButtonType.OK;
+        return result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE;
     }
 
     public ArrayList<String> getUserInfo() {
@@ -169,8 +167,16 @@ public class Utils {
     private ArrayList<String> showAuthDialog() {
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
+
+        // Set Custom Icon
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("images/icon.png"));
+
+        dialog.getDialogPane().getStylesheets().add("styles/root.css");
+        dialog.getDialogPane().getStyleClass().add("accountDialog");
+
         dialog.setTitle("New User Detected");
-        dialog.setHeaderText("Please enter your name to complete your registration and login.");
+        dialog.setHeaderText("Please complete user registration!");
 
         // Set the button types.
         ButtonType loginButtonType = new ButtonType("Create Account", ButtonBar.ButtonData.OK_DONE);
@@ -181,11 +187,16 @@ public class Utils {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
+        grid.setAlignment(Pos.CENTER);
+        grid.setId("accountGrid");
+
 
         TextField username = new TextField("First Name");
+        username.setId("textField");
         username.setPromptText("");
         TextField password = new TextField("Last Name");
         password.setPromptText("");
+        password.setId("textField");
 
         grid.add(new Label("First Name:"), 0, 0);
         grid.add(username, 1, 0);

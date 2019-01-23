@@ -10,7 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import modules.CameraStream;
 import modules.KeyHandlers;
-import modules.SplashScene;
+import scenes.SplashScene;
 import modules.UserInterface;
 
 import java.io.File;

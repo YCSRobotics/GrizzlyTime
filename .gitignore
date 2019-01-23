@@ -32,6 +32,7 @@ hs_err_pid*
 src/main/resources/credentials/credentials.json
 
 # intellij directory
+.idea
 
 # gradle config
 .gradle/

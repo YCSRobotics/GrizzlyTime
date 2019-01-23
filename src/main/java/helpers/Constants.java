@@ -26,7 +26,7 @@ public class Constants {
 
     //configuration locations
     public static final String configLocal = "config.json";
-    public static final String VERSION = "1.2.2";
+    public static final String VERSION = "2.0.0";
     public static final String CREDITS = "Dalton Smith of Grizzly Robotics";
 
     //image constants minus our padding

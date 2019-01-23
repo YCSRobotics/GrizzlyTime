@@ -4,9 +4,12 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
 import javafx.util.Pair;
 
 import java.io.File;
@@ -64,12 +67,7 @@ public class Utils {
 
     //alert helper
     private void showAlert(String title, String header, String content, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-
-        alert.showAndWait();
+        customDialog(title, header, content);
     }
 
     //confirm new user registration
@@ -104,6 +102,42 @@ public class Utils {
         alert.setContentText(message);
 
         Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
+    }
+
+    private boolean customDialog(String title, String header, String message) {
+        // Create the custom dialog.
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+
+        // Set the button types.
+        ButtonType confirmButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
+
+        Image image = new Image("images/bear.png");
+        ImageView imageView = new ImageView(image);
+
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(50);
+
+        // Set the icon (must be included in the project).
+        dialog.setGraphic(imageView);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setId("customDialog");
+
+        Text text = new Text(message);
+
+        grid.add(text, 0, 0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+
         return result.get() == ButtonType.OK;
     }
 

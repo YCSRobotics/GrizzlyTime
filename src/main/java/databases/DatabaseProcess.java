@@ -93,7 +93,7 @@ class DatabaseProcess {
             LoggingUtil.log(Level.SEVERE, e);
             util.createAlert(
                     "ERROR",
-                    "NO NETWORK CONNECTION",
+                    "No Network Connection",
                     "Please confirm your network connection and try again.",
                     Alert.AlertType.ERROR
 
@@ -104,8 +104,8 @@ class DatabaseProcess {
             LoggingUtil.log(Level.SEVERE, e2);
             util.createAlert(
                     "ERROR",
-                    "INVALID CREDENTIALS",
-                    "Please check that you have permission to edit the google sheet and try again.",
+                    "Invalid Credentials",
+                    "Please delete the 'tokens' directory and try again!",
                     Alert.AlertType.ERROR
 
             );
@@ -118,7 +118,7 @@ class DatabaseProcess {
 
             util.createAlert(
                     "ERROR",
-                    "ERROR CONNECTING TO DATABASE",
+                    "Error connecting to database",
                     "Please confirm that the URL is valid and that you have internet access.",
                     Alert.AlertType.ERROR
 

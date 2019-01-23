@@ -40,8 +40,8 @@ public class JSONHelper {
             //show alert dialog
             util.createAlert(
                     "ERROR",
-                    "config.json NOT FOUND",
-                    "The required configuration was not found. It has been created. Please update the sheet URL!",
+                    "Configuration file not found",
+                    "The required config.json file was not found. It has been created. Please update the sheet URL!",
                     Alert.AlertType.ERROR
                     );
 
@@ -63,7 +63,7 @@ public class JSONHelper {
             LoggingUtil.log(Level.SEVERE, e.getMessage());
             util.createAlert(
                     "ERROR",
-                    "ERROR LOADING config.json",
+                    "Error loading configuration file",
                     "Please confirm that the configuration is valid. \n" +
                             "ERROR RETRIEVING: " + key + " EMPTY",
                     Alert.AlertType.ERROR
@@ -78,7 +78,7 @@ public class JSONHelper {
             LoggingUtil.log(Level.SEVERE, "Specified key: " + key + " does not exist");
             util.createAlert(
                     "ERROR",
-                    "ERROR LOADING config.json",
+                    "Invalid Configuration",
                     "Please confirm that the configuration is valid. \n" +
                             "ERROR RETRIEVING: " + key + " EMPTY",
                     Alert.AlertType.ERROR

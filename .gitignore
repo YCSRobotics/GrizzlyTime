@@ -29,7 +29,7 @@ hs_err_pid*
 # End of https://www.gitignore.io/api/java
 
 # credentials directory
-src/main/resources/credentials/
+src/main/resources/credentials/credentials.json
 
 # intellij directory
 

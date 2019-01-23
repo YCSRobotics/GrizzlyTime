@@ -119,7 +119,6 @@ class UserProcess {
     }
 
     //logout the user
-    //TODO clean up code
     void logoutUser(String userID) {
         Platform.runLater(() -> {
             UserInterface.setMessageBoxText("Logging out user: " + userID);

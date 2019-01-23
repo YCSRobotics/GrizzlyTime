@@ -54,22 +54,27 @@ public class Utils {
     }
 
     //create alert
-    public void createAlert(String title, String header, String content, Alert.AlertType type) {
+    public boolean createAlert(String title, String header, String content, Alert.AlertType type) {
 
         //ensure that we always show the dialog on the main UI thread
         if (Platform.isFxApplicationThread()) {
-            showAlert(title, header, content, type);
+            return showAlert(title, header, content, type);
 
         } else {
+
+            AtomicBoolean temp = new AtomicBoolean();
+
             Platform.runLater(() -> {
-                showAlert(title, header, content, type);
+                temp.set(showAlert(title, header, content, type));
             });
+
+            return temp.get();
         }
     }
 
     //alert helper
-    private void showAlert(String title, String header, String content, Alert.AlertType type) {
-        customDialog(title, header, content);
+    private boolean showAlert(String title, String header, String content, Alert.AlertType type) {
+        return customDialog(title, header, content);
     }
 
     //confirm new user registration

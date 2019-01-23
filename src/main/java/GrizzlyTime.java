@@ -12,6 +12,7 @@ import modules.CameraStream;
 import modules.KeyHandlers;
 import scenes.SplashScene;
 import modules.UserInterface;
+import scenes.UpdateNotifier;
 
 import java.io.File;
 
@@ -26,6 +27,7 @@ public class GrizzlyTime extends Application {
     private SplashScene splash = new SplashScene();
     private KeyHandlers keyHandlers = new KeyHandlers();
     private Utils utils = new Utils();
+    private UpdateNotifier updater = new UpdateNotifier();
 
     @Override
     public void start(Stage primaryStage) {
@@ -92,6 +94,9 @@ public class GrizzlyTime extends Application {
         } else {
             processor.displayImage(root);
         }
+
+        //check for updates
+        updater.checkUpdates();
 
         //create UI and logic
         userInterface.updateInterface(root);

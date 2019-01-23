@@ -35,4 +35,8 @@ public class Constants {
 
     public static final boolean grizzlyPrompt = false;
 
+    public static final String updateUrl = "https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/version.txt";
+
+    public static final String releaseUrl = "https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest";
+
 }

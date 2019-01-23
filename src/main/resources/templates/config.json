@@ -1,5 +1,6 @@
 {
   "sheet": "",
   "enableCamera": "true",
-  "handsFreeMode": "false"
+  "handsFreeMode": "false",
+  "updateNotifier": "true"
 }

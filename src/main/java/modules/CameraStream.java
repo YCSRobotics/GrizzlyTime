@@ -5,6 +5,8 @@ import helpers.Constants;
 import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.application.Platform;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -68,9 +70,11 @@ public class CameraStream {
 
             //set image properties
             currentFrame.setImage(image);
+            currentFrame.setPreserveRatio(true);
             currentFrame.setFitHeight(Constants.cameraHeight);
-            currentFrame.setFitWidth(Constants.cameraWidth);
+            GridPane.setHalignment(currentFrame, HPos.CENTER);
 
+            subRoot.setAlignment(Pos.CENTER);
             subRoot.add(currentFrame, 0, 0);
             root.add(subRoot, 0, 0);
 

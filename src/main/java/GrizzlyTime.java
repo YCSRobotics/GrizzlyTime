@@ -78,6 +78,7 @@ public class GrizzlyTime extends Application {
             processor = new CameraStream();
         }
 
+        Utils.stage = primaryStage;
 
         //remove splash screen on load
         root.getChildren().clear();

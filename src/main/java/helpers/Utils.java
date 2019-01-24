@@ -33,6 +33,8 @@ public class Utils {
      * https://code.makery.ch/blog/javafx-dialogs-official/
      */
 
+    public static Stage stage = null;
+
     public static String getCurrentDir() {
         return System.getProperty("user.dir");
 
@@ -106,6 +108,7 @@ public class Utils {
         Dialog dialog = new Dialog<>();
         dialog.setTitle(title);
         dialog.setHeaderText(header);
+        dialog.initOwner(stage);
 
         dialog.getDialogPane().getStylesheets().add("styles/root.css");
         dialog.getDialogPane().getStyleClass().add("myDialog");
@@ -173,6 +176,7 @@ public class Utils {
     private ArrayList<String> showAuthDialog() {
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.initOwner(stage);
 
         // Set Custom Icon
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();

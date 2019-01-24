@@ -44,17 +44,24 @@ public class CreditsScene {
             "ZXing barcode scanning library (Licensed under Apache 2.0) https://github.com/zxing/zxing\n" +
             "");
 
+    Text credits = new Text("GrizzlyTime uses the following open source projects:\n" +
+            "OpenCV 3.4.3\n" +
+            "Google Java API Client 1.23.0\n" +
+            "ZXIng Barcode Scanning Library 3.3.0\n" +
+            "Commons-IO 2.6\n" +
+            "Org.Json");
+
     public void showCredits() {
         stage.setWidth(608);
-        stage.setHeight(610);
+        stage.setHeight(500);
         stage.setScene(scene);
 
         scene.getStylesheets().add("styles/root.css");
         stage.getIcons().add(new Image("images/icon.png"));
 
-        root.setId("main");
+        root.setId("creditsRoot");
 
-        upperPaneMain.setAlignment(Pos.TOP_CENTER);
+        upperPaneMain.setAlignment(Pos.CENTER);
         upperPaneMain.setPrefWidth(root.getWidth());
 
         root.add(upperPaneMain, 0, 0);
@@ -66,8 +73,11 @@ public class CreditsScene {
 
     private void createCreditsUI(GridPane root) {
 
+        root.setAlignment(Pos.TOP_CENTER);
+        GridPane.setHalignment(root, HPos.CENTER);
+
         imageView.setPreserveRatio(true);
-        imageView.setFitWidth(350);
+        imageView.setFitHeight(225);
 
         summaryTitle.setId("title");
         summaryTitle.setTextAlignment(TextAlignment.CENTER);
@@ -81,9 +91,10 @@ public class CreditsScene {
         upperPaneLeft.setAlignment(Pos.TOP_CENTER);
         upperPaneLeft.setMinWidth(300);
         upperPaneLeft.setId("upperPaneLeft");
+        GridPane.setHalignment(upperPaneLeft, HPos.RIGHT);
 
         upperPaneRight.setAlignment(Pos.TOP_CENTER);
-        upperPaneRight.setMinWidth(300);
+        upperPaneRight.setMinWidth(260);
 
         upperPaneLeft.add(summaryTitle, 0, 0);
         upperPaneLeft.add(summaryText, 0, 1);
@@ -92,6 +103,12 @@ public class CreditsScene {
 
         upperPaneMain.add(upperPaneLeft, 0, 0);
         upperPaneMain.add(upperPaneRight, 1, 0);
+
+        bottomPaneMain.setMaxWidth(500);
+        bottomPaneMain.setAlignment(Pos.CENTER);
+        bottomPaneMain.setId("creditsMain");
+        GridPane.setHalignment(bottomPaneMain, HPos.CENTER);
+        bottomPaneMain.add(credits, 0, 0);
     }
 
 }

@@ -99,14 +99,25 @@ Credits CSS
 
 }
 
+#creditsRoot {
+    -fx-font-family: "Calibri";
+    -fx-background-color: #D0BB61;
+    -fx-padding: 8px;
+}
+
 #summaryText {
     -fx-text-alignment: center;
     -fx-font-size: 18px;
     -fx-padding: 15px;
 }
 
-#creditsText {
-
+#creditsMain {
+    -fx-font-size: 20px;
+    -fx-border-width:2px;
+    -fx-border-radius: 3px;
+    -fx-border-color:black;
+    -fx-border-style:solid;
+    -fx-padding: 5px;
 }
 
 /*

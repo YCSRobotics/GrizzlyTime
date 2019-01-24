@@ -143,9 +143,15 @@ public class Utils {
 
         dialog.getDialogPane().setContent(grid);
 
-        Optional<ButtonType> result = dialog.showAndWait();
+        Optional result = dialog.showAndWait();
 
-        return result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE;
+        if (!result.isPresent()) {
+            return false;
+        }
+
+        ButtonType buttonInfo = (ButtonType)result.get();
+
+        return buttonInfo.getButtonData() == ButtonBar.ButtonData.OK_DONE;
     }
 
     public ArrayList<String> getUserInfo() {

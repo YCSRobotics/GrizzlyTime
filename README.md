@@ -1,4 +1,9 @@
 # GrizzlyTime
+<a href="https://github.com/badges/shields/graphs/contributors" alt="Contributors">
+   <img src="https://ci.appveyor.com/api/projects/status/4969habs84m6dyv8?svg=true" />
+</a>
+        
+ 
 ![example image](https://i.ibb.co/TK4Q1WT/90.png)
 
 GrizzlyTime is a Java based time logging system that links with Google Sheets. It features fast setup (<5minutes), logging of individual student dates, quick student registration, flexible 6 digit ID system, etc.

@@ -134,6 +134,7 @@ public class Utils {
         grid.setId("customDialog");
 
         Text text = new Text(message);
+        text.setWrappingWidth(400);
 
         grid.add(text, 0, 0);
 

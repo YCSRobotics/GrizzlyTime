@@ -4,7 +4,6 @@ import helpers.Constants;
 import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,8 +12,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import modules.CameraStream;
 import modules.KeyHandlers;
-import scenes.SplashScene;
 import modules.UserInterface;
+import scenes.SplashScene;
 import scenes.UpdateNotifier;
 
 import java.io.File;
@@ -36,7 +35,7 @@ public class GrizzlyTime extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        Thread.setDefaultUncaughtExceptionHandler(GrizzlyTime::GlobalExceptionHandler);
+        Thread.setDefaultUncaughtExceptionHandler(GrizzlyTime::globalExceptionHandler);
         //grab our application icon from stream
 
         //check if custom icon
@@ -98,9 +97,7 @@ public class GrizzlyTime extends Application {
         keyHandlers.setKeyHandlers(scene, primaryStage);
 
         //process camera frames and read barcode images
-        if (processor == null) {
-            //don't load
-        } else {
+        if (processor != null) {
             processor.displayImage(root);
         }
 
@@ -112,7 +109,7 @@ public class GrizzlyTime extends Application {
 
     }
 
-    private static void GlobalExceptionHandler(Thread thread, Throwable throwable) {
+    private static void globalExceptionHandler(Thread thread, Throwable throwable) {
         LoggingUtil.log(Level.SEVERE, throwable);
         Utils.exitApplication();
     }

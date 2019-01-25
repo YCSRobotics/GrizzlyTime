@@ -8,7 +8,6 @@ public class Constants {
     public static final int LASTLOGOUTCOLUMN = 7;
     public static final int LASTLOGINCOLUMN = 6;
     public static final int STUDENTIDCOLUMN = 0;
-    public static final int TOTALHOURSLOG = 1;
     public static final int FIRSTNAMECOLUMN = 1;
     public static final int LASTNAMECOLUMN = 2;
 

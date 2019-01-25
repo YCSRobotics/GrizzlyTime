@@ -2,16 +2,16 @@ package helpers;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class LoggingUtil {
     public static Logger logger = Logger.getLogger("");
 
     private static boolean isHandlerSet = false;
-
-    private static FileHandler fh = null;
 
     public static void log(Level severity, String text) {
         setHandler();
@@ -39,13 +39,16 @@ public class LoggingUtil {
             System.setProperty("java.util.logging.SimpleFormatter.format",
                     "%4$s: %5$s %n");
 
+            FileHandler fh;
+
             try {
                 String currentDate = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
 
                 File file = new File(Utils.getCurrentDir() + "\\logs\\");
 
                 if (!file.exists()) {
-                    file.mkdir();
+                    boolean success = file.mkdir();
+                    LoggingUtil.log(Level.INFO, "Directory creation success? " + success);
                 }
 
                 fh = new FileHandler(Utils.getCurrentDir() + "\\logs\\log_" + currentDate + ".log");

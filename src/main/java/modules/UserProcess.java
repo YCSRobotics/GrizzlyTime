@@ -1,8 +1,8 @@
 package modules;
 
+import databases.DatabaseUtils;
 import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
-import databases.DatabaseUtils;
 import exceptions.ConnectToWorksheetException;
 import helpers.Constants;
 import helpers.LoggingUtil;
@@ -11,12 +11,9 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import scenes.LoginNotifier;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,7 +67,7 @@ class UserProcess {
         ArrayList<String> userData = util.getUserInfo();
 
         //cancel if user cancelled or exited registration dialog
-        if (userData.get(0).equals("TRUE")) {
+        if (("TRUE").equalsIgnoreCase(userData.get(0))) {
             //create user then login
             int blankRow = dbUtils.nextEmptyCellColumn(Constants.mainSheet);
             dbUtils.setCellData(blankRow, Constants.STUDENTIDCOLUMN, userID, Constants.mainSheet);
@@ -104,15 +101,12 @@ class UserProcess {
             dbUtils.setCellData(userRow, Constants.LOGGEDINCOLUMN, "TRUE", Constants.mainSheet);
             dbUtils.setCellData(userRow, Constants.LASTLOGOUTCOLUMN, "LOGGED IN", Constants.mainSheet);
 
-            if (Constants.grizzlyPrompt) {
-                if (!notifier.checkNotifier(userRow, dbUtils)){
-                    util.playDing();
+            if (Constants.grizzlyPrompt && !notifier.checkNotifier(userRow, dbUtils)) {
+                util.playDing();
 
-                    util.createAlert("Registration not complete!", "Registration not complete!", "It seems you have not completed your user registration!" +
-                            " Please visit https://ycsrobotics.org/registration to finish your registration", Alert.AlertType.ERROR);
-
-
-                }
+                util.createAlert("Registration not complete!", "Registration not complete!", "It seems you have not completed your user registration!" +
+                        " Please visit https://ycsrobotics.org/registration to finish your registration", Alert.AlertType.ERROR);
+                
             }
 
             Platform.runLater(() -> {

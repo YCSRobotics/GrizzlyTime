@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -95,7 +96,13 @@ public class JSONHelper {
     //copy our json outside directory
     private void copyTemplateJSON(){
         try {
-            Files.copy(getClass().getClassLoader().getResourceAsStream("templates/config.json"), Paths.get(Constants.configLocal), REPLACE_EXISTING);
+            InputStream pathToConfig = getClass().getClassLoader().getResourceAsStream("templates/config.json");
+
+            if (pathToConfig == null) {
+                throw new IOException("Path to config is null!");
+            }
+
+            Files.copy(pathToConfig, Paths.get(Constants.configLocal), REPLACE_EXISTING);
 
         } catch (IOException e) {
             LoggingUtil.log(Level.SEVERE, e.getMessage());

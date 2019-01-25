@@ -1,7 +1,7 @@
 package modules;
 
-import exceptions.CancelledUserCreationException;
 import databases.JSONHelper;
+import exceptions.CancelledUserCreationException;
 import exceptions.ConnectToWorksheetException;
 import helpers.LoggingUtil;
 import helpers.Utils;
@@ -9,7 +9,10 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -177,13 +180,7 @@ public class UserInterface {
 
     private void updateHandsFreeValue() {
         if (!jsonHandsFreeGrabbed) {
-            if (parser.getKey("handsFreeMode").equals("false")){
-                handsFreeMode = false;
-
-            } else {
-                handsFreeMode = true;
-
-            }
+            handsFreeMode = !parser.getKey("handsFreeMode").equals("false");
 
             jsonHandsFreeGrabbed = true;
 

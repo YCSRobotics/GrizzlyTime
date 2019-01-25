@@ -27,7 +27,7 @@ public class CVHelper {
             String os = osName.toLowerCase();
 
             //check OS version
-            if (os.indexOf("win") >= 0) {
+            if (os.contains("win")) {
 
                 //check architecture type
                 int bitness = Integer.parseInt(System.getProperty("sun.arch.data.model"));
@@ -47,10 +47,13 @@ public class CVHelper {
                     fileOut = File.createTempFile("lib", ".dll");
 
                 }
-            } else if (os.indexOf("mac") >= 0) {
+            } else if (os.contains("mac")) {
                 LoggingUtil.log(Level.SEVERE, "MAC NOT SUPPORTED YET");
                 in = CVHelper.class.getResourceAsStream("/opencv/mac/libopencv_java343.dylib");
                 fileOut = File.createTempFile("lib", ".dylib");
+
+            } else {
+                throw new OpenCvLoadFailureException("Unsupported OS!");
 
             }
 
@@ -62,7 +65,7 @@ public class CVHelper {
             System.load(fileOut.toString());
 
         } catch (Exception e) {
-            LoggingUtil.log(Level.SEVERE, e.getMessage());
+            LoggingUtil.log(Level.SEVERE, e);
             throw new OpenCvLoadFailureException("Failed to load");
 
         }

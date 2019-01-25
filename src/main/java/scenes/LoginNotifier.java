@@ -8,19 +8,12 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class LoginNotifier {
-
-    private ArrayList<String> firstNamesListReg;
-    private ArrayList<String> lastNamesListReg;
-
-    private String firstName;
-    private String lastName;
-
     public boolean checkNotifier(int studentIDRow, DatabaseUtils dbUtils) {
-        firstName = dbUtils.getCellData(studentIDRow, Constants.FIRSTNAMECOLUMN, Constants.mainSheet);
-        lastName = dbUtils.getCellData(studentIDRow, Constants.LASTNAMECOLUMN, Constants.mainSheet);
+        String firstName = dbUtils.getCellData(studentIDRow, Constants.FIRSTNAMECOLUMN, Constants.mainSheet);
+        String lastName = dbUtils.getCellData(studentIDRow, Constants.LASTNAMECOLUMN, Constants.mainSheet);
 
-        firstNamesListReg = dbUtils.getColumnData(0, Constants.registrationSheet);
-        lastNamesListReg = dbUtils.getColumnData(1, Constants.registrationSheet);
+        ArrayList<String> firstNamesListReg = dbUtils.getColumnData(0, Constants.registrationSheet);
+        ArrayList<String> lastNamesListReg = dbUtils.getColumnData(1, Constants.registrationSheet);
 
         if (matchName(firstName, firstNamesListReg)){
             LoggingUtil.log(Level.INFO, firstName + " was detected in user registration");

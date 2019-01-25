@@ -44,15 +44,15 @@ public class Utils {
         File file = new File(filePath);
         Scanner sc = new Scanner(file);
 
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         //read the entire json
         while (sc.hasNext()) {
-            result = result + sc.next();
+            result.append(sc.next());
 
         }
 
-        return result;
+        return result.toString();
     }
 
     //create alert
@@ -94,8 +94,9 @@ public class Utils {
 
             });
 
-            //wait for the user to confirm the dialog
-            while(!isSet.get()){}
+            while (!isSet.get()) {
+                //wait for the user to confirm the dialog
+            }
 
             Boolean result = tempBoolean.get();
             System.out.println(result);
@@ -273,9 +274,13 @@ public class Utils {
         Media sound = null;
         try {
             sound = new Media(getClass().getResource("/sounds/ding.wav").toURI().toString());
+
         } catch (URISyntaxException e) {
             LoggingUtil.log(Level.SEVERE, e);
+            return;
+
         }
+
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
     }

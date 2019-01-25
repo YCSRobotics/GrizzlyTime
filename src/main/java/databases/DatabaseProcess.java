@@ -24,7 +24,6 @@ import java.io.InputStreamReader;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -142,7 +141,7 @@ class DatabaseProcess {
         range = sheetPage + "!" + range;
 
         ValueRange requestBody = new ValueRange();
-        requestBody.setValues(Arrays.asList(Arrays.asList(data)));
+        requestBody.setValues(Collections.singletonList(Collections.singletonList(data)));
 
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();

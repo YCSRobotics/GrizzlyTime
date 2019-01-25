@@ -30,16 +30,20 @@ import java.util.logging.Level;
  */
 
 public class CameraStream {
-    private VideoCapture capture = new VideoCapture(0);
-    private boolean stopCamera = false;
-    private UserProcess process = new UserProcess();
-    private JSONHelper parser = new JSONHelper();
-    private Utils utils = new Utils();
+    // local class instances
+    private final VideoCapture capture = new VideoCapture(0);
+    private final UserProcess process = new UserProcess();
+    private final JSONHelper parser = new JSONHelper();
+    private final Utils utils = new Utils();
 
-    private GridPane subRoot = new GridPane();
-    private Size sz = new Size(Constants.cameraWidth, Constants.cameraHeight);
-    private Mat frame = new Mat();
-    private ImageView currentFrame = new ImageView();
+    // control flow
+    private boolean stopCamera = false;
+
+    // ui elements
+    private final GridPane subRoot = new GridPane();
+    private final Size sz = new Size(Constants.cameraWidth, Constants.cameraHeight);
+    private final Mat frame = new Mat();
+    private final ImageView currentFrame = new ImageView();
 
     public void displayImage(GridPane root) {
         startWebCamStream(root);

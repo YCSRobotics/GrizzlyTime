@@ -1,20 +1,16 @@
 package scenes;
 
-import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
-import com.sun.javafx.application.HostServicesDelegate;
 import databases.JSONHelper;
 import helpers.Constants;
 import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.scene.control.Alert;
-import modules.KeyHandlers;
 
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 public class UpdateNotifier {
@@ -39,7 +35,7 @@ public class UpdateNotifier {
         BufferedInputStream inputStream = new BufferedInputStream(new URL(Constants.updateUrl).openStream());
         FileOutputStream fileOS = new FileOutputStream(Utils.getCurrentDir()+"\\version.txt");
 
-        byte data[] = new byte[1024];
+        byte[] data = new byte[1024];
         int byteContent;
         while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
             fileOS.write(data, 0, byteContent);
@@ -72,7 +68,7 @@ public class UpdateNotifier {
 
         }
 
-        String version = "";
+        String version;
 
         if (scanner.hasNext()) {
             version = scanner.next();
@@ -84,7 +80,7 @@ public class UpdateNotifier {
             return;
         }
 
-        if (!version.equals(Constants.VERSION)){
+        if (!Constants.VERSION.equals(version)) {
             boolean confirm = utils.createAlert("New Version Available", "An update is available!", "Version " + version + " is available!\n" + Constants.releaseUrl, Alert.AlertType.INFORMATION);
 
             if (confirm) {

@@ -46,8 +46,7 @@ public class JSONHelper {
                     );
 
             //exit the application
-            System.exit(1);
-            return null;
+            return "";
 
         }
 
@@ -64,13 +63,12 @@ public class JSONHelper {
             util.createAlert(
                     "ERROR",
                     "Error loading configuration file",
-                    "Please confirm that the configuration is valid. \n" +
+                    "Please delete the config.json file and relaunch the application. \n" +
                             "ERROR RETRIEVING: " + key + " EMPTY",
                     Alert.AlertType.ERROR
             );
 
-            System.exit(1);
-            return null;
+            return "";
         }
 
         //confirm that the key was successfully retrieved
@@ -86,7 +84,7 @@ public class JSONHelper {
 
             //exit application
             System.exit(1);
-            return null;
+            return "";
 
         } else {
             //key was successfully retrieved

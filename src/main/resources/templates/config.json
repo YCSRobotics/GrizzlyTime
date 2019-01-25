@@ -2,5 +2,6 @@
   "sheet": "",
   "enableCamera": "true",
   "handsFreeMode": "false",
-  "updateNotifier": "true"
+  "updateNotifier": "true",
+  "idLength": "6"
 }

@@ -1,5 +1,6 @@
 package modules;
 
+import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
 import databases.DatabaseUtils;
 import exceptions.ConnectToWorksheetException;
@@ -10,6 +11,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import scenes.LoginNotifier;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -31,6 +33,7 @@ class UserProcess {
     private DatabaseUtils dbUtils = new DatabaseUtils();
     private Utils util = new Utils();
     private LoginNotifier notifier = new LoginNotifier();
+    private JSONHelper json = new JSONHelper();
 
     //check if user is logged in
     public boolean isUserLoggedIn(String userID, boolean handsFree) throws Exception {
@@ -280,10 +283,19 @@ class UserProcess {
 
     //checks if ID is valid integer and 6 digit number
     public boolean isValidID(String userID) {
+        int idLength = 6;
+
+        try {
+            idLength = Integer.parseInt(json.getKey("idLength"));
+
+        } catch (NumberFormatException e) {
+            //do nothing
+        }
+
         try {
             Integer.parseInt(userID);
 
-            return userID.length() == 6;
+            return userID.length() == idLength;
 
         } catch (NumberFormatException e) {
             //not a valid ID

@@ -220,7 +220,7 @@ public class UserInterface {
     }
 
     //helper methods for setting and clearing text box
-    static void setMessageBoxText(String text) {
+    public static void setMessageBoxText(String text) {
         if (Platform.isFxApplicationThread()) {
             messageText.setText(text);
         } else {
@@ -230,6 +230,6 @@ public class UserInterface {
         }
     }
 
-    static void clearInput() { studentIDBox.clear(); }
+    public static void clearInput() { studentIDBox.clear(); }
 
 }

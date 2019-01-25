@@ -1,6 +1,7 @@
 package helpers;
 
 import com.google.api.client.util.IOUtils;
+import exceptions.OpenCvLoadFailureException;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public class CVHelper {
      * https://stackoverflow.com/questions/18269570/how-to-package-opencv-java-in-a-jar
      */
 
-    public static void loadLibrary() {
+    public static void loadLibrary() throws OpenCvLoadFailureException {
         try {
             InputStream in = null;
             File fileOut = null;
@@ -62,7 +63,7 @@ public class CVHelper {
 
         } catch (Exception e) {
             LoggingUtil.log(Level.SEVERE, e.getMessage());
-            throw new RuntimeException("Failed to load opencv native library", e);
+            throw new OpenCvLoadFailureException("Failed to load");
 
         }
 

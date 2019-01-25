@@ -33,7 +33,7 @@ class UserProcess {
     private LoginNotifier notifier = new LoginNotifier();
 
     //check if user is logged in
-    boolean isUserLoggedIn(String userID, boolean handsFree) throws Exception {
+    public boolean isUserLoggedIn(String userID, boolean handsFree) throws Exception {
         dbUtils.getUpdatedData();
 
         ArrayList<String> ids = dbUtils.getColumnData(0, Constants.mainSheet);
@@ -83,7 +83,7 @@ class UserProcess {
     }
 
     //login our user
-    void loginUser(String userID) {
+    public void loginUser(String userID) {
         Platform.runLater(() -> {
             UserInterface.setMessageBoxText("Logging in user: " + userID);
         });
@@ -119,7 +119,7 @@ class UserProcess {
     }
 
     //logout the user
-    void logoutUser(String userID) {
+    public void logoutUser(String userID) {
         Platform.runLater(() -> {
             UserInterface.setMessageBoxText("Logging out user: " + userID);
         });
@@ -279,7 +279,7 @@ class UserProcess {
     }
 
     //checks if ID is valid integer and 6 digit number
-    boolean isValidID(String userID) {
+    public boolean isValidID(String userID) {
         try {
             Integer.parseInt(userID);
 

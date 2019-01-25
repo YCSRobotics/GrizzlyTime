@@ -70,7 +70,7 @@ class DatabaseProcess {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    List<List<Object>> returnWorksheetData(int page) {
+    public List<List<Object>> returnWorksheetData(int page) {
 
         // Build a new authorized API client service.
         try {
@@ -130,7 +130,7 @@ class DatabaseProcess {
         }
     }
 
-    void updateSpreadSheet(int row, int column, String data, int page) {
+    public void updateSpreadSheet(int row, int column, String data, int page) {
 
         // Build a new authorized API client service.
         String columnLetter = getCharForNumber(column);

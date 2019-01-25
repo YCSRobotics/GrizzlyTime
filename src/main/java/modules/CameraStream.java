@@ -36,6 +36,11 @@ public class CameraStream {
     private JSONHelper parser = new JSONHelper();
     private Utils utils = new Utils();
 
+    private GridPane subRoot = new GridPane();
+    private Size sz = new Size(Constants.cameraWidth, Constants.cameraHeight);
+    private Mat frame = new Mat();
+    private ImageView currentFrame = new ImageView();
+
     public void displayImage(GridPane root) {
         startWebCamStream(root);
 
@@ -43,14 +48,10 @@ public class CameraStream {
 
     //grab frames from camera
     private void startWebCamStream(GridPane root) {
-        GridPane subRoot = new GridPane();
-        Size sz = new Size(Constants.cameraWidth, Constants.cameraHeight);
-        Mat frame = new Mat();
-        ImageView currentFrame = new ImageView();
-
         File errorImage = new File(Utils.getCurrentDir() + "\\images\\error.png");
 
         LoggingUtil.log(Level.INFO, "Path to fallback: " + Utils.getCurrentDir() + "\\images\\error.png");
+
         //open the camera
         capture.retrieve(frame);
 
@@ -106,7 +107,7 @@ public class CameraStream {
                     //verify that we have data
                     if (data != null) {
                         try {
-                            if (!(Integer.parseInt(data) == prevID)) {
+                            if (Integer.parseInt(data) != prevID) {
                                 if (process.isUserLoggedIn(data, false)) {
                                     process.logoutUser(data);
 

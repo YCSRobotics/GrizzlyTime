@@ -157,10 +157,8 @@ public class DatabaseUtils {
     }
 
     private boolean isWorksheetsValid() {
-        if (mainWorksheet == null || loggedHours == null) {
-            return false;
-        }
-        return true;
+
+        return (!(mainWorksheet == null || loggedHours == null));
     }
 
     private void setPage(int page) {

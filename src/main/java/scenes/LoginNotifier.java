@@ -43,7 +43,7 @@ public class LoginNotifier {
         name = name.toLowerCase();
 
         for (String nameInList : nameList) {
-            if (nameInList.toLowerCase().equals(name)) {
+            if (nameInList.equalsIgnoreCase(name)) {
                 return true;
             }
         }

@@ -16,35 +16,29 @@ import javafx.stage.Stage;
  * This class constructs the UI for displaying credits
  */
 public class CreditsScene {
-    GridPane root = new GridPane();
-    Scene scene = new Scene(root);
+    private GridPane root = new GridPane();
+    private Scene scene = new Scene(root);
 
-    Stage stage = new Stage();
+    private Stage stage = new Stage();
 
     //credits panes
-    GridPane upperPaneMain = new GridPane();
-    GridPane upperPaneRight = new GridPane();
-    GridPane upperPaneLeft = new GridPane();
-    GridPane bottomPaneMain = new GridPane();
+    private GridPane upperPaneMain = new GridPane();
+    private GridPane upperPaneRight = new GridPane();
+    private GridPane upperPaneLeft = new GridPane();
+    private GridPane bottomPaneMain = new GridPane();
 
     //grizzly image
-    Image image = new Image("images/error.png");
-    ImageView imageView = new ImageView(image);
+    private Image image = new Image("images/error.png");
+    private ImageView imageView = new ImageView(image);
 
     //upperPaneLeft
-    Text summaryTitle = new Text("Summary");
-    Text summaryText = new Text("" +
+    private Text summaryTitle = new Text("Summary");
+    private Text summaryText = new Text("" +
             "GrizzlyTime is a JavaFX application programmed originally for FRC Team 66, Grizzly Robotics. " +
             "GrizzlyTime was programmed by Grizzly Robotics Team Captain of Year 2018/2019, Dalton Smith. " +
             "All rights and permissions are reserved. Content is licensed under MIT. See below for more information.");
 
-    Text creditsText = new Text("" +
-            "GrizzlyTime-javaFX (Licensed under MIT): https://github.com/Daltz333/GrizzlyTime-JavaFX\n" +
-            "Google Sheets API Client (Licensed under Apache 2.0) https://github.com/googleapis/google-api-java-client\n" +
-            "ZXing barcode scanning library (Licensed under Apache 2.0) https://github.com/zxing/zxing\n" +
-            "");
-
-    Text credits = new Text("GrizzlyTime uses the following open source projects:\n" +
+    private Text credits = new Text("GrizzlyTime uses the following open source projects:\n" +
             "OpenCV 3.4.3\n" +
             "Google Java API Client 1.23.0\n" +
             "ZXIng Barcode Scanning Library 3.3.0\n" +

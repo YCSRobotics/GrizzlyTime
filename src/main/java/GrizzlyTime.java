@@ -1,3 +1,4 @@
+import exceptions.OpenCvLoadFailureException;
 import helpers.CVHelper;
 import helpers.Constants;
 import helpers.LoggingUtil;
@@ -75,12 +76,14 @@ public class GrizzlyTime extends Application {
             utils.createAlert("Unsupported", "Mac OS not supported", "Mac OS is not supported at this time, running in experimental mode", Alert.AlertType.ERROR);
         } else {
             //copy OpenCV dlls outside jar
-            CVHelper.loadLibrary();
+            try {
+                CVHelper.loadLibrary();
+                processor = new CameraStream();
 
-            //initialize our modules and interface objects AFTER
-            //we display application
+            } catch (OpenCvLoadFailureException e) {
+                //do nothing
 
-            processor = new CameraStream();
+            }
         }
 
         Utils.stage = primaryStage;

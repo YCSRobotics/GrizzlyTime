@@ -15,7 +15,7 @@ class QRReader {
      * Decodes barcodes from OpenCV image
      */
 
-    static String decodeQRCode(Image qrCodeimage)  {
+    public static String decodeQRCode(Image qrCodeimage)  {
         BufferedImage image = SwingFXUtils.fromFXImage(qrCodeimage, null);
         LuminanceSource source = new BufferedImageLuminanceSource(image);
 

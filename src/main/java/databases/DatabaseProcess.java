@@ -13,10 +13,10 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import helpers.AlertUtils;
+import helpers.CommonUtils;
 import helpers.Constants;
-import helpers.LoggingUtil;
-import helpers.Utils;
-import javafx.scene.control.Alert;
+import helpers.LoggingUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
-//ignore google sheets warnings because of google permission bug
-class DatabaseProcess {
+public class DatabaseProcess {
     /**
      * @author Dalton Smith
      * DatabaseProcess
@@ -43,7 +42,8 @@ class DatabaseProcess {
 
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
     private static final String CREDENTIALS_FILE_PATH = "/credentials/credentials.json";
-    private Utils util = new Utils();
+
+    private AlertUtils util = new AlertUtils();
 
     private static final String spreadsheet = new JSONHelper().getKey("sheet");
 
@@ -89,43 +89,40 @@ class DatabaseProcess {
             return response.getValues();
 
         } catch (NoRouteToHostException | UnknownHostException e) {
-            LoggingUtil.log(Level.SEVERE, e);
+            LoggingUtils.log(Level.SEVERE, e);
             util.createAlert(
                     "ERROR",
                     "No Network Connection",
-                    "Please confirm your network connection and try again.",
-                    Alert.AlertType.ERROR
+                    "Please confirm your network connection and try again."
 
             );
 
-            Utils.exitApplication();
+            CommonUtils.exitApplication();
             return null;
 
         } catch (GeneralSecurityException e2) {
-            LoggingUtil.log(Level.SEVERE, e2);
+            LoggingUtils.log(Level.SEVERE, e2);
             util.createAlert(
                     "ERROR",
                     "Invalid Credentials",
-                    "Please delete the 'tokens' directory and try again!",
-                    Alert.AlertType.ERROR
+                    "Please delete the 'tokens' directory and try again!"
 
             );
 
-            Utils.exitApplication();
+            CommonUtils.exitApplication();
             return null;
 
         } catch (IOException e3) {
-            LoggingUtil.log(Level.SEVERE, e3);
+            LoggingUtils.log(Level.SEVERE, e3);
 
             util.createAlert(
                     "ERROR",
                     "Error connecting to database",
-                    "Please confirm that the URL is valid and that you have internet access.",
-                    Alert.AlertType.ERROR
+                    "Please confirm that the URL is valid and that you have internet access."
 
             );
 
-            Utils.exitApplication();
+            CommonUtils.exitApplication();
             return null;
 
         }
@@ -152,24 +149,28 @@ class DatabaseProcess {
             service.spreadsheets().values().update(spreadsheet, range, requestBody).setValueInputOption("RAW").execute();
 
         } catch (GeneralSecurityException e) {
-            LoggingUtil.log(Level.SEVERE, "INVALID CREDENTIALS");
+            LoggingUtils.log(Level.SEVERE, "INVALID CREDENTIALS");
 
         } catch (IOException e2) {
-            LoggingUtil.log(Level.SEVERE, e2);
+            LoggingUtils.log(Level.SEVERE, e2);
             //do nothing
 
         }
 
     }
 
+    //update current working page
     private String getPage(int page){
         switch (page) {
-            case Constants.mainSheet:
+            case Constants.kMainSheet:
                 return mainPage;
-            case Constants.logSheet:
+
+            case Constants.kLogSheet:
                 return logPage;
-            case Constants.registrationSheet:
+
+            case Constants.kRegistrationSheet:
                 return regPage;
+
             default:
                 return mainPage;
         }

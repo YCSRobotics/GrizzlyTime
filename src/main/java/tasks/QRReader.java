@@ -1,4 +1,4 @@
-package modules;
+package tasks;
 
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;

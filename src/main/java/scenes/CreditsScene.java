@@ -1,5 +1,6 @@
 package scenes;
 
+import helpers.Constants;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -28,30 +29,22 @@ public class CreditsScene {
     private GridPane bottomPaneMain = new GridPane();
 
     //grizzly image
-    private Image image = new Image("images/error.png");
+    private Image image = new Image(Constants.kErrorImage);
     private ImageView imageView = new ImageView(image);
 
     //upperPaneLeft
     private Text summaryTitle = new Text("Summary");
-    private Text summaryText = new Text("" +
-            "GrizzlyTime is a JavaFX application programmed originally for FRC Team 66, Grizzly Robotics. " +
-            "GrizzlyTime was programmed by Grizzly Robotics Team Captain of Year 2018/2019, Dalton Smith. " +
-            "All rights and permissions are reserved. Content is licensed under MIT. See below for more information.");
+    private Text summaryText = new Text(Constants.kCreditsSummary);
 
-    private Text credits = new Text("GrizzlyTime uses the following open source projects:\n" +
-            "OpenCV 3.4.3\n" +
-            "Google Java API Client 1.23.0\n" +
-            "ZXIng Barcode Scanning Library 3.3.0\n" +
-            "Commons-IO 2.6\n" +
-            "Org.Json");
+    private Text credits = new Text(Constants.kCreditsList);
 
     public void showCredits() {
-        stage.setWidth(630);
-        stage.setHeight(550);
+        stage.setWidth(Constants.kCreditsStageWidth);
+        stage.setHeight(Constants.kCreditsStageHeight);
         stage.setScene(scene);
 
-        scene.getStylesheets().add("styles/root.css");
-        stage.getIcons().add(new Image("images/icon.png"));
+        scene.getStylesheets().add(Constants.kRootStylesheet);
+        stage.getIcons().add(new Image(Constants.kApplicationIcon));
 
         root.setId("creditsRoot");
         root.setVgap(25);
@@ -71,8 +64,8 @@ public class CreditsScene {
         root.setAlignment(Pos.TOP_CENTER);
         GridPane.setHalignment(root, HPos.CENTER);
 
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(225);
+        imageView.setPreserveRatio(Constants.kCreditsBearPreserveRatio);
+        imageView.setFitHeight(Constants.kCreditsBearHeight);
 
         summaryTitle.setId("title");
         summaryTitle.setTextAlignment(TextAlignment.CENTER);
@@ -81,7 +74,7 @@ public class CreditsScene {
         GridPane.setHalignment(summaryTitle, HPos.CENTER);
 
         summaryText.setId("summaryText");
-        summaryText.setWrappingWidth(285);
+        summaryText.setWrappingWidth(Constants.kCreditsWrapTextWidth);
 
         upperPaneLeft.setAlignment(Pos.TOP_CENTER);
         upperPaneLeft.setMinWidth(300);

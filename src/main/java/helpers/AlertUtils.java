@@ -8,75 +8,43 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
-//methods in this class should not be dependent on anything relative
-public class Utils {
-    /**
-     * @author Dalton Smith
-     * Utils
-     * Various utility methods used throughout the application
-     * https://code.makery.ch/blog/javafx-dialogs-official/
-     */
+/**
+ * @author Dalton Smith
+ * AlertUtils
+ * Various alert utility methods used throughout the application
+ * https://code.makery.ch/blog/javafx-dialogs-official/
+ */
+public class AlertUtils {
 
     public static Stage stage = null;
 
-    public static String getCurrentDir() {
-        return System.getProperty("user.dir");
-
-    }
-
-    public static String readFile(String filePath) throws FileNotFoundException {
-        File file = new File(filePath);
-        Scanner sc = new Scanner(file);
-
-        StringBuilder result = new StringBuilder();
-
-        //read the entire json
-        while (sc.hasNext()) {
-            result.append(sc.next());
-
-        }
-
-        return result.toString();
-    }
-
     //create alert
-    public boolean createAlert(String title, String header, String content, Alert.AlertType type) {
+    public boolean createAlert(String title, String header, String content) {
 
         //ensure that we always show the dialog on the main UI thread
         if (Platform.isFxApplicationThread()) {
-            return showAlert(title, header, content, type);
+            return customDialog(title, header, content);
 
         } else {
 
             AtomicBoolean temp = new AtomicBoolean();
 
             Platform.runLater(() -> {
-                temp.set(showAlert(title, header, content, type));
+                temp.set(customDialog(title, header, content));
             });
 
             return temp.get();
         }
-    }
-
-    //alert helper
-    private boolean showAlert(String title, String header, String content, Alert.AlertType type) {
-        return customDialog(title, header, content);
     }
 
     //confirm new user registration
@@ -111,22 +79,22 @@ public class Utils {
         dialog.setHeaderText(header);
         dialog.initOwner(stage);
 
-        dialog.getDialogPane().getStylesheets().add("styles/root.css");
+        dialog.getDialogPane().getStylesheets().add(Constants.kRootStylesheet);
         dialog.getDialogPane().getStyleClass().add("myDialog");
 
         // Set Custom Icon
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("images/icon.png"));
+        stage.getIcons().add(new Image(Constants.kApplicationIcon));
 
         // Set the button types.
         ButtonType confirmButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
 
-        Image image = new Image("images/bear.png");
+        Image image = new Image(Constants.kBearImage);
         ImageView imageView = new ImageView(image);
 
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(50);
+        imageView.setPreserveRatio(Constants.kBearPreserveRatio);
+        imageView.setFitWidth(Constants.kBearImageWidth);
 
         // Set the icon (must be included in the project).
         dialog.setGraphic(imageView);
@@ -138,7 +106,7 @@ public class Utils {
         grid.setId("customDialog");
 
         Text text = new Text(message);
-        text.setWrappingWidth(400);
+        text.setWrappingWidth(Constants.kWordWrapWidth);
 
         grid.add(text, 0, 0);
 
@@ -150,7 +118,7 @@ public class Utils {
             return false;
         }
 
-        ButtonType buttonInfo = (ButtonType)result.get();
+        ButtonType buttonInfo = (ButtonType) result.get();
 
         return buttonInfo.getButtonData() == ButtonBar.ButtonData.OK_DONE;
     }
@@ -172,7 +140,8 @@ public class Utils {
             });
 
             //wait until the user has finished dialog
-            while (!isSet.get()) {}
+            while (!isSet.get()) {
+            }
 
             System.out.println("Run later");
             return temp.get();
@@ -187,9 +156,9 @@ public class Utils {
 
         // Set Custom Icon
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("images/icon.png"));
+        stage.getIcons().add(new Image(Constants.kApplicationIcon));
 
-        dialog.getDialogPane().getStylesheets().add("styles/root.css");
+        dialog.getDialogPane().getStylesheets().add(Constants.kRootStylesheet);
         dialog.getDialogPane().getStyleClass().add("accountDialog");
 
         dialog.setTitle("New User Detected");
@@ -256,7 +225,7 @@ public class Utils {
         //return the data
         try {
             if (data.get(0) != null) {
-                LoggingUtil.log(Level.INFO, "User successfully completed all registration fields");
+                LoggingUtils.log(Level.INFO, "User successfully completed all registration fields");
                 return data;
             } else {
                 data.add("FALSE");
@@ -264,30 +233,8 @@ public class Utils {
             }
         } catch (IndexOutOfBoundsException e) {
             data.add("FALSE");
-            LoggingUtil.log(Level.WARNING, e.getMessage());
+            LoggingUtils.log(Level.WARNING, e.getMessage());
             return data;
         }
     }
-
-    public void playDing() {
-
-        Media sound = null;
-        try {
-            sound = new Media(getClass().getResource("/sounds/ding.wav").toURI().toString());
-
-        } catch (URISyntaxException e) {
-            LoggingUtil.log(Level.SEVERE, e);
-            return;
-
-        }
-
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-    }
-
-
-    public static void exitApplication() {
-        System.exit(1);
-    }
-
 }

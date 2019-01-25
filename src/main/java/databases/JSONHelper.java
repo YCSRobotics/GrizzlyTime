@@ -1,9 +1,9 @@
 package databases;
 
+import helpers.AlertUtils;
+import helpers.CommonUtils;
 import helpers.Constants;
-import helpers.LoggingUtil;
-import helpers.Utils;
-import javafx.scene.control.Alert;
+import helpers.LoggingUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +23,7 @@ public class JSONHelper {
      * Utility methods for retrieving configuration stored in the JSON
      */
 
-    private Utils util = new Utils();
+    private AlertUtils util = new AlertUtils();
 
     //grab JSONKey
     public String getKey(String key) {
@@ -31,10 +31,10 @@ public class JSONHelper {
 
         //attempt to grab JSONString from config file
         try {
-            JSONString = Utils.readFile(Utils.getCurrentDir() + "/" + Constants.configLocal);
+            JSONString = CommonUtils.readFile(CommonUtils.getCurrentDir() + "/" + Constants.kConfigName);
 
         } catch (FileNotFoundException e) {
-            LoggingUtil.log(Level.SEVERE, "config.json not found, creating");
+            LoggingUtils.log(Level.SEVERE, "config.json not found, creating");
             //config.json doesn't exist, create
             copyTemplateJSON();
 
@@ -42,8 +42,7 @@ public class JSONHelper {
             util.createAlert(
                     "ERROR",
                     "Configuration file not found",
-                    "The required config.json file was not found. It has been created. Please update the sheet URL!",
-                    Alert.AlertType.ERROR
+                    "The required config.json file was not found. It has been created. Please update the sheet URL!"
                     );
 
             //exit the application
@@ -60,12 +59,11 @@ public class JSONHelper {
             result = json.getString(key);
 
         } catch (JSONException e) {
-            LoggingUtil.log(Level.SEVERE, e);
+            LoggingUtils.log(Level.SEVERE, e);
             util.createAlert(
                     "ERROR",
                     "Error loading configuration file",
-                    "Please delete the config.json file and relaunch the application.",
-                    Alert.AlertType.ERROR
+                    "Please delete the config.json file and relaunch the application."
             );
 
             return "";
@@ -73,12 +71,11 @@ public class JSONHelper {
 
         //confirm that the key was successfully retrieved
         if (result.isEmpty()) {
-            LoggingUtil.log(Level.SEVERE, "Specified key: " + key + " has no data");
+            LoggingUtils.log(Level.SEVERE, "Specified key: " + key + " has no data");
             util.createAlert(
                     "ERROR",
                     "Invalid Configuration",
-                    "Please confirm that the configuration is valid.",
-                    Alert.AlertType.ERROR
+                    "Please confirm that the configuration is valid."
             );
 
             //exit application
@@ -86,7 +83,7 @@ public class JSONHelper {
 
         } else {
             //key was successfully retrieved
-            LoggingUtil.log(Level.INFO, "Successfully retrieved: " + key+ ": " + result);
+            LoggingUtils.log(Level.INFO, "Successfully retrieved: " + key + ": " + result);
             return result;
 
         }
@@ -102,16 +99,15 @@ public class JSONHelper {
                 throw new IOException("Path to config is null!");
             }
 
-            Files.copy(pathToConfig, Paths.get(Constants.configLocal), REPLACE_EXISTING);
+            Files.copy(pathToConfig, Paths.get(Constants.kConfigName), REPLACE_EXISTING);
 
         } catch (IOException e) {
-            LoggingUtil.log(Level.SEVERE, e.getMessage());
+            LoggingUtils.log(Level.SEVERE, e.getMessage());
             util.createAlert(
                     "ERROR",
                     "ERROR COPYING JSON",
                     "An unspecified error occured while copying the config.json. \n" +
-                    e.getMessage(),
-                    Alert.AlertType.ERROR
+                            e.getMessage()
             );
         }
 

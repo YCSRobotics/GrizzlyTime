@@ -1,6 +1,7 @@
 package scenes;
 
-import helpers.Utils;
+import helpers.CommonUtils;
+import helpers.Constants;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -17,14 +18,14 @@ public class SplashScene {
     public void showSplash(GridPane root) {
 
         Image splash;
-        File file = new File(Utils.getCurrentDir() + "\\images\\splash.png");
+        File file = new File(CommonUtils.getCurrentDir() + "\\images\\splash.png");
 
         //check for custom splash
         if (file.exists()) {
             splash = new Image(file.toURI().toString());
 
         } else {
-            splash = new Image("images/splash.jpg");
+            splash = new Image(Constants.kSplashImage);
         }
 
         ImageView splashViewer = new ImageView(splash);

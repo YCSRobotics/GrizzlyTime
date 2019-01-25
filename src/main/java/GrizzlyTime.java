@@ -1,20 +1,16 @@
 import exceptions.OpenCvLoadFailureException;
-import helpers.CVHelper;
-import helpers.Constants;
-import helpers.LoggingUtil;
-import helpers.Utils;
+import helpers.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import modules.CameraStream;
-import modules.KeyHandlers;
-import modules.UserInterface;
+import notifiers.UpdateNotifier;
 import scenes.SplashScene;
-import scenes.UpdateNotifier;
+import tasks.CameraStream;
+import tasks.KeyHandlers;
+import tasks.UserInterface;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -23,13 +19,13 @@ public class GrizzlyTime extends Application {
     /**
      * @author Dalton Smith
      * GrizzlyTime main application class
-     * This class calls our various modules and starts the JavaFX application
+     * This class calls our various tasks and starts the JavaFX application
      */
 
     //only initializations that don't have freezing constructor instances should be placed here
     private SplashScene splash = new SplashScene();
     private KeyHandlers keyHandlers = new KeyHandlers();
-    private Utils utils = new Utils();
+    private AlertUtils alertUtils = new AlertUtils();
     private UpdateNotifier updater = new UpdateNotifier();
 
     @Override
@@ -39,40 +35,40 @@ public class GrizzlyTime extends Application {
         //grab our application icon from stream
 
         //check if custom icon
-        File file = new File(Utils.getCurrentDir() + "\\images\\icon.png");
+        File file = new File(CommonUtils.getCurrentDir() + "\\images\\icon.png");
 
         if (file.exists()) {
             primaryStage.getIcons().add(new Image(file.toURI().toString()));
 
         } else {
-            primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/icon.png")));
+            primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream(Constants.kApplicationIcon)));
 
         }
 
         GridPane root = new GridPane();
 
-        Scene scene = new Scene(root, Constants.splashWidth, Constants.splashHeight);
-        scene.getStylesheets().add("styles/root.css");
+        Scene scene = new Scene(root, Constants.kSplashWidth, Constants.kSplashHeight);
+        scene.getStylesheets().add(Constants.kRootStylesheet);
 
         root.setId("main");
         root.setAlignment(Pos.CENTER);
 
-        primaryStage.setTitle("GrizzlyTime JavaFX Edition");
+        primaryStage.setTitle(Constants.kApplicationName);
         primaryStage.setScene(scene);
-        primaryStage.setResizable(Constants.windowResizable);
+        primaryStage.setResizable(Constants.kWindowResizable);
 
         //show our splash
         splash.showSplash(root);
         primaryStage.show();
         primaryStage.requestFocus();
 
-        //initialize our modules and interface objects AFTER
+        //initialize our tasks and interface objects AFTER
         //we display application
         UserInterface userInterface = new UserInterface();
         CameraStream processor = null;
 
         if(System.getProperty("os.name").toLowerCase().contains("mac")){
-            utils.createAlert("Unsupported", "Mac OS not supported", "Mac OS is not supported at this time, running in experimental mode", Alert.AlertType.ERROR);
+            alertUtils.createAlert("Unsupported", "Mac OS not supported", "Mac OS is not supported at this time, running in experimental mode");
         } else {
             //copy OpenCV dlls outside jar
             try {
@@ -85,12 +81,12 @@ public class GrizzlyTime extends Application {
             }
         }
 
-        Utils.stage = primaryStage;
+        AlertUtils.stage = primaryStage;
 
         //remove splash screen on load
         root.getChildren().clear();
-        primaryStage.setWidth(608);
-        primaryStage.setHeight(630);
+        primaryStage.setWidth(Constants.kMainStageWidth);
+        primaryStage.setHeight(Constants.kMainStageHeight);
         primaryStage.centerOnScreen();
 
         //add our global key handlers
@@ -109,8 +105,9 @@ public class GrizzlyTime extends Application {
 
     }
 
+    //catch uncaught exceptions
     private static void globalExceptionHandler(Thread thread, Throwable throwable) {
-        LoggingUtil.log(Level.SEVERE, throwable);
-        Utils.exitApplication();
+        LoggingUtils.log(Level.SEVERE, throwable);
+        CommonUtils.exitApplication();
     }
 }

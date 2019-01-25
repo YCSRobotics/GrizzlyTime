@@ -2,40 +2,78 @@ package helpers;
 
 public class Constants {
     //spreadsheet layout
-    public static final int LOGGEDINCOLUMN = 10;
-    public static final int TOTALHOURSCOLUMN = 9;
-    public static final int HOURSCOLUMN = 8;
-    public static final int LASTLOGOUTCOLUMN = 7;
-    public static final int LASTLOGINCOLUMN = 6;
-    public static final int STUDENTIDCOLUMN = 0;
-    public static final int FIRSTNAMECOLUMN = 1;
-    public static final int LASTNAMECOLUMN = 2;
+    public static final int kLoggedInColumn = 10;
+    public static final int kTotalHoursColumn = 9;
+    public static final int kHoursColumn = 8;
+    public static final int kLastLogoutColumn = 7;
+    public static final int kLastLoginColumn = 6;
+    public static final int kStudentIdColumn = 0;
+    public static final int kFirstNameColumn = 1;
+    public static final int kLastNameColumn = 2;
 
     //camera feed size
-    public static final int cameraHeight = 400;
-    public static final int cameraWidth = 610;
+    public static final int kCameraHeight = 400;
+    public static final int kCameraWidth = 610;
 
     //window constants
-    public static final boolean windowResizable = false;
+    public static final boolean kWindowResizable = false;
 
     //sheet codes
-    public static final int mainSheet = 0;
-    public static final int logSheet = 1;
-    public static final int registrationSheet = 2;
+    public static final int kMainSheet = 0;
+    public static final int kLogSheet = 1;
+    public static final int kRegistrationSheet = 2;
 
     //configuration locations
-    public static final String configLocal = "config.json";
-    public static final String VERSION = "2.0.0";
-    public static final String CREDITS = "Dalton Smith of Grizzly Robotics";
+    public static final String kConfigName = "config.json";
 
-    //image constants minus our padding
-    public static final int splashWidth = 400 - 10;
-    public static final int splashHeight = 200 - 10;
+    //resource locations
+    public static final String kRootStylesheet = "styles/root.css";
+    public static final String kApplicationIcon = "images/icon.png";
+    public static final String kBearImage = "images/bear.png";
+    public static final String kErrorImage = "images/error.png";
+    public static final String kSplashImage = "images/splash.jpg";
 
-    public static final boolean grizzlyPrompt = false;
+    //alert ui constants
+    public static final int kBearImageWidth = 50;
+    public static final boolean kBearPreserveRatio = true;
+    public static final int kWordWrapWidth = 400;
 
-    public static final String updateUrl = "https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/version.txt";
+    //main ui constants
+    public static final String kUserTutorial = "Type in your Student ID to login. If you do not have a Student ID," +
+            "\nenter your birth date in 8 digits. [MMDDYYYY]";
+    public static final int kMainStageWidth = 608;
+    public static final int kMainStageHeight = 630;
+    public static final String kApplicationName = "GrizzlyTime JavaFX Edition";
 
-    public static final String releaseUrl = "https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest";
+    //credits ui constants
+    public static final String kCreditsSummary = "" +
+            "GrizzlyTime is a JavaFX application programmed originally for FRC Team 66, Grizzly Robotics. " +
+            "GrizzlyTime was programmed by Grizzly Robotics Team Captain of Year 2018/2019, Dalton Smith. " +
+            "All rights and permissions are reserved. Content is licensed under MIT. See below for more information.";
+    public static final String kCreditsList = "GrizzlyTime uses the following open source projects:\n" +
+            "OpenCV 3.4.3\n" +
+            "Google Java API Client 1.23.0\n" +
+            "ZXIng Barcode Scanning Library 3.3.0\n" +
+            "Commons-IO 2.6\n" +
+            "Org.Json";
+    public static final int kCreditsStageWidth = 630;
+    public static final int kCreditsStageHeight = 550;
+    public static final int kCreditsBearHeight = 225;
+    public static final boolean kCreditsBearPreserveRatio = true;
+    public static final int kCreditsWrapTextWidth = 285;
+
+    public static final String kVersion = "2.0.0";
+
+    //splash constants
+    public static final int kSplashWidth = 390;
+    public static final int kSplashHeight = 190;
+
+    //grizzly robotics specific
+    public static final boolean kGrizzlyPrompt = false;
+    public static final boolean kMentorFallback = true;
+
+    public static final String kUpdateUrl = "https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/version.txt";
+    public static final String kReleaseUrl = "https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest";
+
 
 }

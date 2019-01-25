@@ -13,33 +13,35 @@ public class DatabaseUtils {
      * Horribly inefficient, but it works :)
      */
 
-    private DatabaseProcess dbProcess = new DatabaseProcess();
+    private final DatabaseProcess dbProcess = new DatabaseProcess();
     private List<List<Object>> mainWorksheet;
     private List<List<Object>> loggedHours;
     private List<List<Object>> currentWorksheet;
     private List<List<Object>> registrationData;
 
+    //initial grab of worksheet data
     public DatabaseUtils() {
         //initial data
-        currentWorksheet = dbProcess.returnWorksheetData(Constants.mainSheet);
+        currentWorksheet = dbProcess.returnWorksheetData(Constants.kMainSheet);
         mainWorksheet = currentWorksheet;
-        loggedHours = dbProcess.returnWorksheetData(Constants.logSheet);
+        loggedHours = dbProcess.returnWorksheetData(Constants.kLogSheet);
         updateStudentRegistrationData();
 
     }
 
     //helper method called at beginning of each method to retrieve updated data
     public void getUpdatedData() {
-        currentWorksheet = dbProcess.returnWorksheetData(Constants.mainSheet);
+        currentWorksheet = dbProcess.returnWorksheetData(Constants.kMainSheet);
         mainWorksheet = currentWorksheet;
-        loggedHours = dbProcess.returnWorksheetData(Constants.logSheet);
+        loggedHours = dbProcess.returnWorksheetData(Constants.kLogSheet);
         updateStudentRegistrationData();
 
     }
 
+    //update registration data sheet
     private void updateStudentRegistrationData(){
-        if (Constants.grizzlyPrompt) {
-            registrationData = dbProcess.returnWorksheetData(Constants.registrationSheet);
+        if (Constants.kGrizzlyPrompt) {
+            registrationData = dbProcess.returnWorksheetData(Constants.kRegistrationSheet);
         }
     }
 
@@ -147,11 +149,12 @@ public class DatabaseUtils {
         return -1;
     }
 
+    //grab the next empty cell from first row
     public int nextEmptyCellColumn(int page){
 
         setPage(page);
 
-        ArrayList<String> columnData = getColumnData(Constants.STUDENTIDCOLUMN, page);
+        ArrayList<String> columnData = getColumnData(Constants.kStudentIdColumn, page);
         int i;
 
         for (i = 0; i < columnData.size(); i++) {
@@ -171,13 +174,13 @@ public class DatabaseUtils {
 
     private void setPage(int page) {
         switch (page) {
-            case Constants.mainSheet:
+            case Constants.kMainSheet:
                 mainWorksheet = currentWorksheet;
                 break;
-            case Constants.logSheet:
+            case Constants.kLogSheet:
                 mainWorksheet = loggedHours;
                 break;
-            case Constants.registrationSheet:
+            case Constants.kRegistrationSheet:
                 mainWorksheet = registrationData;
                 break;
             default:

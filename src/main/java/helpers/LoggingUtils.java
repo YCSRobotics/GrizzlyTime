@@ -8,8 +8,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class LoggingUtil {
-    public static Logger logger = Logger.getLogger("");
+/**
+ * @author Dalton Smith
+ * LoggingUtils
+ * Handles interaction with the log file.
+ */
+public class LoggingUtils {
+    private static Logger logger = Logger.getLogger("");
 
     private static boolean isHandlerSet = false;
 
@@ -18,6 +23,7 @@ public class LoggingUtil {
         logger.log(severity, text);
     }
 
+    //log full stacktrace
     public static void log(Level severity, Throwable error){
         ByteArrayOutputStream out1 = new ByteArrayOutputStream();
         PrintStream out2 = new PrintStream(out1);
@@ -44,14 +50,14 @@ public class LoggingUtil {
             try {
                 String currentDate = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
 
-                File file = new File(Utils.getCurrentDir() + "\\logs\\");
+                File file = new File(CommonUtils.getCurrentDir() + "\\logs\\");
 
                 if (!file.exists()) {
                     boolean success = file.mkdir();
-                    LoggingUtil.log(Level.INFO, "Directory creation success? " + success);
+                    LoggingUtils.log(Level.INFO, "Directory creation success? " + success);
                 }
 
-                fh = new FileHandler(Utils.getCurrentDir() + "\\logs\\log_" + currentDate + ".log");
+                fh = new FileHandler(CommonUtils.getCurrentDir() + "\\logs\\log_" + currentDate + ".log");
 
             } catch (IOException e) {
                 e.printStackTrace();

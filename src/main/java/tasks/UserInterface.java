@@ -1,10 +1,11 @@
-package modules;
+package tasks;
 
 import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
 import exceptions.ConnectToWorksheetException;
-import helpers.LoggingUtil;
-import helpers.Utils;
+import helpers.AlertUtils;
+import helpers.Constants;
+import helpers.LoggingUtils;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.HPos;
@@ -33,11 +34,11 @@ public class UserInterface {
     private static TextField studentIDBox = new TextField();
     private Button loginButton = new Button("Login/Logout");
     private UserProcess userProcess = new UserProcess();
-    private Utils util = new Utils();
-    private Text description = new Text("Type in your Student ID to login. If you do not have a Student ID," +
-            "\nenter your birth date in 6 digits. [MMDDYY]");
+    private AlertUtils alertUtils = new AlertUtils();
+    private Text description = new Text(Constants.kUserTutorial);
 
     private Hyperlink creditsLink = new Hyperlink("Credits");
+    private Text creditsText = new Text("v" + Constants.kVersion);
     private Hyperlink optionsLink = new Hyperlink("Full Screen");
 
     private BorderPane bottomPane = new BorderPane();
@@ -58,6 +59,7 @@ public class UserInterface {
         loginButton.setId("confirmButton");
         creditsLink.setId("hyperlinkBottom");
         optionsLink.setId("hyperlinkBottom");
+        creditsText.setId("hyperlinkBottom");
 
         //create our panes
         GridPane subRoot = new GridPane();
@@ -82,6 +84,7 @@ public class UserInterface {
         //set bottom pane details
         bottomPane.setId("bottomPane");
         bottomPane.setLeft(optionsLink);
+        bottomPane.setCenter(creditsText);
         bottomPane.setRight(creditsLink);
         bottomPane.setMinWidth(subRoot.getWidth());
 
@@ -109,12 +112,12 @@ public class UserInterface {
     private void setEventHandlers() {
         //login on enter key press
         studentIDBox.setOnAction(event -> {
-            loginUser();
+            confirmLogin();
         });
 
         //login button event handler
         loginButton.setOnAction(event -> {
-            loginUser();
+            confirmLogin();
         });
 
         creditsLink.setOnAction(event -> {
@@ -139,7 +142,7 @@ public class UserInterface {
     }
 
     //helper login method
-    private void loginUser() {
+    private void confirmLogin() {
         setMessageBoxText("Processing...");
 
         if (!userProcess.isValidID(studentIDBox.getText())) {
@@ -165,15 +168,15 @@ public class UserInterface {
 
         if (handsFreeMode) {
             //confirm that the user wants to login/logout
-            if (util.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
-                loginUserLocal(false);
+            if (alertUtils.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
+                loginUser(false);
             } else {
                 setMessageBoxText("");
             }
 
         //show no prompts
         } else {
-            loginUserLocal(true);
+            loginUser(true);
         }
 
     }
@@ -188,7 +191,7 @@ public class UserInterface {
     }
 
     //login the user, check if hands free or not
-    private void loginUserLocal(boolean handsFree) {
+    private void loginUser(boolean handsFree) {
         //separate login process on different thread to ensure
         //main application does not freeze
         //also allows in for multiple users login simultaneously
@@ -206,11 +209,11 @@ public class UserInterface {
 
                 //check if the user is logged in, and that user exists
                 if (!(userProcess.isUserLoggedIn(studentIDBox.getText(), handsFree))) {
-                    LoggingUtil.log(Level.INFO, "Logging in: " + studentIDBox.getText());
+                    LoggingUtils.log(Level.INFO, "Logging in: " + studentIDBox.getText());
                     userProcess.loginUser(studentIDBox.getText());
 
                 } else {
-                    LoggingUtil.log(Level.INFO, "Logging out: " + studentIDBox.getText());
+                    LoggingUtils.log(Level.INFO, "Logging out: " + studentIDBox.getText());
                     userProcess.logoutUser(studentIDBox.getText());
 
                 }
@@ -222,7 +225,7 @@ public class UserInterface {
                 setMessageBoxText("There was an error connecting to the database. Please retry.");
 
             } catch (Exception e) {
-                LoggingUtil.log(Level.SEVERE, e);
+                LoggingUtils.log(Level.SEVERE, e);
                 setMessageBoxText("An unknown error has occurred, see log file.");
             }
 

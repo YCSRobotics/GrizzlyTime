@@ -19,10 +19,11 @@ public class CVHelper {
 
     public static void loadLibrary() throws OpenCvLoadFailureException {
         try {
-            InputStream in = null;
-            File fileOut = null;
+            InputStream in;
+            File fileOut;
+
             String osName = System.getProperty("os.name");
-            LoggingUtil.log(Level.INFO, "Detected OS as " +osName);
+            LoggingUtils.log(Level.INFO, "Detected OS as " + osName);
 
             String os = osName.toLowerCase();
 
@@ -32,23 +33,23 @@ public class CVHelper {
                 //check architecture type
                 int bitness = Integer.parseInt(System.getProperty("sun.arch.data.model"));
                 if (bitness == 32) {
-                    LoggingUtil.log(Level.INFO, "32 bit detected");
+                    LoggingUtils.log(Level.INFO, "32 bit detected");
                     in = CVHelper.class.getResourceAsStream("/opencv/x86/opencv_java343.dll");
                     fileOut = File.createTempFile("lib", ".dll");
 
                 } else if (bitness == 64) {
-                    LoggingUtil.log(Level.INFO, "64 bit detected");
+                    LoggingUtils.log(Level.INFO, "64 bit detected");
                     in = CVHelper.class.getResourceAsStream("/opencv/x64/opencv_java343.dll");
                     fileOut = File.createTempFile("lib", ".dll");
 
                 } else {
-                    LoggingUtil.log(Level.INFO, "Unknown bit detected");
+                    LoggingUtils.log(Level.INFO, "Unknown bit detected");
                     in = CVHelper.class.getResourceAsStream("/opencv/x86/opencv_java343.dll");
                     fileOut = File.createTempFile("lib", ".dll");
 
                 }
             } else if (os.contains("mac")) {
-                LoggingUtil.log(Level.SEVERE, "MAC NOT SUPPORTED YET");
+                LoggingUtils.log(Level.SEVERE, "MAC NOT SUPPORTED YET");
                 in = CVHelper.class.getResourceAsStream("/opencv/mac/libopencv_java343.dylib");
                 fileOut = File.createTempFile("lib", ".dylib");
 
@@ -65,7 +66,7 @@ public class CVHelper {
             System.load(fileOut.toString());
 
         } catch (Exception e) {
-            LoggingUtil.log(Level.SEVERE, e);
+            LoggingUtils.log(Level.SEVERE, e);
             throw new OpenCvLoadFailureException("Failed to load");
 
         }

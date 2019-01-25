@@ -1,13 +1,13 @@
-package modules;
+package tasks;
 
 import databases.JSONHelper;
+import helpers.AlertUtils;
+import helpers.CommonUtils;
 import helpers.Constants;
-import helpers.LoggingUtil;
-import helpers.Utils;
+import helpers.LoggingUtils;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -34,14 +34,14 @@ public class CameraStream {
     private final VideoCapture capture = new VideoCapture(0);
     private final UserProcess process = new UserProcess();
     private final JSONHelper parser = new JSONHelper();
-    private final Utils utils = new Utils();
+    private final AlertUtils alertUtils = new AlertUtils();
 
     // control flow
     private boolean stopCamera = false;
 
     // ui elements
     private final GridPane subRoot = new GridPane();
-    private final Size sz = new Size(Constants.cameraWidth, Constants.cameraHeight);
+    private final Size sz = new Size(Constants.kCameraWidth, Constants.kCameraHeight);
     private final Mat frame = new Mat();
     private final ImageView currentFrame = new ImageView();
 
@@ -52,20 +52,20 @@ public class CameraStream {
 
     //grab frames from camera
     private void startWebCamStream(GridPane root) {
-        File errorImage = new File(Utils.getCurrentDir() + "\\images\\error.png");
+        File errorImage = new File(CommonUtils.getCurrentDir() + "\\images\\error.png");
 
-        LoggingUtil.log(Level.INFO, "Path to fallback: " + Utils.getCurrentDir() + "\\images\\error.png");
+        LoggingUtils.log(Level.INFO, "Path to fallback: " + CommonUtils.getCurrentDir() + "\\images\\error.png");
 
         //open the camera
         capture.retrieve(frame);
 
         //check if camera opened successfully, or is disabled
         if (!capture.isOpened() || parser.getKey("enableCamera").equals("false")) {
-          LoggingUtil.log(Level.WARNING, "Camera disabled or unable to be opened.");
+            LoggingUtils.log(Level.WARNING, "Camera disabled or unable to be opened.");
 
             Image image;
 
-            LoggingUtil.log(Level.INFO, "Does custom fallback exist? " +  errorImage.exists());
+            LoggingUtils.log(Level.INFO, "Does custom fallback exist? " + errorImage.exists());
             //custom error image
             if (errorImage.exists()){
                 image = new Image(errorImage.toURI().toString());
@@ -76,7 +76,7 @@ public class CameraStream {
             //set image properties
             currentFrame.setImage(image);
             currentFrame.setPreserveRatio(true);
-            currentFrame.setFitHeight(Constants.cameraHeight);
+            currentFrame.setFitHeight(Constants.kCameraHeight);
             GridPane.setHalignment(currentFrame, HPos.CENTER);
 
             subRoot.setAlignment(Pos.CENTER);
@@ -130,8 +130,8 @@ public class CameraStream {
 
                     Platform.runLater(() -> currentFrame.setImage(imageToShow));
                 } catch (Exception e) {
-                    LoggingUtil.log(Level.SEVERE, e);
-                    utils.createAlert("Camera disabled", "Camera disabled", "The camera has been disabled, please restart the application to re-enable", Alert.AlertType.ERROR);
+                    LoggingUtils.log(Level.SEVERE, e);
+                    alertUtils.createAlert("Camera disabled", "Camera disabled", "The camera has been disabled, please restart the application to re-enable");
                     stopCamera = true;
 
                 }

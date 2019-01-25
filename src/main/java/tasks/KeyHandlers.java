@@ -1,4 +1,4 @@
-package modules;
+package tasks;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;

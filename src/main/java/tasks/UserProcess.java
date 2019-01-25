@@ -1,15 +1,15 @@
-package modules;
+package tasks;
 
 import databases.DatabaseUtils;
 import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
 import exceptions.ConnectToWorksheetException;
+import helpers.AlertUtils;
+import helpers.CommonUtils;
 import helpers.Constants;
-import helpers.LoggingUtil;
-import helpers.Utils;
+import helpers.LoggingUtils;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import scenes.LoginNotifier;
+import notifiers.LoginNotifier;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -28,9 +28,10 @@ class UserProcess {
      */
 
     private DatabaseUtils dbUtils = new DatabaseUtils();
-    private Utils util = new Utils();
+    private AlertUtils alertUtils = new AlertUtils();
     private LoginNotifier notifier = new LoginNotifier();
     private JSONHelper json = new JSONHelper();
+    private CommonUtils utils = new CommonUtils();
 
     private boolean idGrabbed = false;
     private int idLength = 6;
@@ -39,7 +40,7 @@ class UserProcess {
     public boolean isUserLoggedIn(String userID, boolean handsFree) throws Exception {
         dbUtils.getUpdatedData();
 
-        ArrayList<String> ids = dbUtils.getColumnData(0, Constants.mainSheet);
+        ArrayList<String> ids = dbUtils.getColumnData(0, Constants.kMainSheet);
 
         if (ids == null) {
             throw new ConnectToWorksheetException("ids is null");
@@ -49,7 +50,7 @@ class UserProcess {
         for (int i = 0; i < ids.size(); i++) {
             //if the user exists, check if logged in or logged out and return state
             if (ids.get(i).equals(userID)) {
-                String cellData = dbUtils.getCellData(i, Constants.LOGGEDINCOLUMN, Constants.mainSheet);
+                String cellData = dbUtils.getCellData(i, Constants.kLoggedInColumn, Constants.kMainSheet);
                 try {
                     cellData = cellData.replaceAll("\\s+", "");
 
@@ -63,20 +64,20 @@ class UserProcess {
         }
 
         //request users first name and last name
-        LoggingUtil.log(Level.INFO, "New User Detected");
-        ArrayList<String> userData = util.getUserInfo();
+        LoggingUtils.log(Level.INFO, "New User Detected");
+        ArrayList<String> userData = alertUtils.getUserInfo();
 
         //cancel if user cancelled or exited registration dialog
         if (("TRUE").equalsIgnoreCase(userData.get(0))) {
             //create user then login
-            int blankRow = dbUtils.nextEmptyCellColumn(Constants.mainSheet);
-            dbUtils.setCellData(blankRow, Constants.STUDENTIDCOLUMN, userID, Constants.mainSheet);
-            dbUtils.setCellData(blankRow, Constants.FIRSTNAMECOLUMN, userData.get(1), Constants.mainSheet);
-            dbUtils.setCellData(blankRow, Constants.LASTNAMECOLUMN, userData.get(2), Constants.mainSheet);
+            int blankRow = dbUtils.nextEmptyCellColumn(Constants.kMainSheet);
+            dbUtils.setCellData(blankRow, Constants.kStudentIdColumn, userID, Constants.kMainSheet);
+            dbUtils.setCellData(blankRow, Constants.kFirstNameColumn, userData.get(1), Constants.kMainSheet);
+            dbUtils.setCellData(blankRow, Constants.kLastNameColumn, userData.get(2), Constants.kMainSheet);
             dbUtils.getUpdatedData();
 
         } else {
-            LoggingUtil.log(Level.INFO, "Account Creation Cancelled");
+            LoggingUtils.log(Level.INFO, "Account Creation Cancelled");
             throw new CancelledUserCreationException("Cancelled");
 
         }
@@ -93,19 +94,19 @@ class UserProcess {
 
         //grab the current time from system and format it into string
         String currentTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
-        int userRow = dbUtils.getCellRowFromColumn(userID, Constants.STUDENTIDCOLUMN, Constants.mainSheet);
+        int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kMainSheet);
 
         //log the user in
         if (userRow != -1) {
-            dbUtils.setCellData(userRow, Constants.LASTLOGINCOLUMN, currentTime, Constants.mainSheet);
-            dbUtils.setCellData(userRow, Constants.LOGGEDINCOLUMN, "TRUE", Constants.mainSheet);
-            dbUtils.setCellData(userRow, Constants.LASTLOGOUTCOLUMN, "LOGGED IN", Constants.mainSheet);
+            dbUtils.setCellData(userRow, Constants.kLastLoginColumn, currentTime, Constants.kMainSheet);
+            dbUtils.setCellData(userRow, Constants.kLoggedInColumn, "TRUE", Constants.kMainSheet);
+            dbUtils.setCellData(userRow, Constants.kLastLogoutColumn, "LOGGED IN", Constants.kMainSheet);
 
-            if (Constants.grizzlyPrompt && !notifier.checkNotifier(userRow, dbUtils)) {
-                util.playDing();
+            if (Constants.kGrizzlyPrompt && !notifier.checkNotifier(userRow, dbUtils)) {
+                utils.playDing();
 
-                util.createAlert("Registration not complete!", "Registration not complete!", "It seems you have not completed your user registration!" +
-                        " Please visit https://ycsrobotics.org/registration to finish your registration", Alert.AlertType.ERROR);
+                alertUtils.createAlert("Registration not complete!", "Registration not complete!", "It seems you have not completed your user registration!" +
+                        " Please visit https://ycsrobotics.org/registration to finish your registration");
                 
             }
 
@@ -125,11 +126,11 @@ class UserProcess {
         });
 
         //grab the row the user is on
-        int userRow = dbUtils.getCellRowFromColumn(userID, Constants.STUDENTIDCOLUMN, Constants.mainSheet);
+        int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kMainSheet);
 
         //grab last logged in time
         String logoutTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
-        String loginTime = dbUtils.getCellData(userRow, Constants.LASTLOGINCOLUMN, Constants.mainSheet);
+        String loginTime = dbUtils.getCellData(userRow, Constants.kLastLoginColumn, Constants.kMainSheet);
 
         //ensure it's formatted correctly
         loginTime = loginTime.replaceAll("\\s+","");
@@ -137,7 +138,7 @@ class UserProcess {
         //assuming userRow isn't invalid, calculate difference in time and log hours
         if (userRow != -1) {
             //update the logout time
-            dbUtils.setCellData(userRow, Constants.LASTLOGOUTCOLUMN, logoutTime, Constants.mainSheet);
+            dbUtils.setCellData(userRow, Constants.kLastLogoutColumn, logoutTime, Constants.kMainSheet);
 
             //create our datetime objects for parsing
             LocalTime loginTimeLocalTime = LocalTime.parse(loginTime);
@@ -158,14 +159,14 @@ class UserProcess {
             try {
                 totalHoursTime = LocalTime.parse(time);
             } catch(DateTimeParseException e) {
-                LoggingUtil.log(Level.WARNING, "Error parsing previous time, did they forget to log out? \n" + e.getMessage());
+                LoggingUtils.log(Level.WARNING, "Error parsing previous time, did they forget to log out? \n" + e.getMessage());
                 err = true;
             }
 
 
             if (!err) {
                 //grab the current total hours
-                String totalHours = dbUtils.getCellData(userRow, Constants.TOTALHOURSCOLUMN, Constants.mainSheet);
+                String totalHours = dbUtils.getCellData(userRow, Constants.kTotalHoursColumn, Constants.kMainSheet);
                 String[] prevTotalTime;
                 double[] prevTotalTimeNum = new double[3];
 
@@ -178,7 +179,7 @@ class UserProcess {
                     prevTotalTimeNum[2] = Double.parseDouble(prevTotalTime[2]);
 
                 } catch (DateTimeParseException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    LoggingUtil.log(Level.WARNING, "Error parsing previous total time, using fallback of 0.0");
+                    LoggingUtils.log(Level.WARNING, "Error parsing previous total time, using fallback of 0.0");
                     prevTotalTimeNum[0] = 0.0;
                     prevTotalTimeNum[1] = 0.0;
                     prevTotalTimeNum[2] = 0.0;
@@ -203,19 +204,19 @@ class UserProcess {
                 String timeTotal = String.format("%02d:%02d:%02d", (int)totalHour, (int)totalMinute, (int)totalSeconds);
 
                 //set cell data
-                dbUtils.setCellData(userRow, Constants.HOURSCOLUMN, time, Constants.mainSheet);
+                dbUtils.setCellData(userRow, Constants.kHoursColumn, time, Constants.kMainSheet);
 
                 int userTimeColumn = logCurrentDate();
 
                 //add together day times
                 LocalTime prevDayTime;
                 try {
-                    String prevData = dbUtils.getCellData(userRow, userTimeColumn, Constants.logSheet);
+                    String prevData = dbUtils.getCellData(userRow, userTimeColumn, Constants.kLogSheet);
                     prevDayTime = LocalTime.parse(prevData);
 
                 } catch (DateTimeParseException | NullPointerException e) {
                     prevDayTime = LocalTime.parse("00:00:01");
-                    LoggingUtil.log(Level.WARNING, "There was an issue adding cell data, using fallback. \n" + e.getMessage());
+                    LoggingUtils.log(Level.WARNING, "There was an issue adding cell data, using fallback. \n" + e.getMessage());
 
                 }
 
@@ -230,8 +231,8 @@ class UserProcess {
 
                 String timeTotalDay = String.format("%02d:%02d:%02d", tempTotalDayTime.getHour(), tempTotalDayTime.getMinute(), tempTotalDayTime.getSecond());
 
-                dbUtils.setCellData(userRow, userTimeColumn, timeTotalDay, Constants.logSheet);
-                dbUtils.setCellData(userRow, Constants.TOTALHOURSCOLUMN, timeTotal, Constants.mainSheet);
+                dbUtils.setCellData(userRow, userTimeColumn, timeTotalDay, Constants.kLogSheet);
+                dbUtils.setCellData(userRow, Constants.kTotalHoursColumn, timeTotal, Constants.kMainSheet);
 
                 //show user logout text
                 Platform.runLater(() -> {
@@ -242,7 +243,7 @@ class UserProcess {
             }
 
             //if user didn't logout, then logout user and don't log hours
-            dbUtils.setCellData(userRow, Constants.LOGGEDINCOLUMN, "FALSE", Constants.mainSheet);
+            dbUtils.setCellData(userRow, Constants.kLoggedInColumn, "FALSE", Constants.kMainSheet);
 
             if(err) {
                 Platform.runLater(() -> {
@@ -258,7 +259,7 @@ class UserProcess {
 
     //helper method for grabbing the column that contains the current date
     private int logCurrentDate(){
-        ArrayList<String> data = dbUtils.getRowData(1, Constants.logSheet);
+        ArrayList<String> data = dbUtils.getRowData(1, Constants.kLogSheet);
         String currentDate = new SimpleDateFormat("yyyy:MM:dd").format(new Date());
 
         //check if our date already exists
@@ -274,7 +275,7 @@ class UserProcess {
         }
 
         //log the current date and return column
-        dbUtils.setCellData(0,  i, currentDate, Constants.logSheet);
+        dbUtils.setCellData(0, i, currentDate, Constants.kLogSheet);
         return i;
     }
 
@@ -285,7 +286,13 @@ class UserProcess {
         try {
             Integer.parseInt(userID);
 
-            return userID.length() == idLength;
+            if (Constants.kMentorFallback) {
+                return userID.length() == idLength || userID.length() == 8;
+
+            } else {
+                return userID.length() == idLength;
+
+            }
 
         } catch (NumberFormatException e) {
             //not a valid ID

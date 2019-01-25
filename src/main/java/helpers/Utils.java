@@ -280,4 +280,9 @@ public class Utils {
         mediaPlayer.play();
     }
 
+
+    public static void exitApplication() {
+        System.exit(1);
+    }
+
 }

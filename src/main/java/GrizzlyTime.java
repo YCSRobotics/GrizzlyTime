@@ -114,18 +114,6 @@ public class GrizzlyTime extends Application {
 
     private static void GlobalExceptionHandler(Thread thread, Throwable throwable) {
         LoggingUtil.log(Level.SEVERE, throwable);
-        exitApplication();
-    }
-
-    public static void exitApplication() {
-        if (Platform.isFxApplicationThread()){
-            Platform.exit();
-
-        } else {
-            Platform.runLater(() -> {
-                Platform.exit();
-            });
-
-        }
+        Utils.exitApplication();
     }
 }

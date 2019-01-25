@@ -98,6 +98,8 @@ class DatabaseProcess {
                     Alert.AlertType.ERROR
 
             );
+
+            Utils.exitApplication();
             return null;
 
         } catch (GeneralSecurityException e2) {
@@ -110,7 +112,7 @@ class DatabaseProcess {
 
             );
 
-            System.exit(1);
+            Utils.exitApplication();
             return null;
 
         } catch (IOException e3) {
@@ -124,7 +126,7 @@ class DatabaseProcess {
 
             );
 
-            System.exit(-1);
+            Utils.exitApplication();
             return null;
 
         }

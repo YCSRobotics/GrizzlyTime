@@ -1,7 +1,9 @@
 import helpers.CVHelper;
 import helpers.Constants;
+import helpers.LoggingUtil;
 import helpers.Utils;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,6 +17,7 @@ import modules.UserInterface;
 import scenes.UpdateNotifier;
 
 import java.io.File;
+import java.util.logging.Level;
 
 public class GrizzlyTime extends Application {
     /**
@@ -31,6 +34,8 @@ public class GrizzlyTime extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        Thread.setDefaultUncaughtExceptionHandler(GrizzlyTime::GlobalExceptionHandler);
         //grab our application icon from stream
 
         //check if custom icon
@@ -102,5 +107,22 @@ public class GrizzlyTime extends Application {
         //create UI and logic
         userInterface.updateInterface(root);
 
+    }
+
+    private static void GlobalExceptionHandler(Thread thread, Throwable throwable) {
+        LoggingUtil.log(Level.SEVERE, throwable);
+        exitApplication();
+    }
+
+    public static void exitApplication() {
+        if (Platform.isFxApplicationThread()){
+            Platform.exit();
+
+        } else {
+            Platform.runLater(() -> {
+                Platform.exit();
+            });
+
+        }
     }
 }

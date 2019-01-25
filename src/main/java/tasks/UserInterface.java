@@ -183,7 +183,7 @@ public class UserInterface {
 
     private void updateHandsFreeValue() {
         if (!jsonHandsFreeGrabbed) {
-            handsFreeMode = !parser.getKey("handsFreeMode").equals("false");
+            handsFreeMode = parser.getKey("handsFreeMode").equals("false");
 
             jsonHandsFreeGrabbed = true;
 

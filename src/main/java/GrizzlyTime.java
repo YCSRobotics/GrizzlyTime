@@ -91,7 +91,7 @@ public class GrizzlyTime extends Application {
         //remove splash screen on load
         root.getChildren().clear();
         primaryStage.setWidth(608);
-        primaryStage.setHeight(610);
+        primaryStage.setHeight(630);
         primaryStage.centerOnScreen();
 
         //add our global key handlers

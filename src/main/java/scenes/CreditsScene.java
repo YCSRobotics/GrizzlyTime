@@ -46,14 +46,15 @@ public class CreditsScene {
             "Org.Json");
 
     public void showCredits() {
-        stage.setWidth(608);
-        stage.setHeight(500);
+        stage.setWidth(630);
+        stage.setHeight(550);
         stage.setScene(scene);
 
         scene.getStylesheets().add("styles/root.css");
         stage.getIcons().add(new Image("images/icon.png"));
 
         root.setId("creditsRoot");
+        root.setVgap(25);
 
         upperPaneMain.setAlignment(Pos.CENTER);
         upperPaneMain.setPrefWidth(root.getWidth());

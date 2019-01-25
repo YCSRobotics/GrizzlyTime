@@ -41,6 +41,13 @@ public class UserInterface {
 
     private JSONHelper parser = new JSONHelper();
 
+    private boolean jsonHandsFreeGrabbed = false;
+    private boolean handsFreeMode = false;
+
+    public UserInterface() {
+        updateHandsFreeValue();
+    }
+
     public void updateInterface(GridPane root) {
         //update CSS IDS
         messageText.setId("messageText");
@@ -153,7 +160,7 @@ public class UserInterface {
 
         }
 
-        if (parser.getKey("handsFreeMode").equals("false")) {
+        if (handsFreeMode) {
             //confirm that the user wants to login/logout
             if (util.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
                 loginUserLocal(false);
@@ -166,6 +173,21 @@ public class UserInterface {
             loginUserLocal(true);
         }
 
+    }
+
+    private void updateHandsFreeValue() {
+        if (!jsonHandsFreeGrabbed) {
+            if (parser.getKey("handsFreeMode").equals("false")){
+                handsFreeMode = false;
+
+            } else {
+                handsFreeMode = true;
+
+            }
+
+            jsonHandsFreeGrabbed = true;
+
+        }
     }
 
     //login the user, check if hands free or not

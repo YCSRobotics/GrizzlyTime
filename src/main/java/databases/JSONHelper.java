@@ -63,8 +63,7 @@ public class JSONHelper {
             util.createAlert(
                     "ERROR",
                     "Error loading configuration file",
-                    "Please delete the config.json file and relaunch the application. \n" +
-                            "ERROR RETRIEVING: " + key + " EMPTY",
+                    "Please delete the config.json file and relaunch the application.",
                     Alert.AlertType.ERROR
             );
 
@@ -77,8 +76,7 @@ public class JSONHelper {
             util.createAlert(
                     "ERROR",
                     "Invalid Configuration",
-                    "Please confirm that the configuration is valid. \n" +
-                            "ERROR RETRIEVING: " + key + " EMPTY",
+                    "Please confirm that the configuration is valid.",
                     Alert.AlertType.ERROR
             );
 

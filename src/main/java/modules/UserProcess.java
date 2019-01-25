@@ -35,6 +35,9 @@ class UserProcess {
     private LoginNotifier notifier = new LoginNotifier();
     private JSONHelper json = new JSONHelper();
 
+    private boolean idGrabbed = false;
+    private int idLength = 6;
+
     //check if user is logged in
     public boolean isUserLoggedIn(String userID, boolean handsFree) throws Exception {
         dbUtils.getUpdatedData();
@@ -283,14 +286,7 @@ class UserProcess {
 
     //checks if ID is valid integer and 6 digit number
     public boolean isValidID(String userID) {
-        int idLength = 6;
-
-        try {
-            idLength = Integer.parseInt(json.getKey("idLength"));
-
-        } catch (NumberFormatException e) {
-            //do nothing
-        }
+        grabIdLength();
 
         try {
             Integer.parseInt(userID);
@@ -301,6 +297,21 @@ class UserProcess {
             //not a valid ID
             return false;
         }
+    }
+
+    private int grabIdLength() {
+        if (!idGrabbed) {
+            try {
+                idLength = Integer.parseInt(json.getKey("idLength"));
+
+            } catch (NumberFormatException e) {
+                //do nothing
+            }
+
+            idGrabbed = true;
+        }
+
+        return idLength;
     }
 
 }

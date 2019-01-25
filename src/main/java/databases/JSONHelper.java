@@ -59,7 +59,7 @@ public class JSONHelper {
             result = json.getString(key);
 
         } catch (JSONException e) {
-            LoggingUtil.log(Level.SEVERE, e.getMessage());
+            LoggingUtil.log(Level.SEVERE, e);
             util.createAlert(
                     "ERROR",
                     "Error loading configuration file",
@@ -73,7 +73,7 @@ public class JSONHelper {
 
         //confirm that the key was successfully retrieved
         if (result.isEmpty()) {
-            LoggingUtil.log(Level.SEVERE, "Specified key: " + key + " does not exist");
+            LoggingUtil.log(Level.SEVERE, "Specified key: " + key + " has no data");
             util.createAlert(
                     "ERROR",
                     "Invalid Configuration",
@@ -83,7 +83,6 @@ public class JSONHelper {
             );
 
             //exit application
-            System.exit(1);
             return "";
 
         } else {

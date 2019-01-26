@@ -314,5 +314,4 @@ class UserProcess {
 
         return idLength;
     }
-
 }

@@ -146,7 +146,7 @@ public class UserInterface {
         setMessageBoxText("Processing...");
 
         if (!userProcess.isValidID(studentIDBox.getText())) {
-            setMessageBoxText("ID " + studentIDBox.getText() + " is an invalid 6 digit number.");
+            setMessageBoxText("ID " + studentIDBox.getText() + " is invalid.");
 
             Task<Void> wait = new Task<Void>() {
                 @Override

@@ -75,5 +75,10 @@ public class Constants {
     public static final String kUpdateUrl = "https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/version.txt";
     public static final String kReleaseUrl = "https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest";
 
+    //user states
+    public static final int kIdDoesNotExist = -1;
+    public static final int kIdLoggedIn = 0;
+    public static final int kIdNotLoggedIn = 1;
+
 
 }

@@ -1,7 +1,7 @@
 package scenes;
 
-import activities.KeyHandlers;
-import activities.UserProcess;
+import activities.KeyActivity;
+import activities.UserActivity;
 import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
 import exceptions.ConnectToWorksheetException;
@@ -42,7 +42,7 @@ public class GrizzlyScene {
 
     //define our scene objects
     private Button loginButton = new Button("Login/Logout");
-    private UserProcess userProcess = new UserProcess();
+    private UserActivity userActivity = new UserActivity();
     private Text description = new Text(Constants.kUserTutorial);
     private Hyperlink creditsLink = new Hyperlink("Credits");
     private Text creditsText = new Text("v" + Constants.kVersion);
@@ -156,12 +156,12 @@ public class GrizzlyScene {
 
         optionsLink.setOnAction(event -> {
             Stage stage = (Stage)optionsLink.getScene().getWindow();
-            if (KeyHandlers.isFullscreen){
+            if (KeyActivity.isFullscreen) {
                 stage.setFullScreen(false);
-                KeyHandlers.isFullscreen = false;
+                KeyActivity.isFullscreen = false;
             } else {
                 stage.setFullScreen(true);
-                KeyHandlers.isFullscreen = true;
+                KeyActivity.isFullscreen = true;
             }
         });
     }
@@ -176,7 +176,7 @@ public class GrizzlyScene {
         setMessageBoxText("Processing...");
 
         //confirm the ID is vslid
-        if (!userProcess.isValidID(studentIDBox.getText())) {
+        if (!userActivity.isValidID(studentIDBox.getText())) {
             setMessageBoxText("ID " + studentIDBox.getText() + " is invalid.");
 
             Task<Void> wait = new Task<Void>() {
@@ -238,13 +238,13 @@ public class GrizzlyScene {
             //do nothing if account creation was cancelled
             try {
                 //check if the user is logged in, and that user exists
-                if (!(userProcess.isUserLoggedIn(studentIDBox.getText(), handsFree))) {
+                if (!(userActivity.isUserLoggedIn(studentIDBox.getText()))) {
                     LoggingUtils.log(Level.INFO, "Logging in: " + studentIDBox.getText());
-                    userProcess.loginUser(studentIDBox.getText());
+                    userActivity.loginUser(studentIDBox.getText());
 
                 } else {
                     LoggingUtils.log(Level.INFO, "Logging out: " + studentIDBox.getText());
-                    userProcess.logoutUser(studentIDBox.getText());
+                    userActivity.logoutUser(studentIDBox.getText());
 
                 }
 

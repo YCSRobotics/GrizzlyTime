@@ -4,10 +4,10 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
-public class KeyHandlers {
+public class KeyActivity {
     /**
      * @author Dalton Smith
-     * KeyHandlers
+     * KeyActivity
      * Manages global keybinds
      */
 

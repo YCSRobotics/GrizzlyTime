@@ -1,4 +1,4 @@
-import activities.KeyHandlers;
+import activities.KeyActivity;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
@@ -25,7 +25,7 @@ public class GrizzlyTime extends Application {
 
     //only initializations that don't have freezing constructor instances should be placed here
     private SplashScene splash = new SplashScene();
-    private KeyHandlers keyHandlers = new KeyHandlers();
+    private KeyActivity keyHandlers = new KeyActivity();
     private AlertUtils alertUtils = new AlertUtils();
     private UpdateNotifier updater = new UpdateNotifier();
 

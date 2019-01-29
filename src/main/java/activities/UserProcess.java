@@ -1,4 +1,4 @@
-package tasks;
+package activities;
 
 import databases.DatabaseUtils;
 import databases.JSONHelper;
@@ -10,6 +10,7 @@ import helpers.Constants;
 import helpers.LoggingUtils;
 import javafx.application.Platform;
 import notifiers.LoginNotifier;
+import scenes.GrizzlyScene;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -20,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 
-class UserProcess {
+public class UserProcess {
     /**
      * @author Dalton Smith
      * UserProcess class
@@ -89,7 +90,7 @@ class UserProcess {
     //login our user
     public void loginUser(String userID) {
         Platform.runLater(() -> {
-            UserInterface.setMessageBoxText("Logging in user: " + userID);
+            GrizzlyScene.setMessageBoxText("Logging in user: " + userID);
         });
 
         //grab the current time from system and format it into string
@@ -111,8 +112,8 @@ class UserProcess {
             }
 
             Platform.runLater(() -> {
-                UserInterface.setMessageBoxText("Successfully logged in user: " + userID);
-                UserInterface.clearInput();
+                GrizzlyScene.setMessageBoxText("Successfully logged in user: " + userID);
+                GrizzlyScene.clearInput();
             });
 
         }
@@ -122,7 +123,7 @@ class UserProcess {
     //logout the user
     public void logoutUser(String userID) {
         Platform.runLater(() -> {
-            UserInterface.setMessageBoxText("Logging out user: " + userID);
+            GrizzlyScene.setMessageBoxText("Logging out user: " + userID);
         });
 
         //grab the row the user is on
@@ -225,7 +226,7 @@ class UserProcess {
                     tempTotalDayTime = LocalTime.parse(time).plusHours(prevDayTime.getHour()).plusMinutes(prevDayTime.getMinute()).plusSeconds(prevDayTime.getSecond());
 
                 } catch (DateTimeParseException e) {
-                    UserInterface.setMessageBoxText("There was an error adding together total time. Using fallback.");
+                    GrizzlyScene.setMessageBoxText("There was an error adding together total time. Using fallback.");
                     tempTotalDayTime = prevDayTime;
                 }
 
@@ -236,8 +237,8 @@ class UserProcess {
 
                 //show user logout text
                 Platform.runLater(() -> {
-                    UserInterface.setMessageBoxText("Logged out user: " + userID);
-                    UserInterface.clearInput();
+                    GrizzlyScene.setMessageBoxText("Logged out user: " + userID);
+                    GrizzlyScene.clearInput();
                 });
 
             }
@@ -247,8 +248,8 @@ class UserProcess {
 
             if(err) {
                 Platform.runLater(() -> {
-                    UserInterface.setMessageBoxText("You forgot to log out! Yours hours were not counted! See an administrator if this is in error");
-                    UserInterface.clearInput();
+                    GrizzlyScene.setMessageBoxText("You forgot to log out! Yours hours were not counted! See an administrator if this is in error");
+                    GrizzlyScene.clearInput();
                 });
             }
 

@@ -259,10 +259,15 @@ public class AlertUtils {
         // Request focus on the firstname field by default.
         Platform.runLater(firstName::requestFocus);
 
-        Optional<ButtonType> result = dialog.showAndWait();
+        Optional result = dialog.showAndWait();
+
+        System.out.println(result);
+
         ArrayList<String> data = new ArrayList<>();
 
-        if (result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+        ButtonType resultButtonType = (ButtonType)result.get();
+
+        if (resultButtonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
             data.add("TRUE");
             data.add(firstName.getText());
             data.add(lastName.getText());

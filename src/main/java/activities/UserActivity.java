@@ -78,6 +78,9 @@ public class UserActivity {
             dbUtils.setCellData(blankRow, Constants.kStudentIdColumn, userID, Constants.kMainSheet);
             dbUtils.setCellData(blankRow, Constants.kFirstNameColumn, userData.get(1), Constants.kMainSheet);
             dbUtils.setCellData(blankRow, Constants.kLastNameColumn, userData.get(2), Constants.kMainSheet);
+            dbUtils.setCellData(blankRow, Constants.kEmailColumn, userData.get(3), Constants.kMainSheet);
+            dbUtils.setCellData(blankRow, Constants.kRoleColumn, userData.get(5), Constants.kMainSheet);
+            dbUtils.setCellData(blankRow, Constants.kGenderColumn, userData.get(4), Constants.kMainSheet);
             dbUtils.getUpdatedData();
 
         } else {

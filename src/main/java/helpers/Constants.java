@@ -10,6 +10,9 @@ public class Constants {
     public static final int kStudentIdColumn = 0;
     public static final int kFirstNameColumn = 1;
     public static final int kLastNameColumn = 2;
+    public static final int kGenderColumn = 5;
+    public static final int kRoleColumn = 4;
+    public static final int kEmailColumn = 3;
 
     //camera feed size
     public static final int kCameraHeight = 400;

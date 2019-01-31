@@ -1,6 +1,7 @@
 package helpers;
 
 import javafx.application.Platform;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -10,13 +11,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Dalton Smith
@@ -151,7 +152,8 @@ public class AlertUtils {
 
     private ArrayList<String> showAuthDialog() {
         // Create the custom dialog.
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        Dialog dialog = new Dialog<>();
+
         dialog.initOwner(stage);
 
         // Set Custom Icon
@@ -172,69 +174,115 @@ public class AlertUtils {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
+        grid.setPadding(new Insets(20, 10, 10, 10));
         grid.setAlignment(Pos.CENTER);
         grid.setId("accountGrid");
 
+        TextField firstName = new TextField("");
+        //GridPane.setHgrow(firstName, Priority.ALWAYS);
+        TextField lastName = new TextField("");
 
-        TextField username = new TextField("First Name");
-        username.setId("textField");
-        username.setPromptText("");
-        TextField password = new TextField("Last Name");
-        password.setPromptText("");
-        password.setId("textField");
+        TextField email = new TextField("");
+
+        firstName.setId("textField");
+        lastName.setId("textField");
+
+        firstName.setPromptText("");
+        lastName.setPromptText("");
+
+        email.setPromptText("");
+
+        email.setId("textField");
+
+        ToggleGroup studentRadioGroup = new ToggleGroup();
+
+        RadioButton mentorRadio = new RadioButton("Mentor");
+        RadioButton studentRadio = new RadioButton("Student");
+
+        ToggleGroup genderRadioGroup = new ToggleGroup();
+
+        RadioButton maleRadio = new RadioButton("Male");
+        RadioButton otherRadio = new RadioButton("Other");
+        RadioButton femaleRadio = new RadioButton("Female");
+
+        otherRadio.fire();
+
+        studentRadio.fire();
+
+        mentorRadio.setToggleGroup(studentRadioGroup);
+        studentRadio.setToggleGroup(studentRadioGroup);
+
+        GridPane genderPane = new GridPane();
+
+        maleRadio.setToggleGroup(genderRadioGroup);
+        femaleRadio.setToggleGroup(genderRadioGroup);
+        otherRadio.setToggleGroup(genderRadioGroup);
+
+        genderPane.add(maleRadio, 0, 0);
+        genderPane.add(femaleRadio, 1,0);
+        genderPane.add(otherRadio, 2, 0);
 
         grid.add(new Label("First Name:"), 0, 0);
-        grid.add(username, 1, 0);
+        grid.add(firstName, 1, 0);
         grid.add(new Label("Last Name:"), 0, 1);
-        grid.add(password, 1, 1);
+        grid.add(lastName, 1, 1);
+        grid.add(new Label("Email:"), 0, 2);
+        grid.add(email, 1, 2);
 
-        // Enable/Disable login button depending on whether a username was entered.
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-        loginButton.setDisable(true);
+        GridPane.setColumnSpan(genderPane, 2);
+        grid.add(genderPane, 0, 3);
 
-        // Do some validation (using the Java 8 lambda syntax).
-        username.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(newValue.trim().isEmpty());
-        });
+        GridPane.setHalignment(grid, HPos.CENTER);
+
+        GridPane.setHalignment(studentRadio, HPos.CENTER);
+        GridPane.setHalignment(studentRadio, HPos.CENTER);
+
+        grid.add(studentRadio, 0, 4);
+        grid.add(mentorRadio, 1, 4);
 
         dialog.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
-        Platform.runLater(username::requestFocus);
+        Node button = dialog.getDialogPane().lookupButton(loginButtonType);
 
+        button.setDisable(true);
+
+        email.textProperty().addListener((observable, oldValue, newValue) -> {
+            Pattern regex = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = regex.matcher(newValue);
+
+            if (matcher.matches()) {
+                button.setDisable(false);
+            }
+
+        });
+
+        // Request focus on the firstname field by default.
+        Platform.runLater(firstName::requestFocus);
+
+        Optional<ButtonType> result = dialog.showAndWait();
         ArrayList<String> data = new ArrayList<>();
-        // Convert the result to a username-password-pair when the login button is clicked.
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == loginButtonType) {
-                return new Pair<>(username.getText(), password.getText());
-            }
-            return null;
-        });
 
-        Optional<Pair<String, String>> result = dialog.showAndWait();
-
-        //confirm that the user typed in data
-        result.ifPresent(usernamePassword -> {
+        if (result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
             data.add("TRUE");
-            data.add(usernamePassword.getKey());
-            data.add(usernamePassword.getValue());
+            data.add(firstName.getText());
+            data.add(lastName.getText());
+            data.add(email.getText());
 
-        });
-
-        //return the data
-        try {
-            if (data.get(0) != null) {
-                LoggingUtils.log(Level.INFO, "User successfully completed all registration fields");
-                return data;
+            if (maleRadio.isSelected()) {
+                data.add("MALE");
+            } else if (femaleRadio.isSelected()) {
+                data.add("FEMALE");
             } else {
-                data.add("FALSE");
-                return data;
+                data.add("OTHER");
             }
-        } catch (IndexOutOfBoundsException e) {
+
+            data.add(mentorRadio.isSelected() ? "MENTOR" : "STUDENT");
+
+        } else {
             data.add("FALSE");
-            LoggingUtils.log(Level.WARNING, e.getMessage());
-            return data;
+
         }
+
+        return data;
     }
 }

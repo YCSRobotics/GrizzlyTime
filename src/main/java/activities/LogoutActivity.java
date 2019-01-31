@@ -60,6 +60,8 @@ public class LogoutActivity {
 
         String timeTotal = String.format("%02d:%02d:%02d", (int) totalHour, (int) totalMinute, (int) totalSeconds);
 
+        int userRowLogout = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kLogSheet);
+
         //set cell data
         dbUtils.setCellData(userRow, Constants.kHoursColumn, totalTimeFromDifference, Constants.kMainSheet);
 
@@ -68,7 +70,7 @@ public class LogoutActivity {
         //add together day times
         LocalTime prevDayTime;
         try {
-            String prevData = dbUtils.getCellData(userRow, userTimeColumn, Constants.kLogSheet);
+            String prevData = dbUtils.getCellData(userRowLogout, userTimeColumn, Constants.kLogSheet);
             prevDayTime = LocalTime.parse(prevData);
 
         } catch (DateTimeParseException | NullPointerException e) {
@@ -88,7 +90,7 @@ public class LogoutActivity {
 
         String timeTotalDay = String.format("%02d:%02d:%02d", tempTotalDayTime.getHour(), tempTotalDayTime.getMinute(), tempTotalDayTime.getSecond());
 
-        dbUtils.setCellData(userRow, userTimeColumn, timeTotalDay, Constants.kLogSheet);
+        dbUtils.setCellData(userRowLogout, userTimeColumn, timeTotalDay, Constants.kLogSheet);
         dbUtils.setCellData(userRow, Constants.kTotalHoursColumn, timeTotal, Constants.kMainSheet);
 
         //show user logout text

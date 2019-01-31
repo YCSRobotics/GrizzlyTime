@@ -3,7 +3,6 @@ package activities;
 import databases.DatabaseUtils;
 import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
-import exceptions.ConnectToWorksheetException;
 import helpers.AlertUtils;
 import helpers.Constants;
 import helpers.LoggingUtils;
@@ -40,10 +39,6 @@ public class UserActivity {
         dbUtils.getUpdatedData();
 
         ArrayList<String> ids = dbUtils.getColumnData(0, Constants.kMainSheet);
-
-        if (ids == null) {
-            throw new ConnectToWorksheetException("ids is null");
-        }
 
         int state = doesIdExist(ids, userID);
 
@@ -82,6 +77,21 @@ public class UserActivity {
             dbUtils.setCellData(blankRow, Constants.kRoleColumn, userData.get(5), Constants.kMainSheet);
             dbUtils.setCellData(blankRow, Constants.kGenderColumn, userData.get(4), Constants.kMainSheet);
             dbUtils.getUpdatedData();
+
+            int blankRowLogged = dbUtils.nextEmptyCellColumn(Constants.kLogSheet);
+
+            if (blankRowLogged == 0) {
+                blankRowLogged += 1;
+            }
+
+            dbUtils.setCellData(blankRowLogged, Constants.kStudentIdColumn, userID, Constants.kLogSheet);
+            dbUtils.setCellData(blankRowLogged, Constants.kFirstNameColumn, userData.get(1), Constants.kLogSheet);
+            dbUtils.setCellData(blankRowLogged, Constants.kLastNameColumn, userData.get(2), Constants.kLogSheet);
+
+            dbUtils.getUpdatedData();
+
+            //ensure there is a date column
+            logoutActivity.getCurrentDateColumn();
 
         } else {
             LoggingUtils.log(Level.INFO, "Account Creation Cancelled");

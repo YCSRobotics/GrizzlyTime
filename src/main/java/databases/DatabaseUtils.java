@@ -1,9 +1,11 @@
 package databases;
 
 import helpers.Constants;
+import helpers.LoggingUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class DatabaseUtils {
     /**
@@ -47,23 +49,28 @@ public class DatabaseUtils {
 
     //grabs column data from sheet
     public ArrayList<String> getColumnData(int column, int page) {
-        if (isWorksheetsValid()) {
+        setPage(page);
+
+        if (isWorksheetsNotValid()) {
             return null;
         }
 
-       setPage(page);
-
         ArrayList<String> result = new ArrayList<>();
 
-        //add various rows to ArrayList
-        for (List row: mainWorksheet) {
-            try {
-                result.add(row.get(column).toString());
+        try {
+            //add various rows to ArrayList
+            for (List row : mainWorksheet) {
+                try {
+                    result.add(row.get(column).toString());
 
-            } catch (Exception e){
-                 result.add("");
+                } catch (Exception e) {
+                    result.add("");
 
+                }
             }
+        } catch (NullPointerException e){
+            LoggingUtils.log(Level.WARNING, "IS THERE DATA IN WORKSHEET?");
+
         }
 
         return result;
@@ -71,7 +78,7 @@ public class DatabaseUtils {
     }
 
     public ArrayList<String> getRowData(int row, int page) {
-        if (isWorksheetsValid()) {
+        if (isWorksheetsNotValid()) {
             return null;
         }
 
@@ -112,7 +119,7 @@ public class DatabaseUtils {
 
     //gets specific cell data
     public String getCellData(int row, int column, int page) {
-        if (isWorksheetsValid()) {
+        if (isWorksheetsNotValid()) {
             return null;
         }
 
@@ -134,7 +141,7 @@ public class DatabaseUtils {
     //grab a a cell row based on its position in a column
     public int getCellRowFromColumn(String cellValue, int column, int page) {
 
-        if (isWorksheetsValid()) {
+        if (isWorksheetsNotValid()) {
             return -1;
         }
 
@@ -167,7 +174,11 @@ public class DatabaseUtils {
 
     }
 
-    private boolean isWorksheetsValid() {
+    private boolean isWorksheetsNotValid() {
+
+        if (DatabaseProcess.worksheetIsEmpty) {
+            return false;
+        }
 
         return (mainWorksheet == null || loggedHours == null);
     }

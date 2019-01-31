@@ -6,13 +6,14 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.api.services.sheets.v4.model.*;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
@@ -24,6 +25,7 @@ import java.io.InputStreamReader;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,6 +52,8 @@ public class DatabaseProcess {
     private static final String mainPage = "Current";
     private static final String logPage = "Date Log";
     private static final String regPage = "Student Registration";
+
+    public static boolean worksheetIsEmpty = false;
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //set google logging level to severe due to permissions bug, see https://github.com/googleapis/google-http-java-client/issues/315
@@ -82,11 +86,8 @@ public class DatabaseProcess {
                     .setApplicationName(APPLICATION_NAME)
                     .build();
 
-            ValueRange response = service.spreadsheets().values()
-                    .get(spreadsheet, range)
-                    .execute();
 
-            return response.getValues();
+            return getDataFromSheet(service, range);
 
         } catch (NoRouteToHostException | UnknownHostException e) {
             LoggingUtils.log(Level.SEVERE, e);
@@ -112,6 +113,48 @@ public class DatabaseProcess {
             CommonUtils.exitApplication();
             return null;
 
+        } catch (GoogleJsonResponseException e) {
+            LoggingUtils.log(Level.SEVERE, e);
+
+            try {
+                LoggingUtils.log(Level.WARNING, "Attempting to create our sheets");
+
+                final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+                Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                        .setApplicationName(APPLICATION_NAME)
+                        .build();
+
+                ArrayList<Request> requests = new ArrayList<>();
+
+                requests.add(new Request().setAddSheet(new AddSheetRequest()
+                        .setProperties(new SheetProperties().setTitle("Current"))));
+
+                requests.add(new Request().setAddSheet(new AddSheetRequest()
+                        .setProperties(new SheetProperties().setTitle("Date Log"))));
+
+                BatchUpdateSpreadsheetRequest body
+                        = new BatchUpdateSpreadsheetRequest().setRequests(requests);
+                BatchUpdateSpreadsheetResponse responseOfSheet = service.spreadsheets().batchUpdate(spreadsheet, body).execute();
+
+                String range = getPage(page);
+
+                return getDataFromSheet(service, range);
+
+            } catch (Exception e2) {
+                LoggingUtils.log(Level.SEVERE, e);
+                util.createAlert(
+                        "ERROR",
+                        "Error connecting to database",
+                        "Specified sheets Current or Date Log do not exist, failed to create"
+
+                );
+
+                CommonUtils.exitApplication();
+                return null;
+            }
+
+            //attempt to create our sheets
+
         } catch (IOException e3) {
             LoggingUtils.log(Level.SEVERE, e3);
 
@@ -126,6 +169,18 @@ public class DatabaseProcess {
             return null;
 
         }
+    }
+
+    private List<List<Object>> getDataFromSheet(Sheets service, String range) throws IOException {
+        ValueRange response = service.spreadsheets().values()
+                .get(spreadsheet, range)
+                .execute();
+
+        if (response.getValues() == null) {
+            worksheetIsEmpty = true;
+        }
+
+        return response.getValues();
     }
 
     public void updateSpreadSheet(int row, int column, String data, int page) {

@@ -103,8 +103,14 @@ public class LogoutActivity {
 
 
     //helper method for grabbing the column that contains the current date
-    private int getCurrentDateColumn() {
-        ArrayList<String> data = dbUtils.getRowData(1, Constants.kLogSheet);
+    public int getCurrentDateColumn() {
+        ArrayList<String> data;
+        try {
+            data = dbUtils.getRowData(1, Constants.kLogSheet);
+        } catch (NullPointerException e) {
+            data = new ArrayList<>();
+        }
+
         String currentDate = new SimpleDateFormat("yyyy:MM:dd").format(new Date());
 
         //check if our date already exists
@@ -117,6 +123,11 @@ public class LogoutActivity {
             if (checkDate.equals(currentDate)) {
                 return i;
             }
+        }
+
+        //confirm that the sheet isn't empty
+        if (data.size() == 0) {
+            i = 3;
         }
 
         //log the current date and return column

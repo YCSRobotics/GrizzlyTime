@@ -114,38 +114,57 @@ public class DatabaseProcess {
             return null;
 
         } catch (GoogleJsonResponseException e) {
-            LoggingUtils.log(Level.SEVERE, e);
+            LoggingUtils.log(Level.SEVERE, e.getDetails().getMessage());
 
             try {
-                LoggingUtils.log(Level.WARNING, "Attempting to create our sheets");
 
-                final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-                Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                        .setApplicationName(APPLICATION_NAME)
-                        .build();
+                util.createAlert("ERROR", "Sheet does not exist", e.getDetails().getMessage() + "\nAttempting to create!");
 
-                ArrayList<Request> requests = new ArrayList<>();
+                if (e.getDetails().getMessage().contains("Unable to parse range")) {
+                    LoggingUtils.log(Level.WARNING, "Attempting to create our sheets");
 
-                requests.add(new Request().setAddSheet(new AddSheetRequest()
-                        .setProperties(new SheetProperties().setTitle("Current"))));
+                    final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+                    Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                            .setApplicationName(APPLICATION_NAME)
+                            .build();
 
-                requests.add(new Request().setAddSheet(new AddSheetRequest()
-                        .setProperties(new SheetProperties().setTitle("Date Log"))));
+                    ArrayList<Request> requests = new ArrayList<>();
 
-                BatchUpdateSpreadsheetRequest body
-                        = new BatchUpdateSpreadsheetRequest().setRequests(requests);
-                BatchUpdateSpreadsheetResponse responseOfSheet = service.spreadsheets().batchUpdate(spreadsheet, body).execute();
+                    //add our sheets to the list of sheets to be processed
+                    if (e.getDetails().getMessage().contains("Current")) {
+                        requests.add(new Request().setAddSheet(new AddSheetRequest()
+                                .setProperties(new SheetProperties().setTitle("Current"))));
+                        LoggingUtils.log(Level.INFO, "Creating Current Sheet");
+                    }
 
-                String range = getPage(page);
+                    if (e.getDetails().getMessage().contains("Date Log")) {
+                        requests.add(new Request().setAddSheet(new AddSheetRequest()
+                                .setProperties(new SheetProperties().setTitle("Date Log"))));
+                        LoggingUtils.log(Level.INFO, "Creating Date Log Sheet");
+                    }
 
-                return getDataFromSheet(service, range);
+                    BatchUpdateSpreadsheetRequest body
+                            = new BatchUpdateSpreadsheetRequest().setRequests(requests);
+
+                    BatchUpdateSpreadsheetResponse updateResponse = service.spreadsheets().batchUpdate(spreadsheet, body).execute();
+
+                    LoggingUtils.log(Level.INFO, updateResponse.getReplies().toString());
+
+                    String range = getPage(page);
+
+                    return getDataFromSheet(service, range);
+                }
+
+                LoggingUtils.log(Level.SEVERE, "Unknown exception");
+                CommonUtils.exitApplication();
+                return null;
 
             } catch (Exception e2) {
                 LoggingUtils.log(Level.SEVERE, e);
                 util.createAlert(
                         "ERROR",
                         "Error connecting to database",
-                        "Specified sheets Current or Date Log do not exist, failed to create"
+                        "Specified sheets do not exist, failed to create"
 
                 );
 

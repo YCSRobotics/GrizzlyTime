@@ -30,6 +30,7 @@ public class Constants {
     public static final String kConfigName = "config.json";
 
     //resource locations
+    //resources inside a jar path seperator are NOT OS dependent
     public static final String kRootStylesheet = "styles/root.css";
     public static final String kApplicationIcon = "images/icon.png";
     public static final String kBearImage = "images/bear.png";

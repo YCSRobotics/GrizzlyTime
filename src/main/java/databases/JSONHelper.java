@@ -7,6 +7,7 @@ import helpers.LoggingUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +32,7 @@ public class JSONHelper {
 
         //attempt to grab JSONString from config file
         try {
-            JSONString = CommonUtils.readFile(CommonUtils.getCurrentDir() + "/" + Constants.kConfigName);
+            JSONString = CommonUtils.readFile(CommonUtils.getCurrentDir() + File.separator + Constants.kConfigName);
 
         } catch (FileNotFoundException e) {
             LoggingUtils.log(Level.SEVERE, "config.json not found, creating");
@@ -46,6 +47,7 @@ public class JSONHelper {
                     );
 
             //exit the application
+            CommonUtils.exitApplication();
             return "";
 
         }
@@ -66,6 +68,7 @@ public class JSONHelper {
                     "Please delete the config.json file and relaunch the application."
             );
 
+            CommonUtils.exitApplication();
             return "";
         }
 
@@ -79,6 +82,7 @@ public class JSONHelper {
             );
 
             //exit application
+            CommonUtils.exitApplication();
             return "";
 
         } else {

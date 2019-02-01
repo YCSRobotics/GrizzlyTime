@@ -109,7 +109,7 @@ public class JSONHelper {
             LoggingUtils.log(Level.SEVERE, e.getMessage());
             util.createAlert(
                     "ERROR",
-                    "ERROR COPYING JSON",
+                    "Error Copying Json",
                     "An unspecified error occured while copying the config.json. \n" +
                             e.getMessage()
             );

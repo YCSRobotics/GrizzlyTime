@@ -163,7 +163,7 @@ public class DatabaseProcess {
                 LoggingUtils.log(Level.SEVERE, e);
                 util.createAlert(
                         "ERROR",
-                        "Error connecting to database",
+                        "Error creating sheets",
                         "Specified sheets do not exist, failed to create"
 
                 );

@@ -144,7 +144,6 @@ public class AlertUtils {
             while (!isSet.get()) {
             }
 
-            System.out.println("Run later");
             return temp.get();
 
         }
@@ -260,8 +259,6 @@ public class AlertUtils {
         Platform.runLater(firstName::requestFocus);
 
         Optional result = dialog.showAndWait();
-
-        System.out.println(result);
 
         ArrayList<String> data = new ArrayList<>();
 

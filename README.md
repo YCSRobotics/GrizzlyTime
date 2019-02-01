@@ -6,7 +6,7 @@
 </a>
         
  
-![example image](https://i.ibb.co/TK4Q1WT/90.png)
+![example image](https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/wiki_images/main_screen.png)
 
 GrizzlyTime is a Java based time logging system that links with Google Sheets. It features fast setup (<5minutes), logging of individual student dates, quick student registration, flexible 6 digit ID system, etc.
 
@@ -26,7 +26,8 @@ GrizzlyTime is a Java based time logging system that links with Google Sheets. I
 ## Downloads
 Download the latest **release** [here](https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest "here").
 
-A setup tutorial can be found [here.](https://www.youtube.com/watch?v=Cnrck_dascw "here.")
+A setup tutorial can be found [here.](https://www.youtube.com/watch?v=Cnrck_dascw "here.")  
+Or see the [wiki](https://github.com/Daltz333/GrizzlyTime-JavaFX/wiki "wiki")
 
 ## Customizing/Building Source Code
 Visit the [wiki](https://github.com/Daltz333/GrizzlyTime-JavaFX/wiki "wiki") for information on custom images or code.
@@ -34,9 +35,7 @@ Visit the [wiki](https://github.com/Daltz333/GrizzlyTime-JavaFX/wiki "wiki") for
 ## Credits
 GrizzlyTime is licensed under MIT and uses the following open source software with their respective licenses.
 ```
-OpenCV 3.4.3
 Google Java API Client 1.23.0
-ZXIng Barcode Scanning Library 3.3.0
 Commons-IO 2.6
 Org.Json
 ```

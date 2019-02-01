@@ -50,14 +50,24 @@ public class LoggingUtils {
             try {
                 String currentDate = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
 
-                File file = new File(CommonUtils.getCurrentDir() + "\\logs\\");
+                File file = new File(CommonUtils.getCurrentDir() + File.separator + "logs" + File.separator);
 
                 if (!file.exists()) {
                     boolean success = file.mkdir();
                     LoggingUtils.log(Level.INFO, "Directory creation success? " + success);
                 }
 
-                fh = new FileHandler(CommonUtils.getCurrentDir() + "\\logs\\log_" + currentDate + ".log");
+                File logFile = new File(CommonUtils.getCurrentDir() + File.separator + "logs" + File.separator + "log_" + currentDate + ".log");
+
+                int i = 0;
+                while (logFile.exists()) {
+                    logFile = new File(CommonUtils.getCurrentDir() + File.separator + "logs" + File.separator + "log_" + i +"_" + currentDate + ".log");
+                    i++;
+                }
+
+                String logFilePath = logFile.getAbsolutePath();
+
+                fh = new FileHandler(logFilePath);
 
             } catch (IOException e) {
                 e.printStackTrace();

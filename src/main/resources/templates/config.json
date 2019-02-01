@@ -3,5 +3,7 @@
   "enableCamera": "true",
   "handsFreeMode": "false",
   "updateNotifier": "true",
-  "idLength": "6"
+  "idLength": "6",
+  "applicationName": "GrizzlyTime_JavaFX_Edition",
+  "grizzlyVerification": "false"
 }

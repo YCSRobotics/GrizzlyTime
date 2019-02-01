@@ -1,6 +1,7 @@
 package activities;
 
 import databases.DatabaseUtils;
+import databases.JSONHelper;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
@@ -12,10 +13,20 @@ public class LoginActivity {
     private LoginNotifier notifier = new LoginNotifier();
 
     private DatabaseUtils dbUtils;
+    private JSONHelper helper = new JSONHelper();
+
+    public static boolean grizzlyPrompt;
 
     public LoginActivity(DatabaseUtils dbUtils) {
         this.dbUtils = dbUtils;
 
+        String grizzlyPromptTemp = helper.getKey("grizzlyVerification");
+
+        if (grizzlyPromptTemp.equals("")) {
+            grizzlyPrompt = false;
+        } else {
+            grizzlyPrompt = grizzlyPromptTemp.equalsIgnoreCase("true");
+        }
     }
 
     public void loginUser(int userRow, String currentTime) {
@@ -23,7 +34,7 @@ public class LoginActivity {
         dbUtils.setCellData(userRow, Constants.kLoggedInColumn, "TRUE", Constants.kMainSheet);
         dbUtils.setCellData(userRow, Constants.kLastLogoutColumn, "LOGGED IN", Constants.kMainSheet);
 
-        if (Constants.kGrizzlyPrompt && !notifier.checkNotifier(userRow, dbUtils)) {
+        if (grizzlyPrompt && !notifier.checkNotifier(userRow, dbUtils)) {
             utils.playDing();
 
             alertUtils.createAlert("Registration not complete!", "Registration not complete!", "It seems you have not completed your user registration!" +

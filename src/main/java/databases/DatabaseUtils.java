@@ -1,5 +1,6 @@
 package databases;
 
+import activities.LoginActivity;
 import helpers.Constants;
 import helpers.LoggingUtils;
 
@@ -42,7 +43,7 @@ public class DatabaseUtils {
 
     //update registration data sheet
     private void updateStudentRegistrationData(){
-        if (Constants.kGrizzlyPrompt) {
+        if (LoginActivity.grizzlyPrompt) {
             registrationData = dbProcess.returnWorksheetData(Constants.kRegistrationSheet);
         }
     }

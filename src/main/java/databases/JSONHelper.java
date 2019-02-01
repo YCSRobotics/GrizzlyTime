@@ -78,7 +78,7 @@ public class JSONHelper {
             util.createAlert(
                     "ERROR",
                     "Invalid Configuration",
-                    "Please confirm that the configuration is valid."
+                    "Please confirm that the configuration is valid and the sheet identifier is valid."
             );
 
             //exit application

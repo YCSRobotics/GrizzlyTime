@@ -71,7 +71,6 @@ public class Constants {
     public static final int kSplashHeight = 190;
 
     //grizzly robotics specific
-    public static final boolean kGrizzlyPrompt = false;
     public static final boolean kMentorFallback = true;
 
     public static final String kUpdateUrl = "https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/version.txt";

@@ -1,4 +1,5 @@
 import activities.KeyActivity;
+import databases.JSONHelper;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
@@ -26,8 +27,8 @@ public class GrizzlyTime extends Application {
     //only initializations that don't have freezing constructor instances should be placed here
     private SplashScene splash = new SplashScene();
     private KeyActivity keyHandlers = new KeyActivity();
-    private AlertUtils alertUtils = new AlertUtils();
     private UpdateNotifier updater = new UpdateNotifier();
+    private JSONHelper helper = new JSONHelper();
 
     @Override
     public void start(Stage primaryStage) {
@@ -54,7 +55,16 @@ public class GrizzlyTime extends Application {
         root.setId("main");
         root.setAlignment(Pos.CENTER);
 
-        primaryStage.setTitle(Constants.kApplicationName);
+        String applicationName = helper.getKey("applicationName");
+
+        if (applicationName.equals("")) {
+            primaryStage.setTitle(Constants.kApplicationName);
+
+        } else {
+            applicationName = applicationName.replaceAll("_", " ");
+            primaryStage.setTitle(applicationName);
+        }
+
         primaryStage.setScene(scene);
         primaryStage.setResizable(Constants.kWindowResizable);
 

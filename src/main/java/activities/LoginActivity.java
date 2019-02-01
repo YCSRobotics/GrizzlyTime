@@ -1,11 +1,14 @@
 package activities;
 
+import databases.BatchUpdateData;
 import databases.DatabaseUtils;
 import databases.JSONHelper;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
 import notifiers.LoginNotifier;
+
+import java.util.ArrayList;
 
 public class LoginActivity {
     private CommonUtils utils = new CommonUtils();
@@ -30,9 +33,13 @@ public class LoginActivity {
     }
 
     public void loginUser(int userRow, String currentTime) {
-        dbUtils.setCellData(userRow, Constants.kLastLoginColumn, currentTime, Constants.kMainSheet);
-        dbUtils.setCellData(userRow, Constants.kLoggedInColumn, "TRUE", Constants.kMainSheet);
-        dbUtils.setCellData(userRow, Constants.kLastLogoutColumn, "LOGGED IN", Constants.kMainSheet);
+        ArrayList<BatchUpdateData<Integer, Integer, String>> data = new ArrayList<>();
+
+        data.add(new BatchUpdateData<>(userRow, Constants.kLastLoginColumn, currentTime));
+        data.add(new BatchUpdateData<>(userRow, Constants.kLoggedInColumn, "TRUE"));
+        data.add(new BatchUpdateData<>(userRow, Constants.kLastLogoutColumn, "LOGGED IN"));
+
+        dbUtils.setCellDataBatch(data, Constants.kMainSheet);
 
         if (grizzlyPrompt && !notifier.checkNotifier(userRow, dbUtils)) {
             utils.playDing();

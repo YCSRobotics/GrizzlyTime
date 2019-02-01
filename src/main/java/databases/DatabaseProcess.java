@@ -233,6 +233,49 @@ public class DatabaseProcess {
 
     }
 
+    public void updateSpreadSheetBatch(ArrayList<BatchUpdateData<Integer, Integer, String>> batchData, int page) {
+        try {
+            LoggingUtils.log(Level.INFO, "Batch updating sheet");
+            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+
+            List<ValueRange> requestData = new ArrayList<>();
+
+            for (BatchUpdateData data : batchData) {
+                // Build a new authorized API client service.
+                String columnLetter = getCharForNumber(data.getSecond());
+
+                String range = columnLetter + data.getFirst();
+
+                String sheetPage = getPage(page);
+                range = sheetPage + "!" + range;
+
+                requestData.add(new ValueRange()
+                        .setRange(range)
+                        .setValues(Collections.singletonList(Collections.singletonList(data.getThird()))));
+            }
+
+            BatchUpdateValuesRequest batchBody = new BatchUpdateValuesRequest()
+                    .setValueInputOption("RAW")
+                    .setData(requestData);
+
+            BatchUpdateValuesResponse batchResult = service.spreadsheets().values()
+                    .batchUpdate(spreadsheet, batchBody)
+                    .execute();
+
+        } catch (GeneralSecurityException e) {
+            LoggingUtils.log(Level.SEVERE, "INVALID CREDENTIALS");
+
+        } catch (IOException e2) {
+            LoggingUtils.log(Level.SEVERE, e2);
+            //do nothing
+
+        }
+
+    }
+
     //update current working page
     private String getPage(int page){
         switch (page) {

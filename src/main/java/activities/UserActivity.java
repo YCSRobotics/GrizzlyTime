@@ -1,5 +1,6 @@
 package activities;
 
+import databases.BatchUpdateData;
 import databases.DatabaseUtils;
 import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
@@ -69,25 +70,30 @@ public class UserActivity {
         //cancel if user cancelled or exited registration dialog
         if (("TRUE").equalsIgnoreCase(userData.get(0))) {
             //create user then login
+            ArrayList<BatchUpdateData<Integer, Integer, String>> data = new ArrayList<>();
+
             int blankRow = dbUtils.nextEmptyCellColumn(Constants.kMainSheet);
-            dbUtils.setCellData(blankRow, Constants.kStudentIdColumn, userID, Constants.kMainSheet);
-            dbUtils.setCellData(blankRow, Constants.kFirstNameColumn, userData.get(1), Constants.kMainSheet);
-            dbUtils.setCellData(blankRow, Constants.kLastNameColumn, userData.get(2), Constants.kMainSheet);
-            dbUtils.setCellData(blankRow, Constants.kEmailColumn, userData.get(3), Constants.kMainSheet);
-            dbUtils.setCellData(blankRow, Constants.kRoleColumn, userData.get(5), Constants.kMainSheet);
-            dbUtils.setCellData(blankRow, Constants.kGenderColumn, userData.get(4), Constants.kMainSheet);
+            addUserInfoBasic(userData, userID, data, blankRow);
+            data.add(new BatchUpdateData<>(blankRow, Constants.kEmailColumn, userData.get(3)));
+            data.add(new BatchUpdateData<>(blankRow, Constants.kRoleColumn, userData.get(5)));
+            data.add(new BatchUpdateData<>(blankRow, Constants.kGenderColumn, userData.get(4)));
+
+            dbUtils.setCellDataBatch(data, Constants.kMainSheet);
             dbUtils.getUpdatedData();
 
-            int blankRowLogged = dbUtils.nextEmptyCellColumn(Constants.kLogSheet);
+            ArrayList<String> columnLogged = dbUtils.getColumnData(Constants.kStudentIdColumn, Constants.kLogSheet);
 
-            if (blankRowLogged == 0) {
-                blankRowLogged += 1;
+            int i;
+            for (i = 1; i < columnLogged.size(); i++) {
+                if (columnLogged.get(i).equals("")) {
+                    break;
+                }
             }
 
-            dbUtils.setCellData(blankRowLogged, Constants.kStudentIdColumn, userID, Constants.kLogSheet);
-            dbUtils.setCellData(blankRowLogged, Constants.kFirstNameColumn, userData.get(1), Constants.kLogSheet);
-            dbUtils.setCellData(blankRowLogged, Constants.kLastNameColumn, userData.get(2), Constants.kLogSheet);
+            data.clear();
+            addUserInfoBasic(userData, userID, data, i);
 
+            dbUtils.setCellDataBatch(data, Constants.kLogSheet);
             dbUtils.getUpdatedData();
 
             //ensure there is a date column
@@ -98,6 +104,12 @@ public class UserActivity {
             throw new CancelledUserCreationException("Cancelled");
 
         }
+    }
+
+    private void addUserInfoBasic(ArrayList<String> userData, String userID, ArrayList<BatchUpdateData<Integer, Integer, String>> data, int i) {
+        data.add(new BatchUpdateData<>(i, Constants.kStudentIdColumn, userID));
+        data.add(new BatchUpdateData<>(i, Constants.kFirstNameColumn, userData.get(1)));
+        data.add(new BatchUpdateData<>(i, Constants.kLastNameColumn, userData.get(2)));
     }
 
     public int doesIdExist(ArrayList<String> ids, String userID) {

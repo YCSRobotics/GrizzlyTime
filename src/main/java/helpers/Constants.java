@@ -54,9 +54,7 @@ public class Constants {
             "GrizzlyTime was programmed by Grizzly Robotics Team Captain of Year 2018/2019, Dalton Smith. " +
             "All rights and permissions are reserved. Content is licensed under MIT. See below for more information.";
     public static final String kCreditsList = "GrizzlyTime uses the following open source projects:\n" +
-            "OpenCV 3.4.3\n" +
             "Google Java API Client 1.23.0\n" +
-            "ZXIng Barcode Scanning Library 3.3.0\n" +
             "Commons-IO 2.6\n" +
             "Org.Json";
     public static final int kCreditsStageWidth = 630;

@@ -15,7 +15,6 @@ GrizzlyTime is a Java based time logging system that links with Google Sheets. I
 - Tracking of student/mentor total hours
 - Easy 1 minute registration for new users
 - Compatible with USB Barcode Scanners
-- Built in camera mode to read QR ID codes
 - Graphics are customizable and can be easily replaced
 - Easily extendable
 

@@ -33,7 +33,6 @@ public class UserActivity {
     private LoginActivity loginActivity = new LoginActivity(dbUtils);
 
     private boolean idGrabbed = false;
-    private int idLength = 6;
 
     //check if user is logged in
     public boolean isUserLoggedIn(String userID) throws Exception {
@@ -228,13 +227,14 @@ public class UserActivity {
 
     //checks if ID is valid integer and 6 digit number
     public boolean isValidID(String userID) {
-        grabIdLength();
+        int idLength = grabIdLength("idLength");
+        int mentorIdLength = 7;
 
         try {
             Integer.parseInt(userID);
 
             if (Constants.kMentorFallback) {
-                return userID.length() == idLength || userID.length() == 8;
+                return userID.length() == idLength || userID.length() == mentorIdLength;
 
             } else {
                 return userID.length() == idLength;
@@ -247,17 +247,20 @@ public class UserActivity {
         }
     }
 
-    private int grabIdLength() {
+    private int grabIdLength(String titleOfKey) {
+        int idLength = 6;
+        
         if (!idGrabbed) {
             try {
-                idLength = Integer.parseInt(json.getKey("idLength"));
+                idLength = Integer.parseInt(json.getKey(titleOfKey));
 
             } catch (NumberFormatException e) {
-                //do nothing
+                LoggingUtils.log(Level.SEVERE, "ID Length is not a number!\n" + e.getMessage());
             }
 
-            idGrabbed = true;
         }
+        
+        idGrabbed = true;
 
         return idLength;
     }

@@ -52,6 +52,8 @@ public class LocalDbActivity {
             alertUtils.createAlert("ERROR", "Configuration File does not exist!",
                     "The config.json file does not exist and has been created! Please update the sheet ID");
 
+            jsonHelper.copyTemplateJSON();
+
             CommonUtils.exitApplication();
 
         } catch (JsonKeyHasNoDataException e) {

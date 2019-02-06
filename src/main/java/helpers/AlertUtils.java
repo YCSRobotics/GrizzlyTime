@@ -40,9 +40,7 @@ public class AlertUtils {
 
             AtomicBoolean temp = new AtomicBoolean();
 
-            Platform.runLater(() -> {
-                temp.set(customDialog(title, header, content));
-            });
+            Platform.runLater(() -> temp.set(customDialog(title, header, content)));
 
             return temp.get();
         }

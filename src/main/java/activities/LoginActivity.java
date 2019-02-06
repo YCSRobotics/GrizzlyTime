@@ -25,11 +25,11 @@ public class LoginActivity {
     }
 
     public void loginUser(int userRow, String currentTime) {
-        ArrayList<BatchUpdateData<Integer, Integer, String>> data = new ArrayList<>();
+        ArrayList<BatchUpdateData> data = new ArrayList<>();
 
-        data.add(new BatchUpdateData<>(userRow, Constants.kLastLoginColumn, currentTime));
-        data.add(new BatchUpdateData<>(userRow, Constants.kLoggedInColumn, "TRUE"));
-        data.add(new BatchUpdateData<>(userRow, Constants.kLastLogoutColumn, "LOGGED IN"));
+        data.add(new BatchUpdateData(userRow, Constants.kLastLoginColumn, currentTime));
+        data.add(new BatchUpdateData(userRow, Constants.kLoggedInColumn, "TRUE"));
+        data.add(new BatchUpdateData(userRow, Constants.kLastLogoutColumn, "LOGGED IN"));
 
         dbUtils.setCellDataBatch(data, Constants.kMainSheet);
 

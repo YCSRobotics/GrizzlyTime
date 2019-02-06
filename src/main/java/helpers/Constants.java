@@ -16,7 +16,6 @@ public class Constants {
 
     //camera feed size
     public static final int kCameraHeight = 400;
-    public static final int kCameraWidth = 610;
 
     //window constants
     public static final boolean kWindowResizable = false;

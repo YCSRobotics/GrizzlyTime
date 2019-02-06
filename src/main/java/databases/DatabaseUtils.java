@@ -41,7 +41,7 @@ public class DatabaseUtils {
 
     }
 
-    public void setCellDataBatch(ArrayList<BatchUpdateData<Integer, Integer, String>> data, int page) {
+    public void setCellDataBatch(ArrayList<BatchUpdateData> data, int page) {
         setPage(page);
 
         dbProcess.updateSpreadSheetBatch(data, page);

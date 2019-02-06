@@ -1,18 +1,18 @@
 package databases;
 
-public class BatchUpdateData<T, U, V> {
+public class BatchUpdateData {
 
     private final int first;
     private final int second;
     private final String third;
 
-    public BatchUpdateData(int first, int second, String third) {
-        this.first = first + 1;
-        this.second = second + 1;
-        this.third = third;
+    public BatchUpdateData(int row, int column, String data) {
+        this.first = row + 1;
+        this.second = column + 1;
+        this.third = data;
     }
 
-    public int getFirst() { return first; }
-    public int getSecond() { return second; }
-    public String getThird() { return third; }
+    public int getRow() { return first; }
+    public int getColumn() { return second; }
+    public String getData() { return third; }
 }

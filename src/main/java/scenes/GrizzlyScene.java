@@ -3,7 +3,6 @@ package scenes;
 import activities.KeyActivity;
 import activities.LocalDbActivity;
 import activities.UserActivity;
-import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
 import exceptions.ConnectToWorksheetException;
 import helpers.AlertUtils;
@@ -50,7 +49,6 @@ public class GrizzlyScene {
     private Hyperlink optionsLink = new Hyperlink("Full Screen");
     private BorderPane bottomPane = new BorderPane();
 
-    private JSONHelper parser = new JSONHelper();
     private AlertUtils alertUtils = new AlertUtils();
 
     //boolean state variables
@@ -139,18 +137,12 @@ public class GrizzlyScene {
     //our event handlers for interactivity
     private void setEventHandlers() {
         //login on enter key press
-        studentIDBox.setOnAction(event -> {
-            confirmLogin();
-        });
+        studentIDBox.setOnAction(event -> confirmLogin());
 
         //login button event handler
-        loginButton.setOnAction(event -> {
-            confirmLogin();
-        });
+        loginButton.setOnAction(event -> confirmLogin());
 
-        creditsLink.setOnAction(event -> {
-            showCredits();
-        });
+        creditsLink.setOnAction(event -> showCredits());
 
         optionsLink.setOnAction(event -> {
             Stage stage = (Stage)optionsLink.getScene().getWindow();
@@ -185,9 +177,7 @@ public class GrizzlyScene {
                 }
             };
 
-            wait.setOnSucceeded(e -> {
-                setMessageBoxText("");
-            });
+            wait.setOnSucceeded(e -> setMessageBoxText(""));
 
             //no need to set as daemon as will end after x seconds.
             new Thread(wait).start();
@@ -198,20 +188,20 @@ public class GrizzlyScene {
         if (handsFreeMode) {
             //confirm that the user wants to login/logout
             if (alertUtils.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
-                loginUser(false);
+                loginUser();
             } else {
                 setMessageBoxText("");
             }
 
         //show no prompts
         } else {
-            loginUser(true);
+            loginUser();
         }
 
     }
 
     //login the user, check if hands free or not
-    private void loginUser(boolean handsFree) {
+    private void loginUser() {
         //separate login process on different thread to ensure
         //main application does not freeze
         //also allows in for multiple users login simultaneously
@@ -249,9 +239,7 @@ public class GrizzlyScene {
             }
 
             //refocus the textbox
-            Platform.runLater(() -> {
-                studentIDBox.requestFocus();
-            });
+            Platform.runLater(() -> studentIDBox.requestFocus());
         };
 
         //start our thread
@@ -265,9 +253,7 @@ public class GrizzlyScene {
         if (Platform.isFxApplicationThread()) {
             messageText.setText(text);
         } else {
-            Platform.runLater(() -> {
-                messageText.setText(text);
-            });
+            Platform.runLater(() -> messageText.setText(text));
         }
     }
 

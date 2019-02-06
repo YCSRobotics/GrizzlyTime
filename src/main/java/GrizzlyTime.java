@@ -34,7 +34,7 @@ public class GrizzlyTime extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        Thread.setDefaultUncaughtExceptionHandler(GrizzlyTime::globalExceptionHandler);
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> globalExceptionHandler(throwable));
 
         dbActivity.updateLocalDb();
 
@@ -99,7 +99,7 @@ public class GrizzlyTime extends Application {
     }
 
     //catch uncaught exceptions
-    private static void globalExceptionHandler(Thread thread, Throwable throwable) {
+    private static void globalExceptionHandler(Throwable throwable) {
         LoggingUtils.log(Level.SEVERE, throwable);
         CommonUtils.exitApplication();
     }

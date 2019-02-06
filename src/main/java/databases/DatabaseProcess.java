@@ -234,7 +234,7 @@ public class DatabaseProcess {
 
     }
 
-    public void updateSpreadSheetBatch(ArrayList<BatchUpdateData<Integer, Integer, String>> batchData, int page) {
+    public void updateSpreadSheetBatch(ArrayList<BatchUpdateData> batchData, int page) {
         try {
             LoggingUtils.log(Level.INFO, "Batch updating sheet");
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -246,23 +246,24 @@ public class DatabaseProcess {
 
             for (BatchUpdateData data : batchData) {
                 // Build a new authorized API client service.
-                String columnLetter = getCharForNumber(data.getSecond());
+                String columnLetter = getCharForNumber(data.getColumn());
 
-                String range = columnLetter + data.getFirst();
+                String range = columnLetter + data.getRow();
 
                 String sheetPage = getPage(page);
                 range = sheetPage + "!" + range;
 
                 requestData.add(new ValueRange()
                         .setRange(range)
-                        .setValues(Collections.singletonList(Collections.singletonList(data.getThird()))));
+                        .setValues(Collections.singletonList(Collections.singletonList(data.getData()))));
             }
 
             BatchUpdateValuesRequest batchBody = new BatchUpdateValuesRequest()
                     .setValueInputOption("RAW")
                     .setData(requestData);
 
-            BatchUpdateValuesResponse batchResult = service.spreadsheets().values()
+            //TODO check response
+            service.spreadsheets().values()
                     .batchUpdate(spreadsheet, batchBody)
                     .execute();
 

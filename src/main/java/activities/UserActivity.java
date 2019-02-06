@@ -30,8 +30,6 @@ public class UserActivity {
     private LogoutActivity logoutActivity = new LogoutActivity(dbUtils);
     private LoginActivity loginActivity = new LoginActivity(dbUtils);
 
-    private boolean idGrabbed = false;
-
     //check if user is logged in
     public boolean isUserLoggedIn(String userID) throws Exception {
         dbUtils.getUpdatedData();
@@ -67,13 +65,13 @@ public class UserActivity {
         //cancel if user cancelled or exited registration dialog
         if (("TRUE").equalsIgnoreCase(userData.get(0))) {
             //create user then login
-            ArrayList<BatchUpdateData<Integer, Integer, String>> data = new ArrayList<>();
+            ArrayList<BatchUpdateData> data = new ArrayList<>();
 
             int blankRow = dbUtils.nextEmptyCellColumn(Constants.kMainSheet);
             addUserInfoBasic(userData, userID, data, blankRow);
-            data.add(new BatchUpdateData<>(blankRow, Constants.kEmailColumn, userData.get(3)));
-            data.add(new BatchUpdateData<>(blankRow, Constants.kRoleColumn, userData.get(5)));
-            data.add(new BatchUpdateData<>(blankRow, Constants.kGenderColumn, userData.get(4)));
+            data.add(new BatchUpdateData(blankRow, Constants.kEmailColumn, userData.get(3)));
+            data.add(new BatchUpdateData(blankRow, Constants.kRoleColumn, userData.get(5)));
+            data.add(new BatchUpdateData(blankRow, Constants.kGenderColumn, userData.get(4)));
 
             dbUtils.setCellDataBatch(data, Constants.kMainSheet);
             dbUtils.getUpdatedData();
@@ -103,10 +101,10 @@ public class UserActivity {
         }
     }
 
-    private void addUserInfoBasic(ArrayList<String> userData, String userID, ArrayList<BatchUpdateData<Integer, Integer, String>> data, int i) {
-        data.add(new BatchUpdateData<>(i, Constants.kStudentIdColumn, userID));
-        data.add(new BatchUpdateData<>(i, Constants.kFirstNameColumn, userData.get(1)));
-        data.add(new BatchUpdateData<>(i, Constants.kLastNameColumn, userData.get(2)));
+    private void addUserInfoBasic(ArrayList<String> userData, String userID, ArrayList<BatchUpdateData> data, int i) {
+        data.add(new BatchUpdateData(i, Constants.kStudentIdColumn, userID));
+        data.add(new BatchUpdateData(i, Constants.kFirstNameColumn, userData.get(1)));
+        data.add(new BatchUpdateData(i, Constants.kLastNameColumn, userData.get(2)));
     }
 
     public int doesIdExist(ArrayList<String> ids, String userID) {
@@ -138,9 +136,7 @@ public class UserActivity {
 
     //login our user
     public void loginUser(String userID) {
-        Platform.runLater(() -> {
-            GrizzlyScene.setMessageBoxText("Logging in user: " + userID);
-        });
+        Platform.runLater(() -> GrizzlyScene.setMessageBoxText("Logging in user: " + userID));
 
         //grab the current time from system and format it into string
         String currentTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
@@ -161,9 +157,7 @@ public class UserActivity {
 
     //logout the user
     public void logoutUser(String userID) {
-        Platform.runLater(() -> {
-            GrizzlyScene.setMessageBoxText("Logging out user: " + userID);
-        });
+        Platform.runLater(() -> GrizzlyScene.setMessageBoxText("Logging out user: " + userID));
 
         //grab the row the user is on
         int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kMainSheet);

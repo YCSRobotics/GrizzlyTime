@@ -40,7 +40,7 @@ public class CommonUtils {
 
     public void playDing() {
 
-        Media sound = null;
+        Media sound;
         try {
             sound = new Media(getClass().getResource("/sounds/ding.wav").toURI().toString());
 

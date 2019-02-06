@@ -73,7 +73,7 @@ public class Constants {
     public static final boolean kMentorFallback = true;
 
     public static final String kUpdateUrl = "https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/version.txt";
-    public static final String kReleaseUrl = "https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest";
+    public static final String kReleaseUrl = "https://tinyurl.com/grizzlyupdate";
 
     //user states
     public static final int kIdDoesNotExist = -1;

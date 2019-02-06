@@ -1,10 +1,10 @@
 package databases;
 
+import exceptions.JsonKeyHasNoDataException;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
 import helpers.LoggingUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -27,63 +27,23 @@ public class JSONHelper {
     private AlertUtils util = new AlertUtils();
 
     //grab JSONKey
-    public String getKey(String key) {
+    public String getKey(String key) throws JsonKeyHasNoDataException, FileNotFoundException {
         String JSONString;
 
         //attempt to grab JSONString from config file
-        try {
-            JSONString = CommonUtils.readFile(CommonUtils.getCurrentDir() + File.separator + Constants.kConfigName);
-
-        } catch (FileNotFoundException e) {
-            LoggingUtils.log(Level.SEVERE, "config.json not found, creating");
-            //config.json doesn't exist, create
-            copyTemplateJSON();
-
-            //show alert dialog
-            util.createAlert(
-                    "ERROR",
-                    "Configuration file not found",
-                    "The required config.json file was not found. It has been created. Please update the sheet URL!"
-                    );
-
-            //exit the application
-            CommonUtils.exitApplication();
-            return "";
-
-        }
+        JSONString = CommonUtils.readFile(CommonUtils.getCurrentDir() + File.separator + Constants.kConfigName);
 
         //create a JSONObject from our string
         JSONObject json = new JSONObject(JSONString);
         String result;
 
         //grab the specified key from our json object
-        try {
-            result = json.getString(key);
+        result = json.getString(key);
 
-        } catch (JSONException e) {
-            LoggingUtils.log(Level.SEVERE, e);
-            util.createAlert(
-                    "ERROR",
-                    "Error loading configuration file",
-                    "Please delete the config.json file and relaunch the application."
-            );
-
-            CommonUtils.exitApplication();
-            return "";
-        }
 
         //confirm that the key was successfully retrieved
         if (result.isEmpty()) {
-            LoggingUtils.log(Level.SEVERE, "Specified key: " + key + " has no data");
-            util.createAlert(
-                    "ERROR",
-                    "Invalid Configuration",
-                    "Please confirm that the configuration is valid and the sheet identifier is valid."
-            );
-
-            //exit application
-            CommonUtils.exitApplication();
-            return "";
+            throw new JsonKeyHasNoDataException(key + " has no data!");
 
         } else {
             //key was successfully retrieved
@@ -95,7 +55,7 @@ public class JSONHelper {
     }
 
     //copy our json outside directory
-    private void copyTemplateJSON(){
+    public void copyTemplateJSON(){
         try {
             InputStream pathToConfig = getClass().getClassLoader().getResourceAsStream("templates/config.json");
 

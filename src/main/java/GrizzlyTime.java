@@ -1,5 +1,5 @@
 import activities.KeyActivity;
-import databases.JSONHelper;
+import activities.LocalDbActivity;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
@@ -28,13 +28,15 @@ public class GrizzlyTime extends Application {
     private SplashScene splash = new SplashScene();
     private KeyActivity keyHandlers = new KeyActivity();
     private UpdateNotifier updater = new UpdateNotifier();
-    private JSONHelper helper = new JSONHelper();
+
+    private LocalDbActivity dbActivity = new LocalDbActivity();
 
     @Override
     public void start(Stage primaryStage) {
 
         Thread.setDefaultUncaughtExceptionHandler(GrizzlyTime::globalExceptionHandler);
-        //grab our application icon from stream
+
+        dbActivity.updateLocalDb();
 
         //check if custom icon
         File file = new File(CommonUtils.getCurrentDir() + "\\images\\icon.png");
@@ -55,7 +57,7 @@ public class GrizzlyTime extends Application {
         root.setId("main");
         root.setAlignment(Pos.CENTER);
 
-        String applicationName = helper.getKey("applicationName");
+        String applicationName = LocalDbActivity.kApplicationName;
 
         if (applicationName.equals("")) {
             primaryStage.setTitle(Constants.kApplicationName);

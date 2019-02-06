@@ -2,7 +2,6 @@ package activities;
 
 import databases.BatchUpdateData;
 import databases.DatabaseUtils;
-import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
 import helpers.AlertUtils;
 import helpers.Constants;
@@ -27,7 +26,6 @@ public class UserActivity {
 
     private DatabaseUtils dbUtils = new DatabaseUtils();
     private AlertUtils alertUtils = new AlertUtils();
-    private JSONHelper json = new JSONHelper();
 
     private LogoutActivity logoutActivity = new LogoutActivity(dbUtils);
     private LoginActivity loginActivity = new LoginActivity(dbUtils);
@@ -227,8 +225,8 @@ public class UserActivity {
 
     //checks if ID is valid integer and 6 digit number
     public boolean isValidID(String userID) {
-        int idLength = grabIdLength("idLength");
-        int mentorIdLength = 7;
+        int idLength = LocalDbActivity.kIdLength;
+        int mentorIdLength = LocalDbActivity.kIdLengthFallback;
 
         try {
             Integer.parseInt(userID);
@@ -245,23 +243,5 @@ public class UserActivity {
             //not a valid ID
             return false;
         }
-    }
-
-    private int grabIdLength(String titleOfKey) {
-        int idLength = 6;
-        
-        if (!idGrabbed) {
-            try {
-                idLength = Integer.parseInt(json.getKey(titleOfKey));
-
-            } catch (NumberFormatException e) {
-                LoggingUtils.log(Level.SEVERE, "ID Length is not a number!\n" + e.getMessage());
-            }
-
-        }
-        
-        idGrabbed = true;
-
-        return idLength;
     }
 }

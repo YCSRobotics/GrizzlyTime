@@ -1,6 +1,7 @@
 package scenes;
 
 import activities.KeyActivity;
+import activities.LocalDbActivity;
 import activities.UserActivity;
 import databases.JSONHelper;
 import exceptions.CancelledUserCreationException;
@@ -53,15 +54,12 @@ public class GrizzlyScene {
     private AlertUtils alertUtils = new AlertUtils();
 
     //boolean state variables
-    private boolean jsonHandsFreeGrabbed = false;
-    private boolean handsFreeMode = false;
+    private boolean handsFreeMode = LocalDbActivity.kHandsFreeMode;
 
     //our upper image
     private ImageView imageView;
 
     public GrizzlyScene() {
-        updateHandsFreeValue();
-
         Image splash;
         File file = new File(CommonUtils.getCurrentDir() + "\\images\\error.png");
 
@@ -210,15 +208,6 @@ public class GrizzlyScene {
             loginUser(true);
         }
 
-    }
-
-    private void updateHandsFreeValue() {
-        if (!jsonHandsFreeGrabbed) {
-            handsFreeMode = parser.getKey("handsFreeMode").equals("false");
-
-            jsonHandsFreeGrabbed = true;
-
-        }
     }
 
     //login the user, check if hands free or not

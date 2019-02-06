@@ -4,6 +4,7 @@
   "handsFreeMode": "false",
   "updateNotifier": "true",
   "idLength": "6",
+  "idLengthFallback": "7",
   "applicationName": "GrizzlyTime_JavaFX_Edition",
   "grizzlyVerification": "false"
 }

@@ -1,6 +1,6 @@
 package notifiers;
 
-import databases.JSONHelper;
+import activities.LocalDbActivity;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
@@ -21,7 +21,6 @@ import java.util.logging.Level;
 public class UpdateNotifier {
 
     private AlertUtils alertUtils = new AlertUtils();
-    private JSONHelper jsonHelper = new JSONHelper();
 
     private void downloadVersion() throws IOException {
 
@@ -49,7 +48,7 @@ public class UpdateNotifier {
     }
 
     public void checkUpdates() {
-        if (!jsonHelper.getKey("updateNotifier").equals("true")) {
+        if (!LocalDbActivity.kUpdateNotifier) {
             return;
         }
 

@@ -2,7 +2,6 @@ package activities;
 
 import databases.BatchUpdateData;
 import databases.DatabaseUtils;
-import databases.JSONHelper;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
@@ -16,20 +15,13 @@ public class LoginActivity {
     private LoginNotifier notifier = new LoginNotifier();
 
     private DatabaseUtils dbUtils;
-    private JSONHelper helper = new JSONHelper();
 
     public static boolean grizzlyPrompt;
 
     public LoginActivity(DatabaseUtils dbUtils) {
         this.dbUtils = dbUtils;
 
-        String grizzlyPromptTemp = helper.getKey("grizzlyVerification");
-
-        if (grizzlyPromptTemp.equals("")) {
-            grizzlyPrompt = false;
-        } else {
-            grizzlyPrompt = grizzlyPromptTemp.equalsIgnoreCase("true");
-        }
+        grizzlyPrompt = LocalDbActivity.kGrizzlyVerification;
     }
 
     public void loginUser(int userRow, String currentTime) {

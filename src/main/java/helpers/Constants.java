@@ -63,7 +63,7 @@ public class Constants {
     public static final boolean kCreditsBearPreserveRatio = true;
     public static final int kCreditsWrapTextWidth = 285;
 
-    public static final String kVersion = "2.0.0";
+    public static final String kVersion = "2.0.1";
 
     //splash constants
     public static final int kSplashWidth = 390;

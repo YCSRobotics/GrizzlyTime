@@ -16,12 +16,11 @@ public class LoginActivity {
 
     private DatabaseUtils dbUtils;
 
-    public static boolean grizzlyPrompt;
+    public final static boolean grizzlyPrompt = LocalDbActivity.kGrizzlyVerification;
 
     public LoginActivity(DatabaseUtils dbUtils) {
         this.dbUtils = dbUtils;
 
-        grizzlyPrompt = LocalDbActivity.kGrizzlyVerification;
     }
 
     public void loginUser(int userRow, String currentTime) {

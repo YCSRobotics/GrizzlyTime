@@ -36,6 +36,7 @@ public class DatabaseProcess {
      * @author Dalton Smith
      * DatabaseProcess
      * Manages low level google sheets handling from API
+     * Uses the power of black magic to manage the google sheet
      * Based on Java QuickStart
      */
 

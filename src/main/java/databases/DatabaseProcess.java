@@ -57,6 +57,8 @@ public class DatabaseProcess {
 
     public static boolean worksheetIsEmpty = false;
 
+    //based upon the Java Google Sheets quickstart
+    //settings google sheets logging level to SEVERE only
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //set google logging level to severe due to permissions bug, see https://github.com/googleapis/google-http-java-client/issues/315
         java.util.logging.Logger.getLogger(FileDataStoreFactory.class.getName()).setLevel(Level.SEVERE);
@@ -75,12 +77,10 @@ public class DatabaseProcess {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
+    //return a list of rows and columns of a specified sheet
     public List<List<Object>> returnWorksheetData(int page) {
 
-        // Build a new authorized API client service.
         try {
-
-            // Build a new authorized API client service.
             String range = getPage(page);
 
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -119,9 +119,6 @@ public class DatabaseProcess {
             LoggingUtils.log(Level.SEVERE, e.getDetails().getMessage());
 
             try {
-
-                util.createAlert("ERROR", "Sheet does not exist", e.getDetails().getMessage() + "\nAttempting to create!");
-
                 if (e.getDetails().getMessage().contains("Unable to parse range")) {
                     LoggingUtils.log(Level.WARNING, "Attempting to create our sheets");
 
@@ -158,6 +155,7 @@ public class DatabaseProcess {
                 }
 
                 LoggingUtils.log(Level.SEVERE, "Unknown exception");
+                LoggingUtils.log(Level.SEVERE, e);
                 CommonUtils.exitApplication();
                 return null;
 
@@ -193,9 +191,21 @@ public class DatabaseProcess {
     }
 
     private List<List<Object>> getDataFromSheet(Sheets service, String range) throws IOException {
-        ValueRange response = service.spreadsheets().values()
-                .get(spreadsheet, range)
-                .execute();
+        ValueRange response = null;
+
+        try {
+            response = service.spreadsheets().values()
+                    .get(spreadsheet, range)
+                    .execute();
+
+        } catch (GoogleJsonResponseException e) {
+            LoggingUtils.log(Level.SEVERE, e);
+            if (e.getDetails().getMessage().contains("not found")) {
+                util.createAlert("ERROR", "Spreadsheet does not exist!", "Check your spreadsheet ID and confirm that it's valid!");
+            }
+
+            CommonUtils.exitApplication();
+        }
 
         if (response.getValues() == null) {
             worksheetIsEmpty = true;

@@ -2,11 +2,12 @@ plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '4.0.3'
     id 'application'
+    //id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
 group 'GrizzlyTime'
 version '2.0.1'
-mainClassName = "GrizzlyTime"
+mainClassName = "Main"
 
 repositories {
     mavenCentral()
@@ -20,4 +21,15 @@ dependencies {
     compile 'com.google.apis:google-api-services-sheets:v4-rev516-1.23.0'
     compile 'org.json:json:20180813'
     compile 'com.google.apis:google-api-services-analytics:v3-rev159-1.25.0'
+    //compile "org.openjfx:javafx-graphics:11.0.1:win"
+    //compile "org.openjfx:javafx-graphics:11.0.1:linux"
+    //compile "org.openjfx:javafx-graphics:11.0.1:mac"
 }
+
+/*
+javafx {
+    modules = [ 'javafx.controls',
+                'javafx.media',
+                'javafx.swing']
+}
+*/

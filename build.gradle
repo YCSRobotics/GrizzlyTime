@@ -1,3 +1,7 @@
+/*
+ * Uncomment all lines regarding javafx for java 11 support!
+ */
+
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '4.0.3'

@@ -221,10 +221,35 @@ public class DatabaseProcess {
                     .setApplicationName(APPLICATION_NAME)
                     .build();
 
-            service.spreadsheets().values().append(spreadsheet, range, requestBody).setValueInputOption("RAW").execute();
+            service.spreadsheets().values().update(spreadsheet, range, requestBody).setValueInputOption("RAW").execute();
 
         } catch (GeneralSecurityException e) {
             LoggingUtils.log(Level.SEVERE, "INVALID CREDENTIALS");
+
+        } catch (GoogleJsonResponseException e) {
+            if (e.getDetails().getMessage().contains("exceeds grid limits")) {
+                LoggingUtils.log(Level.WARNING, "Appending Data");
+                try {
+                    final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+                    Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                            .setApplicationName(APPLICATION_NAME)
+                            .build();
+
+                    service.spreadsheets().values().append(spreadsheet, range, requestBody).setValueInputOption("RAW").execute();
+
+                } catch (IOException e1) {
+                    LoggingUtils.log(Level.SEVERE, e);
+
+                } catch (GeneralSecurityException e1) {
+                    LoggingUtils.log(Level.SEVERE, e);
+                    util.createAlert("ERROR", "Invalid Credentials", "You do not have permission to edit this spreadsheet!");
+
+                }
+
+            } else {
+                LoggingUtils.log(Level.SEVERE, e);
+
+            }
 
         } catch (IOException e2) {
             LoggingUtils.log(Level.SEVERE, e2);

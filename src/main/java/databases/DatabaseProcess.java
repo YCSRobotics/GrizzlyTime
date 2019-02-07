@@ -206,7 +206,7 @@ public class DatabaseProcess {
     public void updateSpreadSheet(int row, int column, String data, int page) {
 
         // Build a new authorized API client service.
-        String columnLetter = getCharForNumber(column);
+        String columnLetter = toAlphabetic(column-1);
 
         String range = columnLetter + row;
         String sheetPage = getPage(page);
@@ -221,7 +221,7 @@ public class DatabaseProcess {
                     .setApplicationName(APPLICATION_NAME)
                     .build();
 
-            service.spreadsheets().values().update(spreadsheet, range, requestBody).setValueInputOption("RAW").execute();
+            service.spreadsheets().values().append(spreadsheet, range, requestBody).setValueInputOption("RAW").execute();
 
         } catch (GeneralSecurityException e) {
             LoggingUtils.log(Level.SEVERE, "INVALID CREDENTIALS");
@@ -246,7 +246,7 @@ public class DatabaseProcess {
 
             for (BatchUpdateData data : batchData) {
                 // Build a new authorized API client service.
-                String columnLetter = getCharForNumber(data.getColumn());
+                String columnLetter = toAlphabetic(data.getColumn() - 1);
 
                 String range = columnLetter + data.getRow();
 
@@ -295,8 +295,20 @@ public class DatabaseProcess {
         }
     }
 
-    private String getCharForNumber(int i) {
-        return i > 0 && i < 27 ? String.valueOf((char)(i + 64)) : null;
-    }
+    public static String toAlphabetic(int i) {
+        if( i<0 ) {
+            return "-"+toAlphabetic(-i-1);
+        }
 
+        int quot = i/26;
+        int rem = i%26;
+        char letter = (char)((int)'A' + rem);
+        if( quot == 0 ) {
+            return ""+letter;
+
+        } else {
+            return toAlphabetic(quot-1) + letter;
+
+        }
+    }
 }

@@ -5,17 +5,20 @@
    <img src="https://ci.appveyor.com/api/projects/status/4969habs84m6dyv8?svg=true" />
 </a>
         
- 
 ![example image](https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/wiki_images/main_screen.png)
 
 GrizzlyTime is a Java based time logging system that links with Google Sheets. It features fast setup (<5minutes), logging of individual student dates, quick student registration, flexible 6 digit ID system, etc.
+
+## Notice
+Google Sheets has a maximum column limit of 256 columns. The Date Log WILL break once this limit has been reached!
+I'm currently working on a workaround or an alternative means of storing this data. Stay up-to-date!
 
 ## Features
 - Individual logging of days signed in
 - Tracking of student/mentor total hours
 - Easy 1 minute registration for new users
 - Compatible with USB Barcode Scanners
-- Graphics are customizable and can be easily replaced
+- Graphics and Application name are customizable without code
 - Easily extendable
 
 ## Example uses of data

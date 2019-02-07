@@ -1,5 +1,7 @@
 package helpers;
 
+import activities.LocalDbActivity;
+
 public class Constants {
     //spreadsheet layout
     public static final int kLoggedInColumn = 10;
@@ -43,7 +45,7 @@ public class Constants {
 
     //main ui constants
     public static final String kUserTutorial = "Type in your Student ID to login. If you do not have a Student ID," +
-            "\nenter your birth date in 8 digits. [MMDDYYYY]";
+            "\nenter any " + LocalDbActivity.kIdLengthFallback + " digit ID number.";
     public static final int kMainStageWidth = 608;
     public static final int kMainStageHeight = 630;
     public static final String kApplicationName = "GrizzlyTime JavaFX Edition";

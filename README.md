@@ -29,6 +29,11 @@ I'm currently working on a workaround or an alternative means of storing this da
 - Gather statistics of student growth over time
 
 ## Downloads
+Currently supported OSes: Windows  
+Unsupported OSes: Linux, Mac  
+Note: I would love to support Linux and Mac. Unfortunately, I do not own a Mac machine to test GrizzlyTime on. It may
+or may not work. I'm currently working on getting Linux up and running. See [this issue](https://github.com/Daltz333/GrizzlyTime-JavaFX/issues/25)
+
 Download the latest **release** [here](https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest "here").
 
 A setup tutorial can be found [here.](https://www.youtube.com/watch?v=Cnrck_dascw "here.")  

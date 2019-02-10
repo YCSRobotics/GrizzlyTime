@@ -1,14 +1,12 @@
 # GrizzlyTime
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4aa6c7f1b32d4d0da74b7ba17558e17b)](https://app.codacy.com/app/gamefollower26/GrizzlyTime-JavaFX?utm_source=github.com&utm_medium=referral&utm_content=Daltz333/GrizzlyTime-JavaFX&utm_campaign=Badge_Grade_Dashboard)
-![Current Version Bade](https://img.shields.io/github/release/daltz333/GrizzlyTime-JavaFX.svg?style=flat)
-![Num Downloads](https://img.shields.io/github/downloads/daltz333/GrizzlyTime-JavaFX/latest/total.svg?style=flat)
-![License](https://img.shields.io/github/license/daltz333/GrizzlyTime-JavaFX.svg?style=flat)
-<a href="https://github.com/badges/shields/graphs/contributors" alt="Contributors">
-   <img src="https://ci.appveyor.com/api/projects/status/4969habs84m6dyv8?svg=true" />
-</a>
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/63d04fb23e1d411a946c3184a57ef691)](https://www.codacy.com/app/gamefollower26/GrizzlyTime?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=YCSRobotics/GrizzlyTime&amp;utm_campaign=Badge_Grade)
+![Current Version Bade](https://img.shields.io/github/release/ycsrobotics/GrizzlyTime.svg?style=flat)
+![Num Downloads](https://img.shields.io/github/downloads/ycsrobotics/GrizzlyTime/latest/total.svg?style=flat)
+![License](https://img.shields.io/github/license/ycsrobotics/GrizzlyTime.svg?style=flat)
+![Appveyor](https://ci.appveyor.com/api/projects/status/ph074gnnuymhxssw?svg=true)
         
-![example image](https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/wiki_images/main_screen.png)
+![example image](https://raw.githubusercontent.com/YCSRobotics/GrizzlyTime/master/wiki_images/main_screen.png)
 
 GrizzlyTime is a Java based time logging system that links with Google Sheets. It features fast setup (<5minutes), logging of individual student dates, quick student registration, flexible 6 digit ID system, etc.
 
@@ -34,13 +32,13 @@ Unsupported OSes: Linux, Mac
 Note: I would love to support Linux and Mac. Unfortunately, I do not own a Mac machine to test GrizzlyTime on. It may
 or may not work. I'm currently working on getting Linux up and running. See [this issue](https://github.com/Daltz333/GrizzlyTime-JavaFX/issues/25)
 
-Download the latest **release** [here](https://github.com/Daltz333/GrizzlyTime-JavaFX/releases/latest "here").
+Download the latest **release** [here](https://github.com/YCSRobotics/GrizzlyTime/releases/latest "here").
 
 A setup tutorial can be found [here.](https://www.youtube.com/watch?v=Cnrck_dascw "here.")  
-Or see the [wiki](https://github.com/Daltz333/GrizzlyTime-JavaFX/wiki "wiki")
+Or see the [wiki](https://github.com/YCSRobotics/GrizzlyTime/wiki "wiki")
 
 ## Customizing/Building Source Code
-Visit the [wiki](https://github.com/Daltz333/GrizzlyTime-JavaFX/wiki "wiki") for information on custom images or code.
+Visit the [wiki](https://github.com/YCSRobotics/GrizzlyTime/wiki "wiki") for information on custom images or code.
 
 ## Credits
 GrizzlyTime is licensed under MIT and uses the following open source software with their respective licenses.

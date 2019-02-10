@@ -51,6 +51,8 @@ public class GrizzlyScene {
 
     private AlertUtils alertUtils = new AlertUtils();
 
+    private GridPane subRoot = new GridPane();
+
     //boolean state variables
     private boolean handsFreeMode = LocalDbActivity.kHandsFreeMode;
 
@@ -88,7 +90,6 @@ public class GrizzlyScene {
         creditsText.setId("hyperlinkBottom");
 
         //create our panes
-        GridPane subRoot = new GridPane();
         GridPane options = new GridPane();
         GridPane title = new GridPane();
 
@@ -134,6 +135,13 @@ public class GrizzlyScene {
 
     }
 
+    public void reShowUI(GridPane root) {
+        //add to root pane
+        root.add(imageView, 0, 0);
+        root.add(subRoot, 0, 1);
+        root.add(bottomPane, 0, 2);
+    }
+
     //our event handlers for interactivity
     private void setEventHandlers() {
         //login on enter key press
@@ -157,8 +165,7 @@ public class GrizzlyScene {
     }
 
     private void showCredits() {
-        CreditsScene scene = new CreditsScene();
-        scene.showCredits();
+        SceneManager.updateScene(Constants.kCreditsSceneState);
     }
 
     //helper login method

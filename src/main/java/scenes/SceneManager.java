@@ -12,6 +12,14 @@ public class SceneManager {
     private static SplashScene splashScene;
     private static OptionScene optionScene;
 
+    private static boolean initGrizzlyScene = false;
+    private static boolean initCreditsScene = false;
+    private static boolean initSplashScene = false;
+    private static boolean initOptionsScene = false;
+
+    private static boolean shownGrizzlyScene = false;
+    private static boolean shownCreditsScene = false;
+
     private static GridPane root;
 
     public static void updateScene(int scene) {
@@ -25,10 +33,26 @@ public class SceneManager {
                 displaySplash();
                 break;
             case Constants.kMainSceneState:
-                displayMain();
+                root.getChildren().clear();
+                if (!shownGrizzlyScene) {
+                    displayMain();
+                    shownGrizzlyScene = true;
+                } else {
+                    grizzlyScene.reShowUI(root);
+                }
+
                 break;
             case Constants.kCreditsSceneState:
-                displayCredits();
+                root.getChildren().clear();
+
+                if (!shownCreditsScene) {
+                    loadCredits();
+                    displayCredits();
+                    shownCreditsScene = true;
+                } else {
+                    creditsScene.reShowUI(root);
+                }
+
                 break;
             case Constants.kLoadMainScene:
                 loadMain();
@@ -40,7 +64,9 @@ public class SceneManager {
     }
 
     private static void loadSplash() {
-        splashScene = new SplashScene();
+        if (!initSplashScene) {
+            splashScene = new SplashScene();
+        }
     }
 
     private static void displaySplash() {
@@ -53,7 +79,9 @@ public class SceneManager {
     }
 
     private static void loadMain() {
-        grizzlyScene = new GrizzlyScene();
+        if (!initGrizzlyScene) {
+            grizzlyScene = new GrizzlyScene();
+        }
     }
 
     private static void displayMain(){
@@ -65,8 +93,10 @@ public class SceneManager {
         grizzlyScene.updateInterface(root);
     }
 
-    private void loadCredits() {
-        creditsScene = new CreditsScene();
+    private static void loadCredits() {
+        if (!initCreditsScene) {
+            creditsScene = new CreditsScene();
+        }
 
     }
 
@@ -76,7 +106,7 @@ public class SceneManager {
             return;
         }
 
-        creditsScene.showCredits();
+        creditsScene.showCredits(root);
     }
 
     public static void setRoot(GridPane root) {

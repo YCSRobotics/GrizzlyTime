@@ -3,13 +3,14 @@ package scenes;
 import helpers.Constants;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
+import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 /**
  * @author Dalton Smith
@@ -17,16 +18,16 @@ import javafx.stage.Stage;
  * This class constructs the UI for displaying credits
  */
 public class CreditsScene {
-    private GridPane root = new GridPane();
-    private Scene scene = new Scene(root);
-
-    private Stage stage = new Stage();
-
     //credits panes
     private GridPane upperPaneMain = new GridPane();
     private GridPane upperPaneRight = new GridPane();
     private GridPane upperPaneLeft = new GridPane();
     private GridPane bottomPaneMain = new GridPane();
+    private GridPane mainContent = new GridPane();
+    private BorderPane navMenu = new BorderPane();
+
+    //nav menu
+    Button backButton = new Button("Back");
 
     //grizzly image
     private Image image = new Image(Constants.kErrorImage);
@@ -38,31 +39,40 @@ public class CreditsScene {
 
     private Text credits = new Text(Constants.kCreditsList);
 
-    public void showCredits() {
-        stage.setWidth(Constants.kCreditsStageWidth);
-        stage.setHeight(Constants.kCreditsStageHeight);
-        stage.setScene(scene);
-
-        scene.getStylesheets().add(Constants.kRootStylesheet);
-        stage.getIcons().add(new Image(Constants.kApplicationIcon));
-
+    public void showCredits(GridPane root) {
         root.setId("creditsRoot");
-        root.setVgap(25);
 
         upperPaneMain.setAlignment(Pos.CENTER);
         upperPaneMain.setPrefWidth(root.getWidth());
 
-        root.add(upperPaneMain, 0, 0);
-        root.add(bottomPaneMain, 0, 1);
+        navMenu.setId("navMenu");
+        backButton.setId("navMenuButton");
+
+        navMenu.setLeft(backButton);
+        mainContent.setId("creditsMainContent");
+
+        mainContent.add(upperPaneMain, 0, 0);
+        mainContent.add(bottomPaneMain, 0, 1);
+
+        mainContent.setAlignment(Pos.CENTER);
+        GridPane.setValignment(mainContent, VPos.CENTER);
+
+        root.add(navMenu, 0, 0);
+        root.add(mainContent, 0, 1);
+
+        linkHandlers();
 
         createCreditsUI(root);
-        stage.show();
+    }
+
+    public void reShowUI(GridPane root) {
+        root.add(navMenu, 0, 0);
+        root.add(mainContent, 0, 1);
     }
 
     private void createCreditsUI(GridPane root) {
-
-        root.setAlignment(Pos.TOP_CENTER);
         GridPane.setHalignment(root, HPos.CENTER);
+        root.setAlignment(Pos.TOP_CENTER);
 
         imageView.setPreserveRatio(Constants.kCreditsBearPreserveRatio);
         imageView.setFitHeight(Constants.kCreditsBearHeight);
@@ -77,13 +87,12 @@ public class CreditsScene {
         summaryText.setWrappingWidth(Constants.kCreditsWrapTextWidth);
 
         upperPaneLeft.setAlignment(Pos.TOP_CENTER);
-        upperPaneLeft.setMinWidth(300);
         upperPaneLeft.setId("upperPaneLeft");
+        upperPaneRight.setId("upperPaneRight");
+
         GridPane.setHalignment(upperPaneLeft, HPos.RIGHT);
 
         upperPaneRight.setAlignment(Pos.TOP_CENTER);
-        upperPaneRight.setMinWidth(260);
-
         upperPaneLeft.add(summaryTitle, 0, 0);
         upperPaneLeft.add(summaryText, 0, 1);
 
@@ -97,6 +106,12 @@ public class CreditsScene {
         bottomPaneMain.setId("creditsMain");
         GridPane.setHalignment(bottomPaneMain, HPos.CENTER);
         bottomPaneMain.add(credits, 0, 0);
+    }
+
+    private void linkHandlers() {
+        backButton.setOnAction(event -> {
+            SceneManager.updateScene(Constants.kMainSceneState);
+        });
     }
 
 }

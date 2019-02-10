@@ -86,22 +86,38 @@ Main Screen CSS
     -fx-background-color: lightgrey;
 }
 
+#creditsMainContent {
+    -fx-padding: 5px;
+}
+
 #title {
     -fx-font-size: 30px;
     -fx-text-alignment: center;
+}
+
+#navMenu {
+    -fx-background-color: #d9c575;
+    -fx-padding: 5px;
+}
+
+#navMenuButton {
+    -fx-border-radius: 10px;
 }
 
 /*
 Credits CSS
  */
 #upperPaneLeft {
+    -fx-padding: 20px;
+}
 
+#upperPaneRight {
+    -fx-padding: 10px 0px 0px 0px;
 }
 
 #creditsRoot {
     -fx-font-family: "Calibri";
     -fx-background-color: #D0BB61;
-    -fx-padding: 8px;
 }
 
 #summaryText {

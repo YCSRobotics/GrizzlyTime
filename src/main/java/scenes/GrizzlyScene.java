@@ -192,7 +192,7 @@ public class GrizzlyScene {
 
         }
 
-        if (handsFreeMode) {
+        if (!handsFreeMode) {
             //confirm that the user wants to login/logout
             if (alertUtils.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
                 loginUser();

@@ -12,7 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import notifiers.UpdateNotifier;
 import scenes.GrizzlyScene;
-import scenes.SplashScene;
+import scenes.SceneManager;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -25,7 +25,6 @@ public class GrizzlyTime extends Application {
      */
 
     //only initializations that don't have freezing constructor instances should be placed here
-    private SplashScene splash = new SplashScene();
     private KeyActivity keyHandlers = new KeyActivity();
     private UpdateNotifier updater = new UpdateNotifier();
 
@@ -33,7 +32,6 @@ public class GrizzlyTime extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> globalExceptionHandler(throwable));
 
         dbActivity.updateLocalDb();
@@ -50,6 +48,7 @@ public class GrizzlyTime extends Application {
         }
 
         GridPane root = new GridPane();
+        SceneManager.setRoot(root);
 
         Scene scene = new Scene(root, Constants.kSplashWidth, Constants.kSplashHeight);
         scene.getStylesheets().add(Constants.kRootStylesheet);
@@ -71,13 +70,13 @@ public class GrizzlyTime extends Application {
         primaryStage.setResizable(Constants.kWindowResizable);
 
         //show our splash
-        splash.showSplash(root);
+        SceneManager.updateScene(Constants.kSplashSceneState);
         primaryStage.show();
         primaryStage.requestFocus();
 
         //initialize our activities and interface objects AFTER
         //we display application
-        GrizzlyScene userInterface = new GrizzlyScene();
+        SceneManager.updateScene(Constants.kLoadMainScene);
 
         AlertUtils.stage = primaryStage;
 
@@ -94,7 +93,7 @@ public class GrizzlyTime extends Application {
         updater.checkUpdates();
 
         //create UI and logic
-        userInterface.updateInterface(root);
+        SceneManager.updateScene(Constants.kMainSceneState);
 
     }
 

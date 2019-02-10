@@ -82,5 +82,10 @@ public class Constants {
     public static final int kIdLoggedIn = 0;
     public static final int kIdNotLoggedIn = 1;
 
-
+    //scene manager states
+    public static final int kSplashSceneState = 0;
+    public static final int kMainSceneState = 1;
+    public static final int kCreditsSceneState = 2;
+    public static final int kOptionsSceneState = 3;
+    public static final int kLoadMainScene = 4;
 }

@@ -34,7 +34,7 @@ or may not work. I'm currently working on getting Linux up and running. See [thi
 
 Download the latest **release** [here](https://github.com/YCSRobotics/GrizzlyTime/releases/latest "here").
 
-A setup tutorial can be found [here.](https://www.youtube.com/watch?v=Cnrck_dascw "here.")  
+A setup tutorial can be found [here.](https://www.youtube.com/watch?v=GhDeMjEh9ao "here.")  
 Or see the [wiki](https://github.com/YCSRobotics/GrizzlyTime/wiki "wiki")
 
 ## Customizing/Building Source Code

@@ -4,6 +4,7 @@ import activities.LocalDbActivity;
 
 public class Constants {
     //spreadsheet layout
+    public static final int kEthnicityColumn = 11;
     public static final int kLoggedInColumn = 10;
     public static final int kTotalHoursColumn = 9;
     public static final int kHoursColumn = 8;

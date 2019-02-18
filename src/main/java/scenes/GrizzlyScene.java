@@ -26,6 +26,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.NoRouteToHostException;
 import java.util.logging.Level;
 
 public class GrizzlyScene {
@@ -239,6 +240,9 @@ public class GrizzlyScene {
 
             } catch (ConnectToWorksheetException e) {
                 setMessageBoxText("There was an error connecting to the database. Please retry.");
+
+            } catch (NoRouteToHostException e) {
+                setMessageBoxText("Unable to connect to database. Check internet and retry.");
 
             } catch (Exception e) {
                 LoggingUtils.log(Level.SEVERE, e);

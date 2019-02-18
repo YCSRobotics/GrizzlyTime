@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.NoRouteToHostException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -197,6 +198,16 @@ public class DatabaseProcess {
             response = service.spreadsheets().values()
                     .get(spreadsheet, range)
                     .execute();
+
+        } catch (NoRouteToHostException e) {
+            LoggingUtils.log(Level.SEVERE, "No route to host!");
+            util.createAlert("ERROR", "No Route to Host", "Unable to connect to the database, check internet connection and restart the application.");
+            CommonUtils.exitApplication();
+
+        } catch (SocketTimeoutException e) {
+            LoggingUtils.log(Level.SEVERE, "Connection timed out!");
+            util.createAlert("ERROR", "Connection timed out", "Connecting to database took too long! Please check your internet connection and retry!");
+            CommonUtils.exitApplication();
 
         } catch (GoogleJsonResponseException e) {
             LoggingUtils.log(Level.SEVERE, e);

@@ -59,7 +59,7 @@ public class LocalDbActivity {
         } catch (JsonKeyHasNoDataException e) {
             LoggingUtils.log(Level.SEVERE, e);
             LoggingUtils.log(Level.WARNING, "Using Fallback");
-            
+
         } catch (JSONException e) {
             LoggingUtils.log(Level.SEVERE, e);
             alertUtils.createAlert("ERROR", "Error reading configuration file!","Please try deleting the config.json file and trying again!\n" + e.getMessage());

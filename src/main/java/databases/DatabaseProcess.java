@@ -209,13 +209,6 @@ public class DatabaseProcess {
             util.createAlert("ERROR", "Connection timed out", "Connecting to database took too long! Please check your internet connection and retry!");
             CommonUtils.exitApplication();
 
-        } catch (GoogleJsonResponseException e) {
-            LoggingUtils.log(Level.SEVERE, e);
-            if (e.getDetails().getMessage().contains("not found")) {
-                util.createAlert("ERROR", "Spreadsheet does not exist!", "Check your spreadsheet ID and confirm that it's valid!");
-            }
-
-            CommonUtils.exitApplication();
         }
 
         if (response.getValues() == null) {

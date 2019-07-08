@@ -66,6 +66,8 @@ public class CreditsScene {
     }
 
     public void reShowUI(GridPane root) {
+        root.setId("creditsRoot");
+
         root.add(navMenu, 0, 0);
         root.add(mainContent, 0, 1);
     }

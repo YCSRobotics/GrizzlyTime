@@ -137,6 +137,8 @@ public class GrizzlyScene {
     }
 
     public void reShowUI(GridPane root) {
+        root.setId("main");
+
         //add to root pane
         root.add(imageView, 0, 0);
         root.add(subRoot, 0, 1);

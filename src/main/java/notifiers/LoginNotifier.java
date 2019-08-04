@@ -21,7 +21,7 @@ public class LoginNotifier {
         ArrayList<String> firstNamesListReg = dbUtils.getColumnData(0, Constants.kRegistrationSheet);
         ArrayList<String> lastNamesListReg = dbUtils.getColumnData(1, Constants.kRegistrationSheet);
 
-        //check if first and last names are foudn
+        //check if first and last names are found
         if (matchName(firstName, firstNamesListReg)){
             LoggingUtils.log(Level.INFO, firstName + " was detected in user registration");
             if (matchName(lastName, lastNamesListReg)){

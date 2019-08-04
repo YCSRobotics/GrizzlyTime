@@ -60,7 +60,7 @@ public class DatabaseProcess {
 
     //based upon the Java Google Sheets quickstart
     //settings google sheets logging level to SEVERE only
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+    private static <LocalServerReceiver> Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //set google logging level to severe due to permissions bug, see https://github.com/googleapis/google-http-java-client/issues/315
         java.util.logging.Logger.getLogger(FileDataStoreFactory.class.getName()).setLevel(Level.SEVERE);
 
@@ -74,8 +74,7 @@ public class DatabaseProcess {
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
                 .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        return new AuthorizationCodeInstalledApp(flow, new com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver()).authorize("user");
     }
 
     //return a list of rows and columns of a specified sheet

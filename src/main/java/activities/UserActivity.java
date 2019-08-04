@@ -9,12 +9,10 @@ import helpers.LoggingUtils;
 import javafx.application.Platform;
 import scenes.GrizzlyScene;
 
-import java.text.SimpleDateFormat;
-import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.logging.Level;
 
 public class UserActivity {
@@ -29,6 +27,8 @@ public class UserActivity {
 
     private LogoutActivity logoutActivity = new LogoutActivity(dbUtils);
     private LoginActivity loginActivity = new LoginActivity(dbUtils);
+
+    private static DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
     //check if user is logged in
     public boolean isUserLoggedIn(String userID) throws Exception {
@@ -139,12 +139,14 @@ public class UserActivity {
         Platform.runLater(() -> GrizzlyScene.setMessageBoxText("Logging in user: " + userID));
 
         //grab the current time from system and format it into string
-        String currentTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+        LocalDateTime loginTime = LocalDateTime.now();
+        String formattedLoginTime = loginTime.format(formatter);
+
         int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kMainSheet);
 
         //log the user in
         if (userRow != -1) {
-            loginActivity.loginUser(userRow, currentTime);
+            loginActivity.loginUser(userRow, formattedLoginTime);
 
             Platform.runLater(() -> {
                 GrizzlyScene.setMessageBoxText("Successfully logged in user: " + userID);
@@ -163,40 +165,42 @@ public class UserActivity {
         int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kMainSheet);
 
         //grab last logged in time
-        String logoutTimeAsString = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
-        String loginTimeAsString = dbUtils.getCellData(userRow, Constants.kLastLoginColumn, Constants.kMainSheet);
+        LocalDateTime logoutTime = LocalDateTime.now();
+        LocalDateTime loginTime = LocalDateTime.parse(dbUtils.getCellData(userRow, Constants.kLastLoginColumn, Constants.kMainSheet), formatter);
 
-        //ensure it's formatted correctly
-        loginTimeAsString = loginTimeAsString.replaceAll("\\s+", "");
+        String formattedLogoutTime = logoutTime.format(formatter);
 
         //assuming userRow isn't invalid, calculate difference in time and log hours
         if (userRow != -1) {
             //update the logout time
-            dbUtils.setCellData(userRow, Constants.kLastLogoutColumn, logoutTimeAsString, Constants.kMainSheet);
+            dbUtils.setCellData(userRow, Constants.kLastLogoutColumn, formattedLogoutTime, Constants.kMainSheet);
 
-            //create our datetime objects for parsing
-            LocalTime loginTimeLocalTime = LocalTime.parse(loginTimeAsString);
-            LocalTime logoutTimeLocalTime = LocalTime.parse(logoutTimeAsString);
-
-            //grab the time different between login/logout
-            Duration difference = Duration.between(loginTimeLocalTime, logoutTimeLocalTime);
-            long durInSeconds = difference.getSeconds();
-
-            //calculate the total time from difference
-            String totalTimeFromDifference = String.format("%02d:%02d:%02d", durInSeconds / 3600, (durInSeconds % 3600) / 60, (durInSeconds % 60));
+            int diffHours = logoutTime.getHour() - loginTime.getHour();
+            int diffMinutes = logoutTime.getMinute() - loginTime.getMinute();
+            int diffSeconds = logoutTime.getSecond() - loginTime.getSecond();
 
             boolean err = false;
 
-            //logout the user if in the negative
-            LocalTime totalHoursTime = null;
-
-            try {
-                totalHoursTime = LocalTime.parse(totalTimeFromDifference);
-            } catch(DateTimeParseException e) {
-                LoggingUtils.log(Level.WARNING, "Error parsing previous time, did they forget to log out? \n" + e.getMessage());
+            if (diffHours < 0 || diffMinutes < 0 || diffSeconds < 0) {
+                LoggingUtils.log(Level.SEVERE, "Well this is awkward, difference shouldn't be negative: " + diffHours + diffMinutes + diffSeconds);
                 err = true;
             }
 
+            String totalTimeFromDifference = String.format("%02d:%02d:%02d", diffHours, diffMinutes, diffSeconds);
+
+            LocalTime totalHoursTime = LocalTime.parse(totalTimeFromDifference);
+
+            if (loginTime.getYear() == logoutTime.getYear()) {
+                if (loginTime.getMonth() == logoutTime.getMonth()) {
+                    if (loginTime.getDayOfMonth() != logoutTime.getDayOfMonth()) {
+                        err = true;
+                    }
+                } else {
+                    err = true;
+                }
+            } else {
+                err = true;
+            }
 
             if (!err) {
                 logoutActivity.logoutUserWithHours(userID, userRow, totalHoursTime, totalTimeFromDifference);

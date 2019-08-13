@@ -181,9 +181,19 @@ public class UserActivity {
 
             boolean err = false;
 
-            if (diffHours < 0 || diffMinutes < 0 || diffSeconds < 0) {
+            if (diffHours < 0) {
                 LoggingUtils.log(Level.SEVERE, "Well this is awkward, difference shouldn't be negative: " + diffHours + diffMinutes + diffSeconds);
                 err = true;
+            }
+
+            if (diffSeconds < 0) {
+                diffMinutes -= 1;
+                diffSeconds = 60 - Math.abs(diffSeconds);
+            }
+
+            if (diffMinutes < 0) {
+                diffHours -= 1;
+                diffMinutes = 60 - Math.abs(diffMinutes);
             }
 
             String totalTimeFromDifference = String.format("%02d:%02d:%02d", diffHours, diffMinutes, diffSeconds);

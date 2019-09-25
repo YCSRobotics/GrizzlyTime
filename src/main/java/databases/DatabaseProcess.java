@@ -66,6 +66,12 @@ public class DatabaseProcess {
 
         // Load client secrets.
         InputStream in = DatabaseProcess.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+
+        if (in == null) {
+            LoggingUtils.log(Level.SEVERE, "Credentials file was not loaded, check that the credentials file is in the resources directory!");
+            CommonUtils.exitApplication();
+        }
+
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         // Build flow and trigger user authorization request.

@@ -75,7 +75,7 @@ public class Constants {
     //grizzly robotics specific
     public static final boolean kMentorFallback = true;
 
-    public static final String kUpdateUrl = "https://raw.githubusercontent.com/Daltz333/GrizzlyTime-JavaFX/master/version.txt";
+    public static final String kUpdateUrl = "https://raw.githubusercontent.com/YCSRobotics/GrizzlyTime-JavaFX/master/version.txt";
     public static final String kReleaseUrl = "https://tinyurl.com/grizzlyupdate";
 
     //user states

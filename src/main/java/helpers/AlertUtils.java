@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -145,6 +146,71 @@ public class AlertUtils {
             return temp.get();
 
         }
+    }
+
+    public String showSpreadsheetDialog() {
+        // Create the custom dialog.
+        Dialog dialog = new Dialog<>();
+
+        dialog.initOwner(stage);
+
+        // Set Custom Icon
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(Constants.kApplicationIcon));
+
+        dialog.getDialogPane().getStylesheets().add(Constants.kRootStylesheet);
+        dialog.getDialogPane().getStyleClass().add("accountDialog");
+
+        dialog.setTitle("Spreadsheet Verification!");
+        dialog.setHeaderText("Please input your spreadsheet ID\n and press confirm!");
+
+        // Set the button types.
+        ButtonType loginButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 10, 10, 10));
+        grid.setAlignment(Pos.CENTER);
+        grid.setId("accountGrid");
+
+        TextField sheet = new TextField("");
+        sheet.setMinWidth(400);
+
+        grid.add(sheet, 0, 0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        Node button = dialog.getDialogPane().lookupButton(loginButtonType);
+
+        button.setDisable(true);
+
+        sheet.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.contains("/d/")) {
+                button.setDisable(false);
+            } else {
+                button.setDisable(true);
+            }
+
+        });
+
+        Platform.runLater(sheet::requestFocus);
+
+        Optional result = dialog.showAndWait();
+
+        ButtonType resultButtonType = (ButtonType)result.get();
+
+        String spreadsheet = "";
+        if (resultButtonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+            spreadsheet = sheet.getText().split("/d/")[1].split("/")[0];
+            LoggingUtils.log(Level.INFO, "Using ID of " + spreadsheet);
+        } else {
+            CommonUtils.exitApplication();
+        }
+
+        return spreadsheet;
     }
 
     private ArrayList<String> showAuthDialog() {

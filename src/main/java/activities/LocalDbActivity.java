@@ -5,9 +5,11 @@ import exceptions.JsonKeyHasNoDataException;
 import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.LoggingUtils;
+import javafx.application.Platform;
 import org.json.JSONException;
 
 import java.io.FileNotFoundException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 
 public class LocalDbActivity {
@@ -28,9 +30,7 @@ public class LocalDbActivity {
                 kSheetId = jsonHelper.getKey("sheet");
             } catch (JsonKeyHasNoDataException e) {
                 LoggingUtils.log(Level.SEVERE, e);
-                alertUtils.createAlert("ERROR", "Sheet ID is blank", "Please input the sheet ID into the config.json file");
-                CommonUtils.exitApplication();
-
+                throw new FileNotFoundException("Blank spreadsheet");
             }
 
             kHandsFreeMode = jsonHelper.getKey("handsFreeMode").equalsIgnoreCase("true");
@@ -49,12 +49,36 @@ public class LocalDbActivity {
             }
         } catch (FileNotFoundException e) {
             LoggingUtils.log(Level.SEVERE, e);
-            alertUtils.createAlert("ERROR", "Configuration File does not exist!",
-                    "The config.json file does not exist and has been created! Please update the sheet ID");
-
+            AlertUtils alert = new AlertUtils();
             jsonHelper.copyTemplateJSON();
 
-            CommonUtils.exitApplication();
+            AtomicBoolean set = new AtomicBoolean(false);
+            if (Platform.isFxApplicationThread()) {
+                try {
+                    jsonHelper.editSpreadsheetId(alert.showSpreadsheetDialog());
+                    set.set(true);
+                } catch (FileNotFoundException ex) {
+                    LoggingUtils.log(Level.SEVERE, "Error using GUI to set spreadsheet!");
+                }
+            } else {
+                Platform.runLater(() -> {
+                    try {
+                        jsonHelper.editSpreadsheetId(alert.showSpreadsheetDialog());
+                        set.set(true);
+                    } catch (FileNotFoundException ex) {
+                        LoggingUtils.log(Level.SEVERE, "Error using GUI to set spreadsheet!");
+                    }
+                });
+            }
+
+            if (set.get()) {
+                updateLocalDb();
+            } else {
+                alertUtils.createAlert("ERROR", "Configuration File does not exist!",
+                        "The config.json file does not exist and has been created! Please update the sheet ID");
+
+                CommonUtils.exitApplication();
+            }
 
         } catch (JsonKeyHasNoDataException e) {
             LoggingUtils.log(Level.SEVERE, e);

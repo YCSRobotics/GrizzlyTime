@@ -7,10 +7,7 @@ import helpers.Constants;
 import helpers.LoggingUtils;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -52,6 +49,23 @@ public class JSONHelper {
 
         }
 
+    }
+
+    public void editSpreadsheetId(String sheetID) throws FileNotFoundException {
+        String data = CommonUtils.readFile(CommonUtils.getCurrentDir() + File.separator + Constants.kConfigName);
+
+        String[] keyData = data.split("\"sheet\":\"");
+
+        String newJson = keyData[0] + "\"sheet\":\"" + sheetID + keyData[1];
+
+        try {
+            FileWriter writer = new FileWriter(new File(CommonUtils.getCurrentDir() + File.separator + Constants.kConfigName));
+            writer.write(newJson);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            LoggingUtils.log(Level.SEVERE, "Unable to edit sheet value!");
+        }
     }
 
     //copy our json outside directory

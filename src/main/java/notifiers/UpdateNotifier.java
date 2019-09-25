@@ -37,7 +37,7 @@ public class UpdateNotifier {
         }
 
         BufferedInputStream inputStream = new BufferedInputStream(new URL(Constants.kUpdateUrl).openStream());
-        FileOutputStream fileOS = new FileOutputStream(CommonUtils.getCurrentDir() + "\\version.txt");
+        FileOutputStream fileOS = new FileOutputStream(CommonUtils.getCurrentDir() + File.separator + "version.txt");
 
         byte[] data = new byte[1024];
         int byteContent;

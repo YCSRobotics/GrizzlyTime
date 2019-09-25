@@ -18,7 +18,7 @@ public class SplashScene {
     public void showSplash(GridPane root) {
 
         Image splash;
-        File file = new File(CommonUtils.getCurrentDir() + "\\images\\splash.png");
+        File file = new File(CommonUtils.getCurrentDir() + File.separator + "images" + File.separator + "splash.png");
 
         //check for custom splash
         if (file.exists()) {

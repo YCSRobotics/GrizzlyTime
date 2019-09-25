@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import notifiers.UpdateNotifier;
-import scenes.GrizzlyScene;
 import scenes.SceneManager;
 
 import java.io.File;
@@ -40,8 +39,8 @@ public class GrizzlyTime extends Application {
         dbActivity.updateLocalDb();
 
         //check if custom icon
-        File file = new File(CommonUtils.getCurrentDir() + "\\images\\icon.png");
-
+        File file = new File(CommonUtils.getCurrentDir() + File.separator + "images" + File.separator + "icon.png");
+        File stylesheet = new File(CommonUtils.getCurrentDir() + File.separator + "styles" + File.separator + "style.css");
         if (file.exists()) {
             primaryStage.getIcons().add(new Image(file.toURI().toString()));
 
@@ -54,7 +53,13 @@ public class GrizzlyTime extends Application {
         SceneManager.setRoot(root);
 
         Scene scene = new Scene(root, Constants.kSplashWidth, Constants.kSplashHeight);
+
         scene.getStylesheets().add(Constants.kRootStylesheet);
+
+        if (stylesheet.exists()) {
+            scene.getStylesheets().add("file:///" + stylesheet.getAbsolutePath().replace("\\", "/"));
+            LoggingUtils.log(Level.INFO, "Loaded custom stylesheet!");
+        }
 
         root.setId("main");
         root.setAlignment(Pos.CENTER);

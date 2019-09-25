@@ -82,8 +82,9 @@ public class DatabaseProcess {
 
         return new AuthorizationCodeInstalledApp(flow, new com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver(), new AuthorizationCodeInstalledApp.Browser() {
             @Override
-            public void browse(String url) throws IOException {
+            public void browse(String url) {
                 CommonUtils.application.getHostServices().showDocument(url);
+                LoggingUtils.log(Level.INFO, "Or navigate to " + url + " to authorize the application.");
             }
         }).authorize("user");
     }

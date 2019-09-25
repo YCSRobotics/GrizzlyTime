@@ -62,7 +62,7 @@ public class GrizzlyScene {
 
     public GrizzlyScene() {
         Image splash;
-        File file = new File(CommonUtils.getCurrentDir() + "\\images\\error.png");
+        File file = new File(CommonUtils.getCurrentDir() + File.separator + "images" + File.separator + "error.png");
 
         //check for custom splash
         if (file.exists()) {

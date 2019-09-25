@@ -1,5 +1,6 @@
 package helpers;
 
+import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -17,6 +18,8 @@ public class CommonUtils {
      * Various utility methods used throughout the application
      * https://code.makery.ch/blog/javafx-dialogs-official/
      */
+
+    public static Application application;
 
     public static String getCurrentDir() {
         return System.getProperty("user.dir");

@@ -32,6 +32,9 @@ public class GrizzlyTime extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        //set application in commonutils to access hostservices
+        CommonUtils.application = this;
+
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> globalExceptionHandler(throwable));
 
         dbActivity.updateLocalDb();

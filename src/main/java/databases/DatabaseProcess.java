@@ -3,7 +3,6 @@ package databases;
 import activities.LocalDbActivity;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -20,12 +19,12 @@ import helpers.CommonUtils;
 import helpers.Constants;
 import helpers.LoggingUtils;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.NoRouteToHostException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,7 +79,14 @@ public class DatabaseProcess {
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
                 .build();
-        return new AuthorizationCodeInstalledApp(flow, new com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver()).authorize("user");
+        CommonUtils.application.getHostServices().showDocument("https://google.com/");
+
+        return new AuthorizationCodeInstalledApp(flow, new com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver(), new AuthorizationCodeInstalledApp.Browser() {
+            @Override
+            public void browse(String url) throws IOException {
+                CommonUtils.application.getHostServices().showDocument(url);
+            }
+        }).authorize("user");
     }
 
     //return a list of rows and columns of a specified sheet

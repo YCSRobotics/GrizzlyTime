@@ -88,13 +88,7 @@ public class UpdateNotifier {
             boolean confirm = alertUtils.createAlert("New Version Available", "An update is available!", "Version " + version + " is available!\n" + Constants.kReleaseUrl);
 
             if (confirm) {
-                try {
-                    Desktop.getDesktop().browse(new URL(Constants.kReleaseUrl).toURI());
-
-                } catch (IOException | URISyntaxException e) {
-                    LoggingUtils.log(Level.SEVERE, e);
-
-                }
+                CommonUtils.application.getHostServices().showDocument(Constants.kReleaseUrl);
             }
 
         }

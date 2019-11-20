@@ -182,7 +182,7 @@ public class UserActivity {
             boolean err = false;
 
             if (diffHours < 0) {
-                LoggingUtils.log(Level.SEVERE, "Well this is awkward, difference shouldn't be negative: " + diffHours + diffMinutes + diffSeconds);
+                LoggingUtils.log(Level.SEVERE, "Well this is awkward, difference shouldn't be negative: h:" + diffHours + " m:"+ diffMinutes + " s:"+diffSeconds);
                 err = true;
             }
 
@@ -196,9 +196,7 @@ public class UserActivity {
                 diffMinutes = 60 - Math.abs(diffMinutes);
             }
 
-            String totalTimeFromDifference = String.format("%02d:%02d:%02d", diffHours, diffMinutes, diffSeconds);
 
-            LocalTime totalHoursTime = LocalTime.parse(totalTimeFromDifference);
 
             if (loginTime.getYear() == logoutTime.getYear()) {
                 if (loginTime.getMonth() == logoutTime.getMonth()) {
@@ -213,6 +211,9 @@ public class UserActivity {
             }
 
             if (!err) {
+				String totalTimeFromDifference = String.format("%02d:%02d:%02d", diffHours, diffMinutes, diffSeconds);
+				LocalTime totalHoursTime = LocalTime.parse(totalTimeFromDifference);
+				
                 logoutActivity.logoutUserWithHours(userID, userRow, totalHoursTime, totalTimeFromDifference);
             }
 
@@ -231,13 +232,13 @@ public class UserActivity {
 
     }
 
-    //checks if ID is valid integer and 6 digit number
+    //checks if ID is valid long and x digit number (x based on config file)
     public boolean isValidID(String userID) {
         int idLength = LocalDbActivity.kIdLength;
         int mentorIdLength = LocalDbActivity.kIdLengthFallback;
 
         try {
-            Integer.parseInt(userID);
+            Long.parseLong(userID);
 
             if (Constants.kMentorFallback) {
                 return userID.length() == idLength || userID.length() == mentorIdLength;

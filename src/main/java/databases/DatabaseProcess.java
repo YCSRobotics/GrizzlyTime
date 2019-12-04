@@ -18,13 +18,12 @@ import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
 import helpers.LoggingUtils;
+import javafx.application.HostServices;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.NoRouteToHostException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,8 +82,15 @@ public class DatabaseProcess {
         return new AuthorizationCodeInstalledApp(flow, new com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver(), new AuthorizationCodeInstalledApp.Browser() {
             @Override
             public void browse(String url) {
-                CommonUtils.application.getHostServices().showDocument(url);
                 LoggingUtils.log(Level.INFO, "Or navigate to " + url + " to authorize the application.");
+                //fix for java8 launching on linux because weird shit
+                HostServices hostServices = CommonUtils.application.getHostServices();
+                try {
+                    hostServices.showDocument(url);
+                } catch (NullPointerException e) {
+                    LoggingUtils.log(Level.INFO, "HostServices failed, please navigate to " + url + " to authorize the application.");
+                }
+
             }
         }).authorize("user");
     }

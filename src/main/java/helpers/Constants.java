@@ -37,7 +37,7 @@ public class Constants {
     public static final String kApplicationIcon = "images/icon.png";
     public static final String kBearImage = "images/bear.png";
     public static final String kErrorImage = "images/error.png";
-    public static final String kSplashImage = "images/splash.jpg";
+    public static final String kSplashImage = "images/splash.png";
 
     //alert ui constants
     public static final int kBearImageWidth = 50;

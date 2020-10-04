@@ -158,11 +158,15 @@ public class GrizzlyScene {
         optionsLink.setOnAction(event -> {
             Stage stage = (Stage)optionsLink.getScene().getWindow();
             if (KeyActivity.isFullscreen) {
+                primaryStage.setResizable(true);
                 stage.setFullScreen(false);
                 KeyActivity.isFullscreen = false;
+                primaryStage.setResizable(Constants.kWindowResizable);
             } else {
+                primaryStage.setResizable(true);
                 stage.setFullScreen(true);
                 KeyActivity.isFullscreen = true;
+                primaryStage.setResizable(Constants.kWindowResizable);
             }
         });
     }

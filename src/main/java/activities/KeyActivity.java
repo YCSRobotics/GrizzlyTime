@@ -3,6 +3,7 @@ package activities;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import helpers.Constants;
 
 public class KeyActivity {
     /**
@@ -16,18 +17,33 @@ public class KeyActivity {
     public void setKeyHandlers(Scene scene, Stage stage) {
         //make application fullscreen on f key press
         scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.F11) {
+            if (event.getCode() == KeyCode.F10) {
                 if (isFullscreen) {
-                    primaryStage.setResizable(true);
+                    stage.setResizable(true);
                     stage.setFullScreen(false);
                     isFullscreen = false;
-                    primaryStage.setResizable(Constants.kWindowResizable);
+                    stage.setWidth(Constants.kMainStageWidth);
+                    stage.setHeight(Constants.kMainStageHeight);
+                    stage.centerOnScreen();
+                    stage.setResizable(Constants.kWindowResizable);
 
                 } else {
-                    primaryStage.setResizable(true);
+                    stage.setResizable(true);
                     stage.setFullScreen(true);
                     isFullscreen = true;
-                    primaryStage.setResizable(Constants.kWindowResizable);
+                    stage.setResizable(Constants.kWindowResizable);
+
+                }
+            }
+            else if (event.getCode() == KeyCode.ESCAPE) {
+                if (isFullscreen) {
+                    stage.setResizable(true);
+                    stage.setFullScreen(false);
+                    isFullscreen = false;
+                    stage.setWidth(Constants.kMainStageWidth);
+                    stage.setHeight(Constants.kMainStageHeight);
+                    stage.centerOnScreen();
+                    stage.setResizable(Constants.kWindowResizable);
 
                 }
             }

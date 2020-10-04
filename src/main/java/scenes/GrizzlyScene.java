@@ -158,15 +158,22 @@ public class GrizzlyScene {
         optionsLink.setOnAction(event -> {
             Stage stage = (Stage)optionsLink.getScene().getWindow();
             if (KeyActivity.isFullscreen) {
-                primaryStage.setResizable(true);
+                stage.setResizable(true);
                 stage.setFullScreen(false);
+                stage.setWidth(Constants.kMainStageWidth);
+                stage.setHeight(Constants.kMainStageHeight);
+                stage.centerOnScreen();
+                stage.setResizable(Constants.kWindowResizable);
                 KeyActivity.isFullscreen = false;
-                primaryStage.setResizable(Constants.kWindowResizable);
+                LoggingUtils.log(Level.INFO, "not FS");
+                
             } else {
-                primaryStage.setResizable(true);
+                stage.setResizable(true);
                 stage.setFullScreen(true);
+                stage.setResizable(Constants.kWindowResizable);
                 KeyActivity.isFullscreen = true;
-                primaryStage.setResizable(Constants.kWindowResizable);
+                LoggingUtils.log(Level.INFO, "FS");
+                
             }
         });
     }

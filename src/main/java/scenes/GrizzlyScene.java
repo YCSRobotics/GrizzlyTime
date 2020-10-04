@@ -24,10 +24,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.input.KeyEvent;
+
+import javafx.scene.input.KeyCode;
+//import javafx.scene.control.ContextMenu;
+//import javafx.scene.control.MenuItem;
+//import javafx.geometry.Side;
 
 import java.io.File;
 import java.net.NoRouteToHostException;
 import java.util.logging.Level;
+import java.util.function.UnaryOperator;
 
 public class GrizzlyScene {
     /**
@@ -39,7 +47,7 @@ public class GrizzlyScene {
     //object that should be able to be modified by calling
     //this scene directly
     private static Label messageText = new Label("");
-    private static TextField studentIDBox = new TextField();
+    public static TextField studentIDBox = new TextField();
 
     //define our scene objects
     private Button loginButton = new Button("Login/Logout");
@@ -134,6 +142,22 @@ public class GrizzlyScene {
         //handle our buttons
         setEventHandlers();
 
+        // Limit number of charaters in studentIDBox
+        UnaryOperator<TextFormatter.Change> rejectChange = c -> {
+        // check if the change might effect the validating predicate
+        if (c.isContentChange()) {
+            // check if change is valid
+            if (c.getControlNewText().length() > LocalDbActivity.kIdLengthFallback) {
+                // invalid change
+                // return null to reject the change
+                return null;
+            }
+        }
+        // valid change: accept the change by returning it
+        return c;
+    };
+    studentIDBox.setTextFormatter(new TextFormatter(rejectChange));
+
     }
 
     public void reShowUI(GridPane root) {
@@ -164,15 +188,25 @@ public class GrizzlyScene {
                 stage.setHeight(Constants.kMainStageHeight);
                 stage.centerOnScreen();
                 KeyActivity.isFullscreen = false;
-                LoggingUtils.log(Level.INFO, "not FS");
                 
             } else {
                 stage.setResizable(true);
                 stage.setFullScreen(true);
                 KeyActivity.isFullscreen = true;
-                LoggingUtils.log(Level.INFO, "FS");
                 
             }
+
+            studentIDBox.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+                if (e.getCode() == KeyCode.ESCAPE){
+                    stage.setResizable(true);
+                    stage.setFullScreen(false);
+                    stage.setWidth(Constants.kMainStageWidth);
+                    stage.setHeight(Constants.kMainStageHeight);
+                    stage.centerOnScreen();
+                    KeyActivity.isFullscreen = false;
+                    
+                }
+            });
 
             Task<Void> wait2 = new Task<Void>() {
                 @Override
@@ -185,6 +219,7 @@ public class GrizzlyScene {
             wait2.setOnSucceeded(e -> stage.setResizable(Constants.kWindowResizable));
 
             new Thread(wait2).start();
+            GrizzlyScene.studentIDBox.requestFocus();
             return;
             
         });

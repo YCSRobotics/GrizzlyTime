@@ -13,9 +13,6 @@ import javafx.stage.Stage;
 import notifiers.UpdateNotifier;
 import scenes.SceneManager;
 
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import java.io.File;
 import java.util.logging.Level;
 
@@ -77,8 +74,6 @@ public class GrizzlyTime extends Application {
             primaryStage.setTitle(applicationName);
         }
 
-        AlertUtils.stage = primaryStage;
-        
         primaryStage.setScene(scene);
         primaryStage.setResizable(Constants.kWindowResizable);
 
@@ -87,42 +82,26 @@ public class GrizzlyTime extends Application {
         primaryStage.show();
         primaryStage.requestFocus();
 
+        //initialize our activities and interface objects AFTER
+        //we display application
+        SceneManager.updateScene(Constants.kLoadMainScene);
+
+        AlertUtils.stage = primaryStage;
+
+        //remove splash screen on load
+        root.getChildren().clear();
+        primaryStage.setWidth(Constants.kMainStageWidth);
+        primaryStage.setHeight(Constants.kMainStageHeight);
         primaryStage.centerOnScreen();
 
         //add our global key handlers
         keyHandlers.setKeyHandlers(scene, primaryStage);
 
-        
+        //check for updates
+        updater.checkUpdates();
 
-        // delay for splash screen
-        Task<Void> sleeper = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                }
-                return null;
-            }
-        };
-        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-
-                // create UI and logic
-                primaryStage.setResizable(true);
-                SceneManager.updateScene(Constants.kLoadMainScene);
-                primaryStage.setWidth(Constants.kMainStageWidth);
-                primaryStage.setHeight(Constants.kMainStageHeight);
-                SceneManager.updateScene(Constants.kMainSceneState);
-                primaryStage.centerOnScreen();
-                primaryStage.setResizable(Constants.kWindowResizable);
-
-                //check for updates
-                updater.checkUpdates();
-            }
-        });
-        new Thread(sleeper).start();
+        //create UI and logic
+        SceneManager.updateScene(Constants.kMainSceneState);
 
     }
 

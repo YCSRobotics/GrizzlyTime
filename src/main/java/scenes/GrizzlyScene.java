@@ -163,18 +163,30 @@ public class GrizzlyScene {
                 stage.setWidth(Constants.kMainStageWidth);
                 stage.setHeight(Constants.kMainStageHeight);
                 stage.centerOnScreen();
-                stage.setResizable(Constants.kWindowResizable);
                 KeyActivity.isFullscreen = false;
                 LoggingUtils.log(Level.INFO, "not FS");
                 
             } else {
                 stage.setResizable(true);
                 stage.setFullScreen(true);
-                stage.setResizable(Constants.kWindowResizable);
                 KeyActivity.isFullscreen = true;
                 LoggingUtils.log(Level.INFO, "FS");
                 
             }
+
+            Task<Void> wait2 = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    Thread.sleep(500);
+                    return null;
+                }
+            };
+
+            wait2.setOnSucceeded(e -> stage.setResizable(Constants.kWindowResizable));
+
+            new Thread(wait2).start();
+            return;
+            
         });
     }
 

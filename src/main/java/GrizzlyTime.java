@@ -111,6 +111,10 @@ public class GrizzlyTime extends Application {
 
                 // create UI and logic
                 primaryStage.setResizable(true);
+
+                //check for updates
+                updater.checkUpdates();
+
                 SceneManager.updateScene(Constants.kLoadMainScene);
                 primaryStage.setWidth(Constants.kMainStageWidth);
                 primaryStage.setHeight(Constants.kMainStageHeight);
@@ -118,8 +122,6 @@ public class GrizzlyTime extends Application {
                 primaryStage.centerOnScreen();
                 primaryStage.setResizable(Constants.kWindowResizable);
 
-                //check for updates
-                updater.checkUpdates();
             }
         });
         new Thread(sleeper).start();

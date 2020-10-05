@@ -1,17 +1,14 @@
 package activities;
 
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
-import helpers.Constants;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextField;
-
-import helpers.LoggingUtils;
-
+import javafx.scene.input.KeyCode;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import helpers.Constants;
 import scenes.GrizzlyScene;
 
-import java.util.logging.Level;
+
 
 public class KeyActivity {
     /**
@@ -40,19 +37,8 @@ public class KeyActivity {
                     isFullscreen = true;
 
                 }
+                GrizzlyScene.studentIDBox.requestFocus();
             }
-            
-            Task<Void> wait3 = new Task<Void>() {
-                protected Void call() throws Exception {
-                    Thread.sleep(500);
-                    return null;
-                }
-            };
-
-            wait3.setOnSucceeded(e -> stage.setResizable(Constants.kWindowResizable));
-            new Thread(wait3).start();
-            
-            GrizzlyScene.studentIDBox.requestFocus();
             return;
         });
     }

@@ -28,9 +28,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
 
 import javafx.scene.input.KeyCode;
-//import javafx.scene.control.ContextMenu;
-//import javafx.scene.control.MenuItem;
-//import javafx.geometry.Side;
 
 import java.io.File;
 import java.net.NoRouteToHostException;
@@ -148,8 +145,7 @@ public class GrizzlyScene {
         if (c.isContentChange()) {
             // check if change is valid
             if (c.getControlNewText().length() > LocalDbActivity.kIdLengthFallback) {
-                // invalid change
-                // return null to reject the change
+                // invalid change, return null to reject the change
                 return null;
             }
         }
@@ -169,8 +165,42 @@ public class GrizzlyScene {
         root.add(bottomPane, 0, 2);
     }
 
+    public void escapeKeyPressed(KeyCode keyCode){
+        Stage stage = (Stage)optionsLink.getScene().getWindow();
+        if (keyCode == KeyCode.ESCAPE ){
+            if (KeyActivity.isFullscreen){
+
+                // Monitor for Escape press - Raspberry compatability
+                stage.setResizable(true);
+                stage.setFullScreen(false);
+                
+                // Pause for Raspberry compatability
+                Task<Void> wait3 = new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        Thread.sleep(500);
+                        return null;
+                    }
+                };
+    
+                wait3.setOnSucceeded(e2 -> {
+                    stage.setWidth(Constants.kMainStageWidth);
+                    stage.setHeight(Constants.kMainStageHeight);
+                    stage.centerOnScreen();
+                    KeyActivity.isFullscreen = false;
+                    stage.setResizable(Constants.kWindowResizable);
+                    //studentIDBox.requestFocus();
+                });
+
+                new Thread(wait3).start();
+                studentIDBox.requestFocus();
+            }
+        }
+    }
+
     //our event handlers for interactivity
     private void setEventHandlers() {
+
         //login on enter key press
         studentIDBox.setOnAction(event -> confirmLogin());
 
@@ -196,18 +226,6 @@ public class GrizzlyScene {
                 
             }
 
-            studentIDBox.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-                if (e.getCode() == KeyCode.ESCAPE){
-                    stage.setResizable(true);
-                    stage.setFullScreen(false);
-                    stage.setWidth(Constants.kMainStageWidth);
-                    stage.setHeight(Constants.kMainStageHeight);
-                    stage.centerOnScreen();
-                    KeyActivity.isFullscreen = false;
-                    
-                }
-            });
-
             Task<Void> wait2 = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
@@ -223,6 +241,8 @@ public class GrizzlyScene {
             return;
             
         });
+
+        studentIDBox.setOnKeyPressed(event -> escapeKeyPressed(event.getCode()));
     }
 
     private void showCredits() {

@@ -196,8 +196,6 @@ public class UserActivity {
                 diffMinutes = 60 - Math.abs(diffMinutes);
             }
 
-
-
             if (loginTime.getYear() == logoutTime.getYear()) {
                 if (loginTime.getMonth() == logoutTime.getMonth()) {
                     if (loginTime.getDayOfMonth() != logoutTime.getDayOfMonth()) {
@@ -226,10 +224,7 @@ public class UserActivity {
                     GrizzlyScene.clearInput();
                 });
             }
-
-
         }
-
     }
 
     //checks if ID is valid long and x digit number (x based on config file)

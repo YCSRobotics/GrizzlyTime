@@ -37,8 +37,16 @@ src/main/resources/credentials/credentials.json
 # gradle config
 .gradle/
 
+# vscode config
+.vscode/
+.settings/
+
 # project specific
 build/
 out/
 logs/
 tokens/
+bin/
+
+*.classpath
+*.project

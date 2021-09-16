@@ -168,7 +168,7 @@ public class DatabaseUtils {
 
         setPage(page);
 
-        ArrayList<String> columnData = getColumnData(Constants.kStudentIdColumn, page);
+        ArrayList<String> columnData = getColumnData(Constants.kStudentNumberColumn, page);
         int i;
 
         for (i = 0; i < columnData.size(); i++) {

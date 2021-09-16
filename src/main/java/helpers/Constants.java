@@ -4,18 +4,20 @@ import activities.LocalDbActivity;
 
 public class Constants {
     //spreadsheet layout
-    public static final int kEthnicityColumn = 11;
-    public static final int kLoggedInColumn = 10;
-    public static final int kTotalHoursColumn = 9;
-    public static final int kHoursColumn = 8;
-    public static final int kLastLogoutColumn = 7;
-    public static final int kLastLoginColumn = 6;
-    public static final int kStudentIdColumn = 0;
-    public static final int kFirstNameColumn = 1;
-    public static final int kLastNameColumn = 2;
-    public static final int kGenderColumn = 5;
-    public static final int kRoleColumn = 4;
-    public static final int kEmailColumn = 3;
+    public static final int kStudentNumberColumn = 0;
+    public static final int kStudentIdColumn = 1;
+    public static final int kFirstNameColumn = 2;
+    public static final int kLastNameColumn = 3;
+    public static final int kEmailColumn = 4;
+    public static final int kPhoneNumberColumn = 5;
+    public static final int kAddressColumn = 6;
+    public static final int kPronounColumn = 7;
+    public static final int kRoleColumn = 8;
+    public static final int kLastLoginColumn = 9;
+    public static final int kLastLogoutColumn = 10;
+    public static final int kHoursColumn = 11;
+    public static final int kTotalHoursColumn = 12;
+    public static final int kLoggedInColumn = 13;
 
     //camera feed size
     public static final int kCameraHeight = 400;

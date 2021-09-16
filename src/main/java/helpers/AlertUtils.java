@@ -242,48 +242,59 @@ public class AlertUtils {
         grid.setId("accountGrid");
 
         TextField firstName = new TextField("");
+        firstName.setId("textField");
+        firstName.setPromptText("");
+
         //GridPane.setHgrow(firstName, Priority.ALWAYS);
         TextField lastName = new TextField("");
-
-        TextField email = new TextField("");
-
-        firstName.setId("textField");
         lastName.setId("textField");
-
-        firstName.setPromptText("");
         lastName.setPromptText("");
 
+        TextField email = new TextField("");
+        email.setId("textField");
         email.setPromptText("");
 
-        email.setId("textField");
+        TextField phoneNumber = new TextField("");
+        phoneNumber.setId("textField");
+        phoneNumber.setPromptText("");
+
+        TextField address = new TextField("");
+        address.setId("textField");
+        address.setPromptText("");
+
+        TextField studentId = new TextField("");
+        studentId.setId("textField");
+        studentId.setPromptText("");
 
         ToggleGroup studentRadioGroup = new ToggleGroup();
 
         RadioButton mentorRadio = new RadioButton("Mentor");
+        mentorRadio.setToggleGroup(studentRadioGroup);
+
         RadioButton studentRadio = new RadioButton("Student");
-
-        ToggleGroup genderRadioGroup = new ToggleGroup();
-
-        RadioButton maleRadio = new RadioButton("Male");
-        RadioButton otherRadio = new RadioButton("Other");
-        RadioButton femaleRadio = new RadioButton("Female");
-
-        otherRadio.fire();
-
+        studentRadio.setToggleGroup(studentRadioGroup);
         studentRadio.fire();
 
-        mentorRadio.setToggleGroup(studentRadioGroup);
-        studentRadio.setToggleGroup(studentRadioGroup);
+        ToggleGroup pronounRadioGroup = new ToggleGroup();
 
-        GridPane genderPane = new GridPane();
+        RadioButton heHimRadio = new RadioButton("He/Him");
+        heHimRadio.setToggleGroup(pronounRadioGroup);
 
-        maleRadio.setToggleGroup(genderRadioGroup);
-        femaleRadio.setToggleGroup(genderRadioGroup);
-        otherRadio.setToggleGroup(genderRadioGroup);
+        RadioButton sheHerRadio = new RadioButton("She/Her");
+        sheHerRadio.setToggleGroup(pronounRadioGroup);
 
-        genderPane.add(maleRadio, 0, 0);
-        genderPane.add(femaleRadio, 1,0);
-        genderPane.add(otherRadio, 2, 0);
+        RadioButton theyThemRadio = new RadioButton("They/Them");
+        theyThemRadio.setToggleGroup(pronounRadioGroup);
+
+        RadioButton otherRadio = new RadioButton("Other");
+        otherRadio.setToggleGroup(pronounRadioGroup);
+        otherRadio.fire();
+
+        GridPane pronounPane = new GridPane();
+        pronounPane.add(heHimRadio, 0, 0);
+        pronounPane.add(sheHerRadio, 1,0);
+        pronounPane.add(theyThemRadio, 2,0);
+        pronounPane.add(otherRadio, 3, 0);
 
         grid.add(new Label("First Name:"), 0, 0);
         grid.add(firstName, 1, 0);
@@ -291,32 +302,55 @@ public class AlertUtils {
         grid.add(lastName, 1, 1);
         grid.add(new Label("Email:"), 0, 2);
         grid.add(email, 1, 2);
+        grid.add(new Label("Phone Number:"), 0, 3);
+        grid.add(phoneNumber, 1, 3);
+        grid.add(new Label("Street Address:"), 0, 4);
+        grid.add(address, 1, 4);
+        grid.add(new Label("Student ID:"), 0, 5);
+        grid.add(studentId, 1, 5);
 
-        GridPane.setColumnSpan(genderPane, 2);
-        grid.add(genderPane, 0, 3);
+        GridPane.setColumnSpan(pronounPane, 4);
+        grid.add(pronounPane, 0, 6);
 
         GridPane.setHalignment(grid, HPos.CENTER);
-
-        GridPane.setHalignment(studentRadio, HPos.CENTER);
         GridPane.setHalignment(studentRadio, HPos.CENTER);
 
-        grid.add(studentRadio, 0, 4);
-        grid.add(mentorRadio, 1, 4);
+        grid.add(studentRadio, 0, 7);
+        grid.add(mentorRadio, 1, 7);
 
         dialog.getDialogPane().setContent(grid);
 
         Node button = dialog.getDialogPane().lookupButton(loginButtonType);
-
         button.setDisable(true);
+
+        emailValid = false;
+        phoneNumberValid = false;
+        studentIdValid = false;
+        
+
 
         email.textProperty().addListener((observable, oldValue, newValue) -> {
             Pattern regex = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
             Matcher matcher = regex.matcher(newValue);
 
-            if (matcher.matches()) {
-                button.setDisable(false);
-            }
+            emailValid = matcher.matches();
+            button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
+        });
 
+        phoneNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            Pattern regex = Pattern.compile("^[0-9]{10}$", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = regex.matcher(newValue);
+
+            phoneNumberValid = matcher.matches();
+            button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
+        });
+
+        studentId.textProperty().addListener((observable, oldValue, newValue) -> {
+            Pattern regex = Pattern.compile("^[0-9]{9}$", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = regex.matcher(newValue);
+
+            studentIdValid = matcher.matches();
+            button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
         });
 
         // Request focus on the firstname field by default.
@@ -333,11 +367,16 @@ public class AlertUtils {
             data.add(firstName.getText());
             data.add(lastName.getText());
             data.add(email.getText());
+            data.add(phoneNumber.getText());
+            data.add(address.getText());
+            data.add(studentId.getText());
 
-            if (maleRadio.isSelected()) {
-                data.add("MALE");
-            } else if (femaleRadio.isSelected()) {
-                data.add("FEMALE");
+            if (heHimRadio.isSelected()) {
+                data.add("HE/HIM");
+            } else if (sheHerRadio.isSelected()) {
+                data.add("SHE/HER");
+            } else if (theyThemRadio.isSelected()) {
+                data.add("THEY/THEM");
             } else {
                 data.add("OTHER");
             }
@@ -351,4 +390,8 @@ public class AlertUtils {
 
         return data;
     }
+
+    private static boolean emailValid = false;
+    private static boolean phoneNumberValid = false;
+    private static boolean studentIdValid = false;
 }

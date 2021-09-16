@@ -70,13 +70,16 @@ public class UserActivity {
             int blankRow = dbUtils.nextEmptyCellColumn(Constants.kMainSheet);
             addUserInfoBasic(userData, userID, data, blankRow);
             data.add(new BatchUpdateData(blankRow, Constants.kEmailColumn, userData.get(3)));
-            data.add(new BatchUpdateData(blankRow, Constants.kRoleColumn, userData.get(5)));
-            data.add(new BatchUpdateData(blankRow, Constants.kGenderColumn, userData.get(4)));
+            data.add(new BatchUpdateData(blankRow, Constants.kPhoneNumberColumn, userData.get(4)));
+            data.add(new BatchUpdateData(blankRow, Constants.kAddressColumn, userData.get(5)));
+            data.add(new BatchUpdateData(blankRow, Constants.kStudentIdColumn, userData.get(6)));
+            data.add(new BatchUpdateData(blankRow, Constants.kPronounColumn, userData.get(7)));
+            data.add(new BatchUpdateData(blankRow, Constants.kRoleColumn, userData.get(8)));
 
             dbUtils.setCellDataBatch(data, Constants.kMainSheet);
             dbUtils.getUpdatedData();
 
-            ArrayList<String> columnLogged = dbUtils.getColumnData(Constants.kStudentIdColumn, Constants.kLogSheet);
+            ArrayList<String> columnLogged = dbUtils.getColumnData(Constants.kStudentNumberColumn, Constants.kLogSheet);
 
             int i;
             for (i = 1; i < columnLogged.size(); i++) {
@@ -102,7 +105,7 @@ public class UserActivity {
     }
 
     private void addUserInfoBasic(ArrayList<String> userData, String userID, ArrayList<BatchUpdateData> data, int i) {
-        data.add(new BatchUpdateData(i, Constants.kStudentIdColumn, userID));
+        data.add(new BatchUpdateData(i, Constants.kStudentNumberColumn, userID));
         data.add(new BatchUpdateData(i, Constants.kFirstNameColumn, userData.get(1)));
         data.add(new BatchUpdateData(i, Constants.kLastNameColumn, userData.get(2)));
     }
@@ -142,7 +145,7 @@ public class UserActivity {
         LocalDateTime loginTime = LocalDateTime.now();
         String formattedLoginTime = loginTime.format(formatter);
 
-        int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kMainSheet);
+        int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentNumberColumn, Constants.kMainSheet);
 
         //log the user in
         if (userRow != -1) {
@@ -162,7 +165,7 @@ public class UserActivity {
         Platform.runLater(() -> GrizzlyScene.setMessageBoxText("Logging out user: " + userID));
 
         //grab the row the user is on
-        int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kMainSheet);
+        int userRow = dbUtils.getCellRowFromColumn(userID, Constants.kStudentNumberColumn, Constants.kMainSheet);
 
         //grab last logged in time
         LocalDateTime logoutTime = LocalDateTime.now();

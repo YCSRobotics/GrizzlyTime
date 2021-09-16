@@ -60,7 +60,7 @@ public class LogoutActivity {
 
         String timeTotal = String.format("%02d:%02d:%02d", (int) totalHour, (int) totalMinute, (int) totalSeconds);
 
-        int userRowLogout = dbUtils.getCellRowFromColumn(userID, Constants.kStudentIdColumn, Constants.kLogSheet);
+        int userRowLogout = dbUtils.getCellRowFromColumn(userID, Constants.kStudentNumberColumn, Constants.kLogSheet);
 
         //set cell data
         dbUtils.setCellData(userRow, Constants.kHoursColumn, totalTimeFromDifference, Constants.kMainSheet);

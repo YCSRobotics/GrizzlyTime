@@ -334,7 +334,11 @@ public class AlertUtils {
             Matcher matcher = regex.matcher(newValue);
 
             emailValid = matcher.matches();
-            button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
+            
+            //TODO: Checking disabled as it's not working right - fix later//Disable Checking as it isn't working 
+            //button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
+            button.setDisable(false);  
+            
         });
 
         phoneNumber.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -342,7 +346,10 @@ public class AlertUtils {
             Matcher matcher = regex.matcher(newValue);
 
             phoneNumberValid = matcher.matches();
-            button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
+
+            //TODO: Checking disabled as it's not working right - fix later//Disable Checking as it isn't working 
+            //button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
+            button.setDisable(false);
         });
 
         studentId.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -350,7 +357,10 @@ public class AlertUtils {
             Matcher matcher = regex.matcher(newValue);
 
             studentIdValid = matcher.matches();
-            button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
+
+            //TODO: Checking disabled as it's not working right - fix later//Disable Checking as it isn't working 
+            //button.setDisable(!(emailValid && phoneNumberValid && studentIdValid));
+            button.setDisable(false);
         });
 
         // Request focus on the firstname field by default.

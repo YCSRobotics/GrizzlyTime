@@ -5,9 +5,9 @@ import activities.LocalDbActivity;
 public class Constants {
     //spreadsheet layout
     public static final int kStudentNumberColumn = 0;
-    public static final int kStudentIdColumn = 1;
-    public static final int kFirstNameColumn = 2;
-    public static final int kLastNameColumn = 3;
+    public static final int kStudentIdColumn = 3;  //Moved to #3 to fix sheet formatting bug
+    public static final int kFirstNameColumn = 1;  //Needs to be col 1 as otherwise messes up sheet formatting
+    public static final int kLastNameColumn = 2;   //Needs to be col 1 as otherwise messes up sheet formatting
     public static final int kEmailColumn = 4;
     public static final int kPhoneNumberColumn = 5;
     public static final int kAddressColumn = 6;

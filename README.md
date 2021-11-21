@@ -27,9 +27,9 @@ I'm currently working on a workaround or an alternative means of storing this da
 - Gather statistics of student growth over time
 
 ## Downloads
-Currently supported OSes: Windows, Linux
-Unsupported OSes: Mac
-Note: I would love to support Mac. Unfortunately, I do not own a Mac machine to test GrizzlyTime on. It may
+Currently supported OSes: Windows, Linux <br>
+Unsupported OSes: MacOS <br>
+Note: I would love to support MacOS. Unfortunately, I do not own a Mac to test GrizzlyTime on. It may
 or may not work.
 
 Download the latest **release** [here](https://github.com/YCSRobotics/GrizzlyTime/releases/latest "here").

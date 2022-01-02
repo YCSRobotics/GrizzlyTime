@@ -162,7 +162,7 @@ public class AlertUtils {
         dialog.getDialogPane().getStyleClass().add("accountDialog");
 
         dialog.setTitle("Spreadsheet Verification!");
-        dialog.setHeaderText("Please input your spreadsheet ID\n and press confirm!");
+        dialog.setHeaderText("Please input your spreadsheet URL\n and press confirm!");
 
         // Set the button types.
         ButtonType loginButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);

@@ -16,7 +16,7 @@ mainClassName = "Main"
 
 def javaVer = getVersion()
 
-if (javaVer > 11) {
+if (javaVer >= 11) {
     apply plugin: "org.openjfx.javafxplugin"
 }
 

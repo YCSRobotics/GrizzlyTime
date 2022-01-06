@@ -5,7 +5,7 @@
 ![Num Downloads](https://img.shields.io/github/downloads/ycsrobotics/GrizzlyTime/latest/total.svg?style=flat)
 ![License](https://img.shields.io/github/license/ycsrobotics/GrizzlyTime.svg?style=flat)
 ![Appveyor](https://ci.appveyor.com/api/projects/status/ph074gnnuymhxssw?svg=true)
-        
+
 ![example image](https://raw.githubusercontent.com/YCSRobotics/GrizzlyTime/master/wiki_images/main_screen.png)
 
 GrizzlyTime is a Java based time logging system that links with Google Sheets. It features fast setup (<5minutes), logging of individual student dates, quick student registration, flexible 6 digit ID system, etc.
@@ -34,7 +34,7 @@ or may not work.
 
 Download the latest **release** [here](https://github.com/YCSRobotics/GrizzlyTime/releases/latest "here").
 
-A setup tutorial can be found [here.](https://www.youtube.com/watch?v=GhDeMjEh9ao "here.")  
+A setup tutorial can be found [here.](https://www.youtube.com/watch?v=GhDeMjEh9ao "here.")
 Or see the [wiki](https://github.com/YCSRobotics/GrizzlyTime/wiki "wiki")
 
 ## Customizing/Building Source Code

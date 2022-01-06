@@ -1,4 +1,3 @@
 package scenes;
 
-public class OptionScene {
-}
+public class OptionScene {}

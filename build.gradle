@@ -7,6 +7,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'application'
     id "org.openjfx.javafxplugin" version "0.0.10" apply false
+    id 'com.diffplug.spotless' version '6.1.0'
 }
 
 group 'GrizzlyTime'
@@ -42,9 +43,54 @@ dependencies {
 
 if (javaVer >= 11) {
     javafx {
-        modules = [ 'javafx.controls',
-                    'javafx.media',
-                    'javafx.swing']
+        modules = [
+            'javafx.controls',
+            'javafx.media',
+            'javafx.swing'
+        ]
+    }
+}
+
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        toggleOffOn()
+        googleJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    groovyGradle {
+        target fileTree('.') {
+            include '**/*.gradle'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        greclipse()
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format 'xml', {
+        target fileTree('.') {
+            include '**/*.xml'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        eclipseWtp('xml')
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    format 'misc', {
+        target fileTree('.') {
+            include '**/*.md', '**/.gitignore'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
     }
 }
 
@@ -56,6 +102,6 @@ def getVersion() {
     } else {
         def dot = version.indexOf(".");
         if(dot != -1) { version = version.substring(0, dot); }
-    } 
+    }
     return Integer.parseInt(version)
 }

@@ -9,6 +9,9 @@ import helpers.AlertUtils;
 import helpers.CommonUtils;
 import helpers.Constants;
 import helpers.LoggingUtils;
+import java.io.File;
+import java.net.NoRouteToHostException;
+import java.util.logging.Level;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.HPos;
@@ -25,251 +28,245 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.net.NoRouteToHostException;
-import java.util.logging.Level;
-
 public class GrizzlyScene {
-    /**
-     * @author Dalton Smith
-     * GrizzlyScene
-     * Manages the main interface
-     */
+  /** @author Dalton Smith GrizzlyScene Manages the main interface */
 
-    //object that should be able to be modified by calling
-    //this scene directly
-    private static Label messageText = new Label("");
-    private static TextField studentIDBox = new TextField();
+  // object that should be able to be modified by calling
+  // this scene directly
+  private static Label messageText = new Label("");
 
-    //define our scene objects
-    private Button loginButton = new Button("Login/Logout");
-    private UserActivity userActivity = new UserActivity();
-    private Text description = new Text(Constants.kUserTutorial);
-    private Hyperlink creditsLink = new Hyperlink("Credits");
-    private Text creditsText = new Text("v" + Constants.kVersion);
-    private Hyperlink optionsLink = new Hyperlink("Full Screen");
-    private BorderPane bottomPane = new BorderPane();
+  private static TextField studentIDBox = new TextField();
 
-    private AlertUtils alertUtils = new AlertUtils();
+  // define our scene objects
+  private Button loginButton = new Button("Login/Logout");
+  private UserActivity userActivity = new UserActivity();
+  private Text description = new Text(Constants.kUserTutorial);
+  private Hyperlink creditsLink = new Hyperlink("Credits");
+  private Text creditsText = new Text("v" + Constants.kVersion);
+  private Hyperlink optionsLink = new Hyperlink("Full Screen");
+  private BorderPane bottomPane = new BorderPane();
 
-    private GridPane subRoot = new GridPane();
+  private AlertUtils alertUtils = new AlertUtils();
 
-    //boolean state variables
-    private boolean handsFreeMode = LocalDbActivity.kHandsFreeMode;
+  private GridPane subRoot = new GridPane();
 
-    //our upper image
-    private ImageView imageView;
+  // boolean state variables
+  private boolean handsFreeMode = LocalDbActivity.kHandsFreeMode;
 
-    public GrizzlyScene() {
-        Image splash;
-        File file = new File(CommonUtils.getCurrentDir() + File.separator + "images" + File.separator + "error.png");
+  // our upper image
+  private ImageView imageView;
 
-        //check for custom splash
-        if (file.exists()) {
-            splash = new Image(file.toURI().toString());
+  public GrizzlyScene() {
+    Image splash;
+    File file =
+        new File(
+            CommonUtils.getCurrentDir() + File.separator + "images" + File.separator + "error.png");
 
-        } else {
-            splash = new Image(Constants.kErrorImage);
-        }
+    // check for custom splash
+    if (file.exists()) {
+      splash = new Image(file.toURI().toString());
 
-        imageView = new ImageView(splash);
+    } else {
+      splash = new Image(Constants.kErrorImage);
     }
 
-    public void updateInterface(GridPane root) {
+    imageView = new ImageView(splash);
+  }
 
-        //create the upper image
-        imageView.setFitHeight(Constants.kCameraHeight);
-        GridPane.setHalignment(imageView, HPos.CENTER);
-        root.add(imageView, 0, 0);
+  public void updateInterface(GridPane root) {
 
-        //update CSS IDS
-        messageText.setId("messageText");
-        studentIDBox.setId("textBox");
-        loginButton.setId("confirmButton");
-        creditsLink.setId("hyperlinkBottom");
-        optionsLink.setId("hyperlinkBottom");
-        creditsText.setId("hyperlinkBottom");
+    // create the upper image
+    imageView.setFitHeight(Constants.kCameraHeight);
+    GridPane.setHalignment(imageView, HPos.CENTER);
+    root.add(imageView, 0, 0);
 
-        //create our panes
-        GridPane options = new GridPane();
-        GridPane title = new GridPane();
+    // update CSS IDS
+    messageText.setId("messageText");
+    studentIDBox.setId("textBox");
+    loginButton.setId("confirmButton");
+    creditsLink.setId("hyperlinkBottom");
+    optionsLink.setId("hyperlinkBottom");
+    creditsText.setId("hyperlinkBottom");
 
-        subRoot.setId("bottomView");
+    // create our panes
+    GridPane options = new GridPane();
+    GridPane title = new GridPane();
 
-        //confirm alignments
-        subRoot.setAlignment(Pos.CENTER);
-        options.setAlignment(Pos.CENTER);
-        title.setAlignment(Pos.CENTER);
-        messageText.setAlignment(Pos.CENTER);
-        description.setTextAlignment(TextAlignment.CENTER);
-        description.setId("textDescription");
+    subRoot.setId("bottomView");
 
-        //manually align message text because Gridpane is weird
-        GridPane.setHalignment(messageText, HPos.CENTER);
-        GridPane.setHalignment(description, HPos.CENTER);
-        GridPane.setHalignment(subRoot, HPos.CENTER);
+    // confirm alignments
+    subRoot.setAlignment(Pos.CENTER);
+    options.setAlignment(Pos.CENTER);
+    title.setAlignment(Pos.CENTER);
+    messageText.setAlignment(Pos.CENTER);
+    description.setTextAlignment(TextAlignment.CENTER);
+    description.setId("textDescription");
 
-        //set bottom pane details
-        bottomPane.setId("bottomPane");
-        bottomPane.setLeft(optionsLink);
-        bottomPane.setCenter(creditsText);
-        bottomPane.setRight(creditsLink);
-        bottomPane.setMinWidth(subRoot.getWidth());
+    // manually align message text because Gridpane is weird
+    GridPane.setHalignment(messageText, HPos.CENTER);
+    GridPane.setHalignment(description, HPos.CENTER);
+    GridPane.setHalignment(subRoot, HPos.CENTER);
 
-        //add our various nodes to respective panes
-        title.add(description, 0, 1);
-        options.add(studentIDBox, 0, 0);
-        options.add(loginButton, 1, 0);
-        subRoot.add(title, 0, 0);
-        subRoot.add(options, 0, 1);
-        subRoot.add(messageText, 0, 2);
+    // set bottom pane details
+    bottomPane.setId("bottomPane");
+    bottomPane.setLeft(optionsLink);
+    bottomPane.setCenter(creditsText);
+    bottomPane.setRight(creditsLink);
+    bottomPane.setMinWidth(subRoot.getWidth());
 
-        //sub root details
-        subRoot.setVgap(10);
+    // add our various nodes to respective panes
+    title.add(description, 0, 1);
+    options.add(studentIDBox, 0, 0);
+    options.add(loginButton, 1, 0);
+    subRoot.add(title, 0, 0);
+    subRoot.add(options, 0, 1);
+    subRoot.add(messageText, 0, 2);
 
-        //add to root pane
-        root.add(subRoot, 0, 1);
-        root.add(bottomPane, 0, 2);
+    // sub root details
+    subRoot.setVgap(10);
 
-        //handle our buttons
-        setEventHandlers();
+    // add to root pane
+    root.add(subRoot, 0, 1);
+    root.add(bottomPane, 0, 2);
 
-    }
+    // handle our buttons
+    setEventHandlers();
+  }
 
-    public void reShowUI(GridPane root) {
-        root.setId("main");
+  public void reShowUI(GridPane root) {
+    root.setId("main");
 
-        //add to root pane
-        root.add(imageView, 0, 0);
-        root.add(subRoot, 0, 1);
-        root.add(bottomPane, 0, 2);
-    }
+    // add to root pane
+    root.add(imageView, 0, 0);
+    root.add(subRoot, 0, 1);
+    root.add(bottomPane, 0, 2);
+  }
 
-    //our event handlers for interactivity
-    private void setEventHandlers() {
-        //login on enter key press
-        studentIDBox.setOnAction(event -> confirmLogin());
+  // our event handlers for interactivity
+  private void setEventHandlers() {
+    // login on enter key press
+    studentIDBox.setOnAction(event -> confirmLogin());
 
-        //login button event handler
-        loginButton.setOnAction(event -> confirmLogin());
+    // login button event handler
+    loginButton.setOnAction(event -> confirmLogin());
 
-        creditsLink.setOnAction(event -> showCredits());
+    creditsLink.setOnAction(event -> showCredits());
 
-        optionsLink.setOnAction(event -> {
-            Stage stage = (Stage)optionsLink.getScene().getWindow();
-            if (KeyActivity.isFullscreen) {
-                stage.setFullScreen(false);
-                KeyActivity.isFullscreen = false;
-            } else {
-                stage.setFullScreen(true);
-                KeyActivity.isFullscreen = true;
-            }
+    optionsLink.setOnAction(
+        event -> {
+          Stage stage = (Stage) optionsLink.getScene().getWindow();
+          if (KeyActivity.isFullscreen) {
+            stage.setFullScreen(false);
+            KeyActivity.isFullscreen = false;
+          } else {
+            stage.setFullScreen(true);
+            KeyActivity.isFullscreen = true;
+          }
         });
+  }
+
+  private void showCredits() {
+    SceneManager.updateScene(Constants.kCreditsSceneState);
+  }
+
+  // helper login method
+  private void confirmLogin() {
+    setMessageBoxText("Processing...");
+
+    // confirm the ID is vslid
+    if (!userActivity.isValidID(studentIDBox.getText())) {
+      setMessageBoxText("ID " + studentIDBox.getText() + " is invalid.");
+
+      Task<Void> wait =
+          new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+              Thread.sleep(5000);
+              return null;
+            }
+          };
+
+      wait.setOnSucceeded(e -> setMessageBoxText(""));
+
+      // no need to set as daemon as will end after x seconds.
+      new Thread(wait).start();
+      return;
     }
 
-    private void showCredits() {
-        SceneManager.updateScene(Constants.kCreditsSceneState);
+    if (!handsFreeMode) {
+      // confirm that the user wants to login/logout
+      if (alertUtils.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
+        loginUser();
+      } else {
+        setMessageBoxText("");
+      }
+
+      // show no prompts
+    } else {
+      loginUser();
     }
+  }
 
-    //helper login method
-    private void confirmLogin() {
-        setMessageBoxText("Processing...");
-
-        //confirm the ID is vslid
-        if (!userActivity.isValidID(studentIDBox.getText())) {
-            setMessageBoxText("ID " + studentIDBox.getText() + " is invalid.");
-
-            Task<Void> wait = new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    Thread.sleep(5000);
-                    return null;
-                }
-            };
-
-            wait.setOnSucceeded(e -> setMessageBoxText(""));
-
-            //no need to set as daemon as will end after x seconds.
-            new Thread(wait).start();
+  // login the user, check if hands free or not
+  private void loginUser() {
+    // separate login process on different thread to ensure
+    // main application does not freeze
+    // also allows in for multiple users login simultaneously
+    Runnable loginUser =
+        () -> {
+          // ensure that the user typed something in
+          if (studentIDBox.getText().isEmpty()) {
+            setMessageBoxText("Nothing was entered!");
             return;
+          }
 
-        }
+          // attempt login/logout and or account creation
+          // do nothing if account creation was cancelled
+          try {
+            // check if the user is logged in, and that user exists
+            if (!(userActivity.isUserLoggedIn(studentIDBox.getText()))) {
+              LoggingUtils.log(Level.INFO, "Logging in: " + studentIDBox.getText());
+              userActivity.loginUser(studentIDBox.getText());
 
-        if (!handsFreeMode) {
-            //confirm that the user wants to login/logout
-            if (alertUtils.confirmInput("Confirm login/logout of user: " + studentIDBox.getText())) {
-                loginUser();
             } else {
-                setMessageBoxText("");
+              LoggingUtils.log(Level.INFO, "Logging out: " + studentIDBox.getText());
+              userActivity.logoutUser(studentIDBox.getText());
             }
 
-        //show no prompts
-        } else {
-            loginUser();
-        }
+          } catch (CancelledUserCreationException e) {
+            setMessageBoxText("Cancelled account creation");
 
-    }
+          } catch (ConnectToWorksheetException e) {
+            setMessageBoxText("There was an error connecting to the database. Please retry.");
 
-    //login the user, check if hands free or not
-    private void loginUser() {
-        //separate login process on different thread to ensure
-        //main application does not freeze
-        //also allows in for multiple users login simultaneously
-        Runnable loginUser = () -> {
-            //ensure that the user typed something in
-            if (studentIDBox.getText().isEmpty()) {
-                setMessageBoxText("Nothing was entered!");
-                return;
+          } catch (NoRouteToHostException e) {
+            setMessageBoxText("Unable to connect to database. Check internet and retry.");
 
-            }
+          } catch (Exception e) {
+            LoggingUtils.log(Level.SEVERE, e);
+            setMessageBoxText("An unknown error has occurred, see log file.");
+          }
 
-            //attempt login/logout and or account creation
-            //do nothing if account creation was cancelled
-            try {
-                //check if the user is logged in, and that user exists
-                if (!(userActivity.isUserLoggedIn(studentIDBox.getText()))) {
-                    LoggingUtils.log(Level.INFO, "Logging in: " + studentIDBox.getText());
-                    userActivity.loginUser(studentIDBox.getText());
-
-                } else {
-                    LoggingUtils.log(Level.INFO, "Logging out: " + studentIDBox.getText());
-                    userActivity.logoutUser(studentIDBox.getText());
-
-                }
-
-            } catch (CancelledUserCreationException e) {
-                setMessageBoxText("Cancelled account creation");
-
-            } catch (ConnectToWorksheetException e) {
-                setMessageBoxText("There was an error connecting to the database. Please retry.");
-
-            } catch (NoRouteToHostException e) {
-                setMessageBoxText("Unable to connect to database. Check internet and retry.");
-
-            } catch (Exception e) {
-                LoggingUtils.log(Level.SEVERE, e);
-                setMessageBoxText("An unknown error has occurred, see log file.");
-            }
-
-            //refocus the textbox
-            Platform.runLater(() -> studentIDBox.requestFocus());
+          // refocus the textbox
+          Platform.runLater(() -> studentIDBox.requestFocus());
         };
 
-        //start our thread
-        Thread t = new Thread(loginUser);
-        t.setDaemon(true);
-        t.start();
+    // start our thread
+    Thread t = new Thread(loginUser);
+    t.setDaemon(true);
+    t.start();
+  }
+
+  // helper methods for setting and clearing text box
+  public static void setMessageBoxText(String text) {
+    if (Platform.isFxApplicationThread()) {
+      messageText.setText(text);
+    } else {
+      Platform.runLater(() -> messageText.setText(text));
     }
+  }
 
-    //helper methods for setting and clearing text box
-    public static void setMessageBoxText(String text) {
-        if (Platform.isFxApplicationThread()) {
-            messageText.setText(text);
-        } else {
-            Platform.runLater(() -> messageText.setText(text));
-        }
-    }
-
-    public static void clearInput() { studentIDBox.clear(); }
-
+  public static void clearInput() {
+    studentIDBox.clear();
+  }
 }

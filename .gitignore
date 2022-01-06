@@ -38,7 +38,9 @@ src/main/resources/credentials/credentials.json
 .gradle/
 
 # project specific
-build/
-out/
-logs/
-tokens/
+build/*
+out/*
+logs/*
+tokens/*
+bin/*
+config.json

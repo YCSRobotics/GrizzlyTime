@@ -5,6 +5,7 @@ import helpers.CommonUtils;
 import helpers.Constants;
 import helpers.LoggingUtils;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -76,33 +77,37 @@ public class GrizzlyTime extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(Constants.kWindowResizable);
-
-        //show our splash
-        SceneManager.updateScene(Constants.kSplashSceneState);
         primaryStage.show();
-        primaryStage.requestFocus();
 
-        //initialize our activities and interface objects AFTER
-        //we display application
-        SceneManager.updateScene(Constants.kLoadMainScene);
+        Platform.runLater(() -> {
+            //show our splash
+            SceneManager.updateScene(Constants.kSplashSceneState);
+            primaryStage.requestFocus();
+            primaryStage.centerOnScreen();
+            LoggingUtils.log(Level.INFO, "Run first");
+        });
 
-        AlertUtils.stage = primaryStage;
+        // queue our updates
+        Platform.runLater(() -> {
+            //initialize our activities and interface objects AFTER
+            //we display application
+            SceneManager.updateScene(Constants.kLoadMainScene);
+            AlertUtils.stage = primaryStage;
+            updater.checkUpdates();
+            keyHandlers.setKeyHandlers(scene, primaryStage);
+            LoggingUtils.log(Level.INFO, "Run second");
+        });
 
-        //remove splash screen on load
-        root.getChildren().clear();
-        primaryStage.setWidth(Constants.kMainStageWidth);
-        primaryStage.setHeight(Constants.kMainStageHeight);
-        primaryStage.centerOnScreen();
-
-        //add our global key handlers
-        keyHandlers.setKeyHandlers(scene, primaryStage);
-
-        //check for updates
-        updater.checkUpdates();
-
-        //create UI and logic
-        SceneManager.updateScene(Constants.kMainSceneState);
-
+        // queue the update to main thread
+        Platform.runLater(() -> {
+            //remove splash screen on load
+            root.getChildren().clear();
+            primaryStage.setWidth(Constants.kMainStageWidth);
+            primaryStage.setHeight(Constants.kMainStageHeight);
+            primaryStage.centerOnScreen();
+            SceneManager.updateScene(Constants.kMainSceneState);
+            LoggingUtils.log(Level.INFO, "Run third");
+        });
     }
 
     //catch uncaught exceptions

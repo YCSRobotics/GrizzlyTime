@@ -30,9 +30,7 @@ public class SplashScene {
 
         ImageView splashViewer = new ImageView(splash);
 
-        root.add(splashViewer, 0, 0
-
-        );
+        root.add(splashViewer, 0, 0);
     }
 
 }

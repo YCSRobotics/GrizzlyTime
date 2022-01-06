@@ -1,7 +1,7 @@
 # GrizzlyTime
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/63d04fb23e1d411a946c3184a57ef691)](https://www.codacy.com/app/gamefollower26/GrizzlyTime?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=YCSRobotics/GrizzlyTime&amp;utm_campaign=Badge_Grade)
-![Current Version Bade](https://img.shields.io/github/release/ycsrobotics/GrizzlyTime.svg?style=flat)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/526a7badc871467ba68c0d688e87b3c7)](https://www.codacy.com/gh/YCSRobotics/GrizzlyTime/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=YCSRobotics/GrizzlyTime&amp;utm_campaign=Badge_Grade)utm_medium=referral&amp;utm_content=YCSRobotics/GrizzlyTime&amp;utm_campaign=Badge_Grade)
+![Current Version Badge](https://img.shields.io/github/release/ycsrobotics/GrizzlyTime.svg?style=flat)
 ![Num Downloads](https://img.shields.io/github/downloads/ycsrobotics/GrizzlyTime/latest/total.svg?style=flat)
 ![License](https://img.shields.io/github/license/ycsrobotics/GrizzlyTime.svg?style=flat)
 ![Appveyor](https://ci.appveyor.com/api/projects/status/ph074gnnuymhxssw?svg=true)

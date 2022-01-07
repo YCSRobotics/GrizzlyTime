@@ -118,6 +118,10 @@ public class GrizzlyTime extends Application {
         });
   }
 
+  public static void main(String[] args) {
+      Application.launch(args);
+  }
+
   // catch uncaught exceptions
   private static void globalExceptionHandler(Throwable throwable) {
     LoggingUtils.log(Level.SEVERE, throwable);

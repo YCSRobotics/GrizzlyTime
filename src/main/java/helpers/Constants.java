@@ -81,7 +81,7 @@ public class Constants {
   public static final boolean kMentorFallback = true;
 
   public static final String kUpdateUrl =
-      "https://raw.githubusercontent.com/YCSRobotics/GrizzlyTime/master/version.txt";
+      "https://raw.githubusercontent.com/YCSRobotics/GrizzlyTime/main/version.txt";
   public static final String kReleaseUrl =
       "https://github.com/YCSRobotics/GrizzlyTime/wiki/5.-Updating-GrizzlyTime";
 
